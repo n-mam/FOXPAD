@@ -6,9 +6,7 @@ download mysql zip file for windows
 type c:\windows\my.cnf
 
 [mysqld]
-# set basedir to your installation path
 basedir=C:\\code\\mysql-8.0.20-winx64
-# set datadir to the location of your data directory
 datadir=C:\\code\\mysql-8.0.20-winx64\\data
 
 mysqld --initialize --console

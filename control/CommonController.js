@@ -8,7 +8,7 @@ var listChecked = require('../views/common/ListChecked');
 function Initialize(cbk)
 {
   let v = mainView.getView(this);
-  
+
   let sql = v.json.prv.sql;
 
   ss.getUser(this.cookie, function(e, data = {}) {

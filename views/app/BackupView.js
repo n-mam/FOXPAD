@@ -1,7 +1,7 @@
-var fsbrowser = require('../common/FSBrowser');
 var css = require('../common/CSS');
 var input = require('../common/Input');
 var listRow = require('../common/ListRow');
+var fsbrowser = require('../common/FSBrowser');
 
 function ProcessBackupViewResponse(m)
 {
