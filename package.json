@@ -1,0 +1,21 @@
+{
+  "author": "Neelabh Mam <neelabh.mam@gmail.com>",
+  "description": "node-npl",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/n-mam/node-npl.git"
+  },
+  "dependencies": {
+    "mime": "1.4.1",
+    "mysql": "^2.16.0",
+    "oppressor": "0.0.1",
+    "throttle": "1.0.3"
+  },
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  }
+}
