@@ -12,17 +12,17 @@ var render = (v) =>
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
      ${preJS()}
-     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro.min.css">
-     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-colors.min.css">
-     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-rtl.min.css">
-     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-icons.min.css">    
+     <link rel="stylesheet" href="js/metro-ui-css/css/metro.min.css">
+     <link rel="stylesheet" href="js/metro-ui-css/css/metro-colors.min.css">
+     <link rel="stylesheet" href="js/metro-ui-css/css/metro-rtl.min.css">
+     <link rel="stylesheet" href="js/metro-ui-css/css/metro-icons.min.css">    
      ${css.main(v.page)}
     </head>
     <body>
       ${u.isDefined(v.json.prv.user) ? Header(v) : ''}
       ${content.render(v)}
       ${postJS()}
-      <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
+      <script src="js/metro-ui-css/js/metro.min.js"></script>
     </body>
    </html>`;
 }
@@ -33,7 +33,7 @@ var Header = ({page, json}) =>
 
   return `
   <div class="container-fluid pos-fixed fixed-top z-top">
-  <header class="app-bar bg-hero fg-white app-bar-expand" data-role="appbar" data-expand="true" data-role-appbar="true">
+  <header class="app-bar bg-hero fg-black app-bar-expand" data-role="appbar" data-expand="true" data-role-appbar="true">
     ${css.spacer(4, 'h-spacer')}
     <div class='flex' style='cursor:pointer'>
       <img style='' src='/image/fox1.png' alt='logo' width='32' height='32'>

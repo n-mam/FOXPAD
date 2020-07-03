@@ -9,13 +9,12 @@ var style = () => {
       font-weight: bold;
     }
     .log {
-      width: 60%;
+      width: 70%;
       overflow: auto;
       max-height:45em;
       min-height:45em;
       text-align: left;
       font-family: monospace;
-      border: 1px solid var(--border-color);
     }
     .trace {
       word-wrap: break-word;
@@ -32,28 +31,24 @@ function render(id)
   return `
      ${style()}
      <div id='${id}' class='flex column' style='display:none;width:100%;'>
-      <div class='flex column'>
-
-        <div class='flex row' style='align-items:flex-end'>
-         <input id='id-agent-host' type='text' placeholder='Hostname'>
-         ${css.nbsp(2)}
-         <div id='id-agent-connect' class='flex button' onclick='ProcessConnect(this)'>CONNECT</div>
+      <div class='flex'>
+        <input id='id-agent-host' type="text" class="flex" placeholder='Host' data-role="input" data-clear-button="false">
+        ${css.spacer(4, 'h-spacer')}
+        <div class="input-control text">
+         <input id='id-agent-port' type="text" class="flex mini" placeholder='Port' data-role="input" data-clear-button="false">
         </div>
-      
-        ${css.spacer(2)}
+        ${css.spacer(4, 'h-spacer')}
+        <button id='id-agent-connect' class="flex button dark outline rounded" onclick='ProcessConnect(this)'>CONNECT</button>
       </div>
+      ${css.spacer(4)}
       <div class='flex row' style='width:100%'>
        ${logview()}
       </div>
       ${css.spacer(2)}
       <div class='flex row' style='width:100%'>
-       <div class='flex button action' onclick="SaveAgentTrace()" style='width:6em;'>
-        <p>SAVE</p> 
-       </div>
+       <button class="flex button dark outline rounded" style='min-width:6em' onclick='SaveAgentTrace()'>SAVE</button>
        ${css.nbsp(2)}
-       <div class='flex button action' onclick="document.getElementById('id-agent-log').innerHTML=''" style='width:6em;'>
-        <p>CLEAR</p>
-       </div>
+       <button class="flex button dark outline rounded" style='min-width:6em' onclick='document.getElementById('id-agent-log').innerHTML='''>CLEAR</button>
       </div>
      </div>
      <script src='/js/ws.js'></script>`;

@@ -8,7 +8,22 @@ var style = () =>
 
 var script = () =>
 {
-  return ``;
+  return `
+  <script>
+   function onFrameOpen(frame)
+   {
+     console.log(frame);
+     let view = document.getElementById(frame.dataset.link);
+     view.style.display = 'inline-flex';
+   }
+   function onFrameClose(frame)
+   {
+     console.log(frame);
+     let view = document.getElementById(frame.dataset.link);
+     view.style.display = 'none';     
+   }   
+  </script>
+  `;
 }
 
 var render = (title, sections) =>
@@ -25,13 +40,15 @@ var render = (title, sections) =>
    <div  data-role="accordion"
     data-one-frame="false"
     data-show-active="true"
+    data-on-frame-open="onFrameOpen(arguments[0])"
+    data-on-frame-close="onFrameClose(arguments[0])"    
     data-active-heading-class="bg-lightCyan fg-white"
     data-active-content-class="bg-grayBlue fg-white">`;
 
   sections.forEach(
     element => {
     html += `
-    <div class="frame">
+    <div class="frame" data-link='${element.link}'>
       <div class="heading">${element.title}</div>
       <div class="content">
         <div class="p-2">Cur luba manducare? Pol, a bene ionicis tormento...</div>

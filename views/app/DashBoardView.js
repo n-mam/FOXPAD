@@ -51,6 +51,12 @@ function ShowUserDashBoard(v)
 
   sections.push(
     {
+      title : 'WEBSOCKET',
+      link : 'id-ftp'
+    });
+
+  sections.push(
+    {
       title : 'AGENT',
       link : 'id-agent'
     });

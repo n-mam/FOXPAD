@@ -8,6 +8,7 @@ var common = () => {
      width: 100%;
      height: 87%;
      text-align: center;
+     align-items: flex-start;
    }
    #flash {
      width: 50%;
@@ -15,6 +16,7 @@ var common = () => {
      min-height: auto;
    }`;
 }
+
 var style_h = (v) => 
 {
   return `
@@ -23,12 +25,12 @@ var style_h = (v) =>
    </style>`;
 }
 
-var horizontal = (v) => 
+var horizontal = (v) =>
 {
   return `
    ${style_h(v)}
-   <div id='content' class='flex pt-18 pl-4'>
-    <div id='left' class='flex column left'>
+   <div id='content' class='flex pt-16'>
+    <div id='left' class='flex column left pl-3'>
      ${u.isDefined(v.page.html.left) ? v.page.html.left : '<!--p>LEFT</p-->'}
     </div>
     <div id='center' class='flex column center'>

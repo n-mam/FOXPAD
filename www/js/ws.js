@@ -1,4 +1,4 @@
-var s;  
+var s;
 var host = 'localhost:8081'
 
 function AgentSend(message)
