@@ -1,5 +1,5 @@
 # node-npl
-web app for cpp-npl
+node web app boilerplate
 
 download mysql zip file for windows
 

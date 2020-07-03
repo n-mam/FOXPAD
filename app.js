@@ -1,13 +1,14 @@
 var http = require("http");
 var URL = require('url').URL;
-/**
+
+/*
  *  library
  */
+var u = require('./lib/util');
 var router = require('./lib/router');
 var APIController = require('./lib/api');
-var u = require('./lib/util');
 
-/** 
+/*
  * controllers
  */
 var HomeController = require('./control/HomeController');
@@ -15,13 +16,13 @@ var DashBoardController = require('./control/DashBoardController');
 var UserController = require('./control/UserController');
 var FileController = require('./control/FileController');
 
-/**
+/*
  * command line defaults
  */
 var port = 8080;
 var dbname = "foxpad";
 
-/**
+/*
  * node.exe server.js 1234 dbname
  */
 if (process.argv.length >= 3)
@@ -61,12 +62,12 @@ var reqListener = (req, res) =>
     res.setHeader('Connection', 'close');
   
     u.send_json(
-       413, 
-       {
-         status: 'ERROR',
-         msg: m
-       },
-       res);
+      413, 
+      {
+        status: 'ERROR',
+        msg: m
+      },
+      res);
   
     console.log('request connection destroyed');
   }
@@ -83,7 +84,7 @@ var reqListener = (req, res) =>
     total += chunk.length;
 
     console.log('new chunk ' + chunk.length + ' total : ' + total);
-    /**
+    /*
      * except for upload route, limit the body size to 1K todo
      */
     if ((cookie === null) && (_url.pathname !== '/upload') && (total >= 1024))
