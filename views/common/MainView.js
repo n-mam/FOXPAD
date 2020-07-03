@@ -5,73 +5,59 @@ var content = require('./Content');
 var render = (v) =>
 {
   return `
-   <!doctype html>
+   <!DOCTYPE html>
    <html lang='en'>
     <head>
      <title>${v.page.title}</title>
-     <meta charset="UTF-8">
-     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
      ${preJS()}
+     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro.min.css">
+     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-colors.min.css">
+     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-rtl.min.css">
+     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-icons.min.css">    
      ${css.main(v.page)}
     </head>
     <body>
       ${u.isDefined(v.json.prv.user) ? Header(v) : ''}
-      <div style='width:100%;height:2%;'> </div>
       ${content.render(v)}
       ${postJS()}
+      <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
     </body>
    </html>`;
 }
 
 var Header = ({page, json}) =>
 {
- return `
- <div class='flex header'>
-  <div class='flex left' style='justify-content:center' onclick="window.location='/';">
-    <div class='flex' style='font-size:1.1em;letter-spacing:0.4em;cursor:pointer'>
+  let {name, email, image = '/image/profile.png'} = json.prv.user;
+
+  return `
+  <div class="container-fluid pos-fixed fixed-top z-top">
+  <header class="app-bar bg-hero fg-white app-bar-expand" data-role="appbar" data-expand="true" data-role-appbar="true">
+    ${css.spacer(4, 'h-spacer')}
+    <div class='flex' style='cursor:pointer'>
       <img style='' src='/image/fox1.png' alt='logo' width='32' height='32'>
-      ${css.nbsp(2)}
+      ${css.spacer(2, 'h-spacer')}
       <b>${page.title}</b>
     </div>
+    ${css.spacer(4, 'h-spacer')}
+    <div class="app-bar-menu ml-auto">
+     <li>
+      <a href="#" class="dropdown-toggle">
+       <img src="${image}" width=32 height=32> ${name}
+      </a>
+      <ul class="d-menu place-right" data-role="dropdown">
+       <li><a href="#">Windows 10</a></li>
+       <li><a href="#">Profile</a></li>
+       <li class="divider bg-lightGray"></li>
+       <li><a href="#" onclick="_auth('LOGOUT')">Sign out</a></li>
+      </ul>
+     </li>
+    </div>
+    ${css.spacer(4, 'h-spacer')}
+  </header>
   </div>
-  <div class='flex center' style='letter-spacing: 0.15em;justify-content:flex-end;'>
-
-  </div>
-  <div class='flex right' style='justify-content:center'>
-    ${profile(json.prv.user)}
-  </div>
- </div>`;
-}
-
-var profile = (user) => 
-{
-  let html = ``;
-
-  if (u.isDefined(user))
-  {
-    let {name, email, image = '/image/profile.png'} = user;
-
-    html = `
-     ${css.profile()}
-     <div id='profile' class='flex column'>
-       <div class='flex'>
-         <img src=${image} alt='user' width='24' height='24'>
-         <b style='margin:0.3em'>${u.isDefined(name) ? name : email}</b>
-       </div>
-       <div id='menu' class='flex column'>
-         <div class='h-line' style="width:65%"></div>
-            <div id='menu-profile' class='flex menu-item' onclick="window.location='/User/show?id=${user.id}';">
-              <b>PROFILE</b>
-            </div>
-            <div class='h-line' style="width:65%"></div>
-            <div id='menu-logout' class='flex menu-item' onclick="_auth('LOGOUT')">
-              <b>LOGOUT</b>
-            </div>
-         </div>
-       </div>`;
-  }
-  
-  return html;
+  `;
 }
 
 var navigation = (merchant, branch) => 

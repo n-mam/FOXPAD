@@ -27,7 +27,7 @@ var horizontal = (v) =>
 {
   return `
    ${style_h(v)}
-   <div id='content' class='flex'>
+   <div id='content' class='flex pt-18 pl-4'>
     <div id='left' class='flex column left'>
      ${u.isDefined(v.page.html.left) ? v.page.html.left : '<!--p>LEFT</p-->'}
     </div>
@@ -67,7 +67,7 @@ var vertical = (v) =>
 {
   return `
    ${style_v(v)}
-   <div id='content' class='flex column'>
+   <div id='content' class='flex column pt-18 pl-4'>
      <div id='top' class='flex'>
        ${u.isDefined(v.page.html.top) ? v.page.html.top : ''}
      </div>
@@ -85,12 +85,12 @@ var vertical = (v) =>
 function LandingPage()
 {
   return `
-  <div class='flex row' style='width:100%;height:75%;'>
-   <img style='' src='/image/architecture.png' alt='logo' >
-   ${css.nbsp(10)}
-   <div class='flex column'>
+  <div class="flex row pos-fixed pos-center">
+    <img style='' src='/image/architecture.png' alt='logo'>
+    ${css.spacer(4, 'h-spacer')}
+    <div class="flex column">
     ${cred.credentials()}
-    ${css.spacer(5)}
+      ${css.spacer(2)}
     <a href="/content/foxpad/Foxpad-1.0.0-win64.exe">
      <div id='btn-download' class='flex button action' style='background-color:var(--accordian-color);color:white;min-width:10em;padding:0.5em;'>
       <b>DOWNLOAD</b>

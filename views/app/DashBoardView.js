@@ -27,38 +27,32 @@ function ShowUserDashBoard(v)
 
   sections.push(
     {
-      title: 'FTP',
-      link: 'id-ftp'
+      title : 'FTP',
+      link : 'id-ftp'
     });
 
   sections.push(
     {
-      title: 'SSH',
-      link: 'id-ssh'
+      title : 'SSH',
+      link : 'id-ssh'
     });
 
   sections.push(
     {
-      title: 'BACKUP',
-      link: 'id-backup'
+      title : 'BACKUP',
+      link : 'id-backup'
     });
 
   sections.push(
     {
-      title: 'MOUNT',
-      link: 'id-recover'
+      title : 'MOUNT',
+      link : 'id-recover'
     });
 
   sections.push(
     {
-      title: 'AGENT',
-      link: 'id-agent'
-    });
-
-  sections.push(
-    {
-      active: u.getPathCookie('accordion', v),
-      suffix: ''
+      title : 'AGENT',
+      link : 'id-agent'
     });
 
   v.page.html.center = "";
@@ -69,6 +63,7 @@ function ShowUserDashBoard(v)
   v.page.html.center += recoveryView.render('id-recover');
   v.page.html.center += kissView.render('id-kiss');
   v.page.html.center += agentView.render('id-agent');
+
   v.page.html.left = accordion.render('Dashboard', sections);
 }
 
