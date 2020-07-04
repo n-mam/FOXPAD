@@ -27,6 +27,7 @@ var style = () => { return `
 
 var credentials = () => {
   return `
+
   <div id='auth' class='flex column' style='min-width:17em;'>
     <div class='flex' style='font-size:1.1em;letter-spacing:0.4em;cursor:pointer'>
       <img style='' src='/image/fox1.png' alt='logo' width='32' height='32'>
@@ -53,14 +54,14 @@ var credentials = () => {
    </div>
    ${css.spacer(3)}
    <div class='flex'>
-    <div id='btn-signup' class='flex button action' onclick='_auth("SIGNUP")' style='display:none;min-width:4.5em;' tabindex="3">
+    <div id='btn-signup' class='flex button action' onclick='_auth("SIGNUP")' style='display:none;min-width:6em;' tabindex="3">
      <b>SIGNUP</b>
     </div>
-    <div id='btn-login' class='flex button action' onclick='_auth("LOGIN")' style='display:inline-flex;min-width:4.5em;' tabindex="3">
+    <div id='btn-login' class='flex button action' onclick='_auth("LOGIN")' style='display:inline-flex;min-width:6em;' tabindex="3">
      <b>LOGIN</b>
     </div>
    </div>
-   ${css.spacer(2)}
+   ${css.spacer(4)}
    <div id='l-toggle' tabindex="3">
      New user ? <b class='link' style="color:blue;border-bottom:solid 1px blue;padding:0.1em;cursor:pointer;" onclick='toggleaction()'>SIGNUP</b>
    </div>

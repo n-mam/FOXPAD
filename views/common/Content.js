@@ -89,10 +89,10 @@ function LandingPage()
   return `
   <div class="flex row pos-fixed pos-center">
     <img style='' src='/image/architecture.png' alt='logo'>
-    ${css.spacer(4, 'h-spacer')}
+    ${css.spacer(6, 'h-spacer')}
     <div class="flex column">
     ${cred.credentials()}
-      ${css.spacer(2)}
+    ${css.spacer(6)}
     <a href="/content/foxpad/Foxpad-1.0.0-win64.exe">
      <div id='btn-download' class='flex button action' style='background-color:var(--accordian-color);color:white;min-width:10em;padding:0.5em;'>
       <b>DOWNLOAD</b>

@@ -30,7 +30,7 @@ function render(id)
 {
   return `
      ${style()}
-     <div id='${id}' class='flex column' style='display:none;width:100%;'>
+     <div id='${id}' class='flex column pt-8' style='display:none;width:100%;'>
       <div class='flex'>
         <input id='id-agent-host' type="text" class="flex" placeholder='Host' data-role="input" data-clear-button="false">
         ${css.spacer(4, 'h-spacer')}
@@ -42,13 +42,13 @@ function render(id)
       </div>
       ${css.spacer(4)}
       <div class='flex row' style='width:100%'>
-       ${logview()}
+        ${logview()}
       </div>
       ${css.spacer(2)}
       <div class='flex row' style='width:100%'>
-       <button class="flex button dark outline rounded" style='min-width:6em' onclick='SaveAgentTrace()'>SAVE</button>
-       ${css.nbsp(2)}
-       <button class="flex button dark outline rounded" style='min-width:6em' onclick='document.getElementById('id-agent-log').innerHTML='''>CLEAR</button>
+        <button class="flex button dark outline rounded" style='min-width:6em' onclick='SaveAgentTrace()'>SAVE</button>
+        ${css.nbsp(2)}
+        <button class="flex button dark outline rounded" style='min-width:6em' onclick='document.getElementById('id-agent-log').innerHTML='''>CLEAR</button>
       </div>
      </div>
      <script src='/js/ws.js'></script>`;

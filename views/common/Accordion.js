@@ -10,11 +10,16 @@ var script = () =>
 {
   return `
   <script>
+   let currentView = null;
    function onFrameOpen(frame)
    {
      console.log(frame);
-     let view = document.getElementById(frame.dataset.link);
-     view.style.display = 'inline-flex';
+     if (currentView)
+     {
+       currentView.style.display = 'none';
+     }
+     currentView = document.getElementById(frame.dataset.link);
+     currentView.style.display = 'inline-flex';
    }
    function onFrameClose(frame)
    {
@@ -49,7 +54,7 @@ var render = (title, sections) =>
     element => {
     html += `
     <div class="frame" data-link='${element.link}'>
-      <div class="heading">${element.title}</div>
+      <div class="heading"><b>${element.title}</b></div>
       <div class="content">
         <div class="p-2">Cur luba manducare? Pol, a bene ionicis tormento...</div>
       </div>

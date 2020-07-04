@@ -70,7 +70,7 @@ function ShowUserDashBoard(v)
   v.page.html.center += kissView.render('id-kiss');
   v.page.html.center += agentView.render('id-agent');
 
-  v.page.html.left = accordion.render('Dashboard', sections);
+  v.page.html.left = accordion.render('', sections);
 }
 
 function ShowAdminDashBoard(v)
