@@ -63,12 +63,12 @@ function ShowUserDashBoard(v)
 
   v.page.html.center = "";
 
-  v.page.html.center += ftpView.render('id-ftp');
-  v.page.html.center += sshView.render('id-ssh');
-  v.page.html.center += backupView.render('id-backup');
-  v.page.html.center += recoveryView.render('id-recover');
-  v.page.html.center += kissView.render('id-kiss');
-  v.page.html.center += agentView.render('id-agent');
+  ftpView.render(v, 'id-ftp');
+  sshView.render(v, 'id-ssh');
+  backupView.render(v, 'id-backup');
+  recoveryView.render(v, 'id-recover');
+  kissView.render(v, 'id-kiss');
+  agentView.render(v, 'id-agent');
 
   v.page.html.left = accordion.render('', sections);
 }
