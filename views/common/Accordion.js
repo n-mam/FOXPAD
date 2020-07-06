@@ -33,7 +33,7 @@ var script = () =>
 
 var render = (title, sections) =>
 {
-  let html = `${css.spacer(2)}`;
+  let html = ``;
 
   if (title.length)
   {
@@ -42,7 +42,7 @@ var render = (title, sections) =>
   }
 
   html += `
-   <div  data-role="accordion"
+   <div class="w-20" data-role="accordion"
     data-one-frame="false"
     data-show-active="true"
     data-on-frame-open="onFrameOpen(arguments[0])"

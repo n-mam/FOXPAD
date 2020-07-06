@@ -2,85 +2,23 @@ var u = require('../../lib/util');
 var css = require('../common/CSS');
 var cred = require('./Credentials');
 
-var common = () => { 
- return `
-   #content {
-     width: 100%;
-     height: 87%;
-     text-align: center;
-     align-items: flex-start;
-   }
-   #flash {
-     width: 50%;
-     display: none;
-     min-height: auto;
-   }`;
-}
-
-var style_h = (v) => 
-{
-  return `
-   <style>
-    ${common()}
-   </style>`;
-}
-
 var horizontal = (v) =>
 {
   return `
-   ${style_h(v)}
-   <div id='content' class='flex pt-16'>
-    <div id='left' class='flex column left pl-3'>
-     ${u.isDefined(v.page.html.left) ? v.page.html.left : '<!--p>LEFT</p-->'}
-    </div>
-    <div id='center' class='flex column center'>
-     ${u.isDefined(v.page.html.center) ? v.page.html.center : '<p>CENTER</p>'}
-     ${css.spacer(2)}
+   <div class="container-fluid text-center pt-16">
+     <div class="grid">
+       <div class="row">
+         <div class="cell-2"><div class="h-100">${v.page.html.left}</div></div>
+         <div class="cell-8"><div class="h-100">${v.page.html.center}</div></div>
+         <div class="cell-2"><div class="h-100"> </div></div>
+       </div>
+     <div class="row">${u.DEBUG()}</div>        
+   </div>
+
+   <div>
      <div id='flash' class='flex error'>
       <b>ERROR</b>
-     </div>
-     ${u.DEBUG()}
-    </div>
-    <div id='right' class='flex column right'>
-     ${u.isDefined(v.page.html.right) ? v.page.html.right : '<!--p>RIGHT</p-->'}
-    </div>
-  </div>`;
-}
-
-var style_v = (v) => 
-{
-  return `
-   <style>
-    ${common()}
-    #top, #bottom {
-      width: 100%;
-    }
-    #top {
-      height: ${u.isDefined(v.json.prv.user) ? '5%;' : '45%;' }
-    }
-    #bottom {
-      justify-content: flex-start;
-      height: ${u.isDefined(v.json.prv.user) ? '95%;' : '55%;' }
-    }
-   </style>`;
-}
-
-var vertical = (v) => 
-{
-  return `
-   ${style_v(v)}
-   <div id='content' class='flex column pt-18 pl-4'>
-     <div id='top' class='flex'>
-       ${u.isDefined(v.page.html.top) ? v.page.html.top : ''}
-     </div>
-     <div id='bottom' class='flex column'>
-      ${u.isDefined(v.page.html.bottom) ? v.page.html.bottom : ''}
-      ${css.spacer(2)}
-      <div id='flash' class='flex error'>
-       <b>ERROR</b>
-      </div>
-      ${u.DEBUG()}
-     </div>
+     </div>     
    </div>`;
 }
 
