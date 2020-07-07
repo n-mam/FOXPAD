@@ -37,26 +37,8 @@ var newConnectionPanel = (id) =>
 
        console.log(m)
 
-       switch (m.action)
+       switch (m.response)
        {
-         case "connect":
-
-           if (m.response == 'ok') {
-             AgentSend(
-               JSON.stringify({
-                 service: 'platform', 
-                 action: 'get-volume-list'})
-             );
-           } else {
-             showToast(m.response);
-           }
-
-          break;
-
-         case "disconnect":
-
-         break;
-
          case "list":
 
          break;
@@ -95,7 +77,7 @@ var newConnectionPanel = (id) =>
 
        ftpSessions[ftp.id] = ftp;
 
-       AgentSend(JSON.stringify({service: 'ftp', action: 'connect', ...ftp})); 
+       AgentSend(JSON.stringify({service: 'ftp', request: 'connect', list: '/', ...ftp})); 
      }
     </script>
 
