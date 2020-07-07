@@ -127,5 +127,21 @@ var nbsp = (multiplier = 2) =>
   return html;
 }
 
+var MetroPanelStart = (id, title) => {
+  return `
+  <div 
+   id='${id}' 
+   class="mx-auto mb-5 rounded"
+   data-role="panel"
+   data-title-caption="${title}"
+   data-title-icon="<span class='mif-display'></span>"
+   data-collapsible="true"
+   data-draggable="false">  
+  `;
+}
 
-module.exports = { main, profile, ll, spacer, nbsp };
+var MetroPanelEnd = () => {
+  return `</div>`;
+}
+
+module.exports = { main, profile, ll, spacer, nbsp, MetroPanelStart, MetroPanelEnd};

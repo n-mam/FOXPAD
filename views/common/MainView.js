@@ -33,7 +33,7 @@ var Header = ({page, json}) =>
 
   return `
   <div class="container-fluid pos-fixed fixed-top z-top">
-  <header class="app-bar bg-hero fg-black app-bar-expand" data-role="appbar" data-expand="true" data-role-appbar="true">
+  <header class="app-bar fg-black app-bar-expand" data-role="appbar" data-expand="true" data-role-appbar="true">
     ${css.spacer(4, 'h-spacer')}
     <div class='flex' style='cursor:pointer'>
       <img style='' src='/image/fox1.png' alt='logo' width='32' height='32'>

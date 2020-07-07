@@ -1,64 +1,84 @@
-var css = require('../common/CSS')
+var css = require('../common/CSS');
 
-var style = () => {
-  return `
-   <style>
-    #id-agent { }
-    #id-agent-status {
-      color: #ff0000;
-      font-weight: bold;
-    }
-    .log {
-      width: 70%;
-      overflow: auto;
-      max-height:45em;
-      min-height:45em;
-      text-align: left;
-      font-family: monospace;
-    }
-    .trace {
-      word-wrap: break-word;
-      margin: 0.5em;
-    }
-    .trace:hover {
-      background-color:lightgrey;
-    }
-   </style>`;
-}
-
-function render(id)
+var savedConnectionPanel = (id) =>
 {
   return `
-     ${style()}
-     <div id='${id}' class='flex column pt-8' style='display:none;width:100%;'>
-      <div class='flex'>
-        <input id='id-agent-host' type="text" class="flex" placeholder='Host' data-role="input" data-clear-button="false">
-        ${css.spacer(4, 'h-spacer')}
-        <div class="input-control text">
-         <input id='id-agent-port' type="text" class="flex mini" placeholder='Port' data-role="input" data-clear-button="false">
+  <div id='${id}' class="mx-auto mb-5"
+  data-role="panel"
+  data-title-caption="Saved connection"
+  data-title-icon="<span class='mif-display'></span>"
+  data-collapsible="true"
+  data-draggable="false">
+  
+  </div>
+  `;
+}
+
+var newConnectionPanel = (id) =>
+{
+  return `
+    <script>
+
+    </script>
+
+    <div id='${id}-new-connection' class="mx-auto mb-5"
+    data-role="panel"
+    data-title-caption="New agent connection"
+    data-title-icon="<span class='mif-display'></span>"
+    data-collapsible="true"
+    data-draggable="false">
+ 
+    <div class='flex column'>
+      <div class='flex mb-5'>
+        <div class='input-control text' style='width:60%'>
+          <input id='${id}-host' type="text" class="flex rounded" placeholder='Host' data-role="input" data-clear-button="false">
         </div>
         ${css.spacer(4, 'h-spacer')}
-        <button id='id-agent-connect' class="flex button dark outline rounded" onclick='ProcessConnect(this)'>CONNECT</button>
+        <div class="input-control text" style='width:25%'>
+          <input id='${id}-port' type="text" class="flex rounded" placeholder='Port' data-role="input" data-clear-button="false">
+        </div>      
       </div>
-      ${css.spacer(4)}
-      <div class='flex row' style='width:100%'>
-        ${logview()}
+ 
+      <!--div class="flex mb-5">
+        <div class="input-control text" style='width:40%'>
+          <input id='${id}-username' type="text" class="flex rounded" placeholder='User' data-role="input" data-clear-button="false">
+        </div>
+        ${css.spacer(4, 'h-spacer')}
+        <div class="input-control password" style='width:40%'>
+          <input id='${id}-password' type="password" class="flex rounded" placeholder='Password' data-role="input" data-clear-button="false">
+        </div>
+      </div-->
+ 
+      <div class="flex">
+        <button class="flex button secondary outline rounded" onclick='ProcessConnect(this)'>CONNECT</button> 
       </div>
-      ${css.spacer(2)}
-      <div class='flex row' style='width:100%'>
-        <button class="flex button dark outline rounded" style='min-width:6em' onclick='SaveAgentTrace()'>SAVE</button>
-        ${css.nbsp(2)}
-        <button class="flex button dark outline rounded" style='min-width:6em' onclick='document.getElementById('id-agent-log').innerHTML='''>CLEAR</button>
-      </div>
-     </div>
-     <script src='/js/ws.js'></script>`;
+    </div>
+    </div>
+  `;
 }
 
 function logview()
 {
   return `
-    <div id='id-agent-log' class='log'>
-    
+    <div id='id-agent-log' style='font-family: monospace;'>   
     </div>`;
 }
+
+function render(v, id)
+{
+  v.page.html.center += `
+   <div class="grid h-100" id='${id}-center' style='display:none'>
+    <div class="row h-100 pl-3 pr-3">
+      <div class="cell border text-left  bd-lightGray border-size-1 rounded">${logview()}</div>
+    </div>
+   </div>
+   <script src='/js/ws.js'></script>`;
+
+   v.page.html.right += `
+   <div id='${id}-right' style='display:none'>
+     ${savedConnectionPanel('id-agent-saved-connections')}  
+     ${newConnectionPanel('id-agent')}
+   </div>`;
+}
+
 module.exports = { render }

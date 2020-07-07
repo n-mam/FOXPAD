@@ -33,41 +33,14 @@ function ShowUserDashBoard(v)
 
   sections.push(
     {
-      title : 'SSH',
-      link : 'id-ssh'
-    });
-
-  sections.push(
-    {
-      title : 'BACKUP',
-      link : 'id-backup'
-    });
-
-  sections.push(
-    {
-      title : 'MOUNT',
-      link : 'id-recover'
-    });
-
-  sections.push(
-    {
-      title : 'WEBSOCKET',
-      link : 'id-ftp'
-    });
-
-  sections.push(
-    {
       title : 'AGENT',
       link : 'id-agent'
     });
 
   v.page.html.center = "";
+  v.page.html.right = "";  
 
   ftpView.render(v, 'id-ftp');
-  sshView.render(v, 'id-ssh');
-  backupView.render(v, 'id-backup');
-  recoveryView.render(v, 'id-recover');
-  kissView.render(v, 'id-kiss');
   agentView.render(v, 'id-agent');
 
   v.page.html.left = accordion.render('', sections);

@@ -1,5 +1,6 @@
 var s;
-var host = 'localhost:8081'
+var host = 'localhost';
+var port = '8081';
 
 function AgentSend(message)
 {
@@ -23,11 +24,9 @@ function AgentSend(message)
 
 function AgentConnect()
 {
-  document.getElementById('id-agent-host').value = host;
+  TraceLog('Connecting to host : ' + host + ', port : ' + port);
 
-  TraceLog('Connecting to host : ' + host);
-
-  s = new WebSocket ('ws://' + host);
+  s = new WebSocket ('ws://' + host + ':' + port);
 
   s.reconnect = true;
 
@@ -36,15 +35,13 @@ function AgentConnect()
   };
 
   s.onopen = function (evt) {
-    let hostname = document.getElementById('id-agent-host');
-    hostname.value = host;
     initActions.forEach(element => {
       AgentSend(element);
     });
   };
 
   s.onclose = function(e) {
-    TraceLog('web socket closed. reconnecting to \'' + host + '\' in 5 second.', e.reason);
+    TraceLog('web socket closed. reconnecting to \'' + host + ':' + port + '\' in 5 second.', e.reason);
     s.AgentTimer = setTimeout(
       function() {
         AgentConnect();
@@ -98,7 +95,7 @@ function AgentConnect()
 
 function AgentDisconnect()
 {
-  TraceLog('closing ws connection to : ' + host);
+  TraceLog('closing ws connection to : ' + host + ':' + port);
   clearTimeout(s.AgentTimer);
   s.close();
 }
@@ -149,11 +146,13 @@ function TraceLog(line, color = 'black')
 function ProcessConnect(e)
 {
   newhost = document.getElementById('id-agent-host').value;
+  newport = document.getElementById('id-agent-port').value;
 
   if (newhost !== host)
   {
     AgentDisconnect();
     host = newhost;
+    port = newport;
     AgentConnect();
   }
   else
