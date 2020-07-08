@@ -77,7 +77,7 @@ var newConnectionPanel = (id) =>
 
        ftpSessions[ftp.id] = ftp;
 
-       AgentSend(JSON.stringify({service: 'ftp', request: 'connect', list: '/', ...ftp})); 
+       AgentSend(JSON.stringify({service: 'ftp', cmd: 'connect', dir: '/', ...ftp})); 
      }
     </script>
 
