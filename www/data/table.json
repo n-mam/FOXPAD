@@ -1,0 +1,24 @@
+{
+    "header": [
+      {
+        "name": "name",
+        "title": "Name",
+        "sortable": true        
+      },
+      {
+        "name": "attributes",
+        "title": "Attributes"      
+      },
+      {
+        "name": "size",
+        "title": "Size",
+        "sortable": true,
+        "format": "int"              
+      },
+      {
+        "name": "timestamp",
+        "title": "Timestamp",
+        "sortable": true        
+      }      
+    ]
+}

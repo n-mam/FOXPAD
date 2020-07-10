@@ -1,6 +1,6 @@
 var s;
-var host = 'localhost';
 var port = '8081';
+var host = 'localhost';
 
 function AgentSend(message)
 {
@@ -53,8 +53,10 @@ function AgentConnect()
   {
     TraceLog(e.data, 'blue');
 
-    var parts = e.data.split('\\');
-    var output = parts.join('\\\\');  
+    let parts = e.data.split("\r");
+    let output = parts.join("\\r");
+    parts = output.split("\n");
+    output = parts.join("\\n");
 
     if (output[0] === '{')
     {

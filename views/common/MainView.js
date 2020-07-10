@@ -60,32 +60,6 @@ var Header = ({page, json}) =>
   `;
 }
 
-var navigation = (merchant, branch) => 
-{
-  return `
-    <div class='flex column' style='cursor:pointer;width:auto' onclick="location.href='/';">
-     <p>
-      <b style='color:mediumblue'>Home</b>
-     </p>
-    </div>
-    ${u.isDefined(merchant) ?
-     `${css.nbsp(5)}>>${css.nbsp(5)}
-      <div class='flex column' style='cursor:pointer;width:auto' onclick="location.href='/Merchant/show?id=${merchant.id}';">
-      ${css.spacer(0)}
-      <p>
-        <b style='color:mediumblue'>${merchant.name}</b>
-      </p>
-     </div>` : ``}
-    ${u.isDefined(branch) ?
-     `${css.nbsp(5)}>>${css.nbsp(5)}
-      <div class='flex column' style='cursor:pointer;width:auto' onclick="location.href='/Branch/show?id=${branch.id}&mid=${merchant.id}';">
-        ${css.spacer(0)}
-        <p>
-         <b style='color:mediumblue'>${branch.name}</b>
-        </p>
-      </div>` : ``}`;
-}
-
 var preJS = () =>
 {
   return `
@@ -207,4 +181,4 @@ var getView = (context) =>
   return context.view;
 }
 
-module.exports = { render, message, getView, navigation };
+module.exports = { render, message, getView };

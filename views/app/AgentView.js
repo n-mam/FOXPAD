@@ -67,8 +67,8 @@ function logview()
 function render(v, id)
 {
   v.page.html.center += `
-   <div class="grid h-100" id='${id}-center' style='display:none'>
-    <div class="row h-100 pl-3 pr-3">
+   <div class="grid" id='${id}-center' style='display:none'>
+    <div class="row pl-3 pr-3">
       <div class="cell border text-left  bd-lightGray border-size-1 rounded">${logview()}</div>
     </div>
    </div>

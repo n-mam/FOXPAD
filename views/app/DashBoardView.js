@@ -23,6 +23,12 @@ function index(v)
 
 function ShowUserDashBoard(v)
 {
+  v.page.html.center = "";
+  v.page.html.right = "";  
+
+  ftpView.render(v, 'id-ftp');
+  agentView.render(v, 'id-agent');
+
   let sections = [];
 
   sections.push(
@@ -36,13 +42,7 @@ function ShowUserDashBoard(v)
       title : 'AGENT',
       link : 'id-agent'
     });
-
-  v.page.html.center = "";
-  v.page.html.right = "";  
-
-  ftpView.render(v, 'id-ftp');
-  agentView.render(v, 'id-agent');
-
+  
   v.page.html.left = accordion.render('', sections);
 }
 

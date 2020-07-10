@@ -2,11 +2,9 @@ var main = ({theme, accordian}) => {
  return `
  <style>
  html {
-  height: 100%;
 }
 
  body {
-  height: 100%;
   font-family: 'Quicksand', sans-serif;
  }
  .h-line {
@@ -33,23 +31,6 @@ a, u {
 }
 .column {
   flex-direction: column;
-}
-.error {
-  color: black;
-  text-align: center;
-  background-color: #ffa7a7;
-  border-radius: 0.15em;
-  padding: 0.5em;
-}
-input[type=text], input[type=password] {
-  border: none;
-  outline: none;
-  border-bottom: 1px solid #a1a1a1; 
-  background: transparent;
-  font-family: 'Quicksand';
-  text-align:center;
-  font-weight: bold;
-
 }
 @font-face {
  font-family: Quicksand;
@@ -127,14 +108,15 @@ var nbsp = (multiplier = 2) =>
   return html;
 }
 
-var MetroPanelStart = (id, title) => {
+var MetroPanelStart = (id, title, icon) => {
   return `
   <div 
    id='${id}' 
-   class="mx-auto mb-5 rounded"
+   class="mx-auto rounded"
    data-role="panel"
    data-title-caption="${title}"
-   data-title-icon="<span class='mif-display'></span>"
+   data-cls-title="text-bold bg-lightGray fg-black"
+   data-title-icon="<span class='${icon}'></span>"
    data-collapsible="true"
    data-draggable="false">  
   `;
@@ -144,4 +126,29 @@ var MetroPanelEnd = () => {
   return `</div>`;
 }
 
-module.exports = { main, profile, ll, spacer, nbsp, MetroPanelStart, MetroPanelEnd};
+// <li data-icon="<span class='mif-folder fg-green'>" data-caption="Documents"></li>
+// <li data-icon="<span class='mif-folder-download fg-blue'>" data-caption="Downloads"></li>
+var listPanel = (id, title, icon) => {
+  return `
+  ${MetroPanelStart(id, title,icon)}
+  <div class="">
+  <table id="${id}-table" class="table text-left striped table-border mt-4"
+  data-role="table" data-static-view="true"
+  data-cls-table-top="row flex-nowrap"
+  data-cls-search="cell-md-8"
+  data-cls-rows-count="cell-md-4"
+  data-source="data/table.json"  
+  data-rows="5"
+  data-rows-steps="5, 10"
+  data-show-activity="false">
+<thead>
+</thead>
+<tbody>
+</tbody>
+</table>
+  </div>
+  ${MetroPanelEnd()}
+  `;
+}
+
+module.exports = { main, profile, ll, spacer, nbsp, MetroPanelStart, MetroPanelEnd, listPanel};
