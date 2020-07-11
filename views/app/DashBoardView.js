@@ -24,26 +24,26 @@ function index(v)
 function ShowUserDashBoard(v)
 {
   v.page.html.center = "";
-  v.page.html.right = "";  
+  v.page.html.right = "";
+  v.page.html.left = "";  
 
   ftpView.render(v, 'id-ftp');
-  agentView.render(v, 'id-agent');
 
-  let sections = [];
+  // let sections = [];
 
-  sections.push(
-    {
-      title : 'FTP',
-      link : 'id-ftp'
-    });
+  // sections.push(
+  //   {
+  //     title : 'FTP',
+  //     link : 'id-ftp'
+  //   });
 
-  sections.push(
-    {
-      title : 'AGENT',
-      link : 'id-agent'
-    });
+  // sections.push(
+  //   {
+  //     title : 'AGENT',
+  //     link : 'id-agent'
+  //   });
   
-  v.page.html.left = accordion.render('', sections);
+  // v.page.html.left = accordion.render('', sections);
 }
 
 function ShowAdminDashBoard(v)

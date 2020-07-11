@@ -4,35 +4,28 @@ var script = () => {
 return `
   <script>
 
-  let tj = {
-    data: [
-      [
-        "x.txt",
-        "-dxxxr-xx",
-        "1024"
-      ],
-      [
-        "y.txt",
-        "-dxxxr-xx",
-        "128"
-      ],
-      [
-        "a.txt",
-        "-dxxxr-xx",
-        "1024"
-      ],
-      [
-        "b.txt",
-        "-dxxxr-xx",
-        "512"
-      ]                  
-    ]
-  }
-      
-      
-  var ftpSessions = [];
+  var SessionMap = {};
+
   MessageListeners.push(ftpServiceListener);
 
+  initActions.push(
+    JSON.stringify(
+      {
+        app: 'os',
+        req: 'get-active-sessions'
+      }
+    )
+  );
+
+  initActions.push(
+    JSON.stringify(
+      {
+        app: 'os',
+        req: 'get-volumes'
+      }
+    )
+  );
+  
   function showToast(m)
   {
     var o = {
@@ -63,7 +56,7 @@ return `
 
     if (isDefined(json.req)) 
     {
-      let id = json.id;
+      let sid = json.sid;
 
       switch (json.req)
       {
@@ -72,7 +65,7 @@ return `
           AgentSend(
             JSON.stringify({
               app : 'ftp',
-              id  : id.toString(),
+              sid : sid.toString(),
               req : 'list',
               dir : '/'
             })
@@ -81,7 +74,7 @@ return `
         }
         case "list":
         {
-          addRemoteListView(id, json.data);
+          addRemoteListView(sid, json.data);
           break;
         }
         default:
@@ -98,8 +91,9 @@ return `
 
   function onClickConnect(id)
   {
-    var table = Metro.getPlugin('#id-ftp-ll-table', 'table');
-    table.setData(tj);
+    // var table = Metro.getPlugin('#id-ftp-ll-table', 'table');
+    // table.setData(tj);
+
     let host = document.getElementById(id+'-host').value;
     let port = document.getElementById(id+'-port').value;
     let user = document.getElementById(id+'-user').value;
@@ -116,15 +110,18 @@ return `
       showToast(e);
       return;
     }
+  
+    let d = new Date();
+    let key = "ftp-" + d.getSeconds() + "-" + d.getMilliseconds();
 
     let ftp = {};
-
+    ftp.sid = key
     ftp.host = host;
     ftp.port = port;
     ftp.user = user;
     ftp.pass = pass;
 
-    ftpSessions.push(ftp);
+    SessionMap[key] = ftp;
 
     AgentSend(
       JSON.stringify({
@@ -135,7 +132,7 @@ return `
     );
   }
 
-  function addRemoteListView(id, list)
+  function addRemoteListView(sid, list)
   {
     let lines = list.split("\\r\\n");
 
@@ -146,32 +143,39 @@ return `
     lines.forEach(
       function(line, index) 
       {
-        line = line.replace(/ +(?= )/g,'');
-        let pp = line.split(" ");
-        console.log(pp);
-        let e = [];
+        line = line.replace(/ +(?= )/g,'').trim();
 
-        let name = '';
-        for (let i = 8; i < pp.length; i++)
+        if (line.length)
         {
-          if (isDefined(pp[i]))
+          console.log(line);
+
+          let pp = line.split(" ");
+
+          let e = [];
+  
+          let name = '';
+          for (let i = 8; i < pp.length; i++)
           {
-            name += pp[i];
+            if (isDefined(pp[i]))
+            {
+              name += pp[i] + " ";
+            }
           }
+  
+          e.push(name.trim()); //name
+          e.push(pp[0]); //attributes
+          e.push(pp[4]); //size
+          e.push(pp[5] + " " + pp[6] + " " + pp[7]); //ts
+  
+          elements.push(e);
         }
-
-        e.push(name); //name
-
-        e.push(pp[0]); //attributes
-        e.push(pp[4]); //size
-        e.push(pp[5] + " " + pp[6] + " " + pp[7]); //ts
-
-        elements.push(e);
       }
     );
     
     let rl_table = Metro.getPlugin('#id-ftp-rl-table', 'table');
     rl_table.setData({data: elements}, true);
+    //let rl_panel = document.getElementById('id-ftp-rl');
+    //$( "#id-ftp-rl" ).attr("data-title-caption", SessionMap[sid].host); //dataset.titleCaption = SessionMap[sid].host + ":" + SessionMap[sid].port;
   }
 
  </script>`;
@@ -188,10 +192,10 @@ var savedConnectionsPanel = (id) =>
 var newConnectionPanel = (id) =>
 {
   return `
-    ${css.MetroPanelStart(id, "New FTP connection", 'mif-display')}
+    ${css.MetroPanelStart(id, "FTP/SSH", 'mif-display', 'fg-black', 'flase')}
     <div class="grid">
 
-      <div class="row pt-3">
+      <div class="row">
         <div class="cell-8">
           <div class='input-control text'>
             <input id='${id}-host' type="text" class="flex rounded" placeholder='Host' data-role="input" data-clear-button="false">
@@ -204,7 +208,7 @@ var newConnectionPanel = (id) =>
         </div>
       </div>
 
-      <div class="row pt-3"> 
+      <div class="row"> 
        <div class="cell-6">
          <div class='input-control text'>
            <input id='${id}-user' type="text" class="flex rounded" placeholder='User' data-role="input" data-clear-button="false">
@@ -217,7 +221,7 @@ var newConnectionPanel = (id) =>
        </div>     
       </div>
 
-      <div class="row pt-3">
+      <div class="row">
         <div class="cell-4">
           <input type="checkbox" data-style="2" data-role="checkbox" data-caption="FTPS" data-caption-position="left" onclick="toggleFTPS(this)">
         </div>
@@ -237,9 +241,9 @@ var newConnectionPanel = (id) =>
         </div>
       </div>
 
-      <div class="row pt-3">
+      <div class="row">
         <div class="cell-12">
-          <button class="flex button secondary outline rounded mb-2" onclick="onClickConnect('${id}')">CONNECT</button>
+          <button class="flex button secondary outline rounded" onclick="onClickConnect('${id}')">CONNECT</button>
         </div>
       </div>     
     
@@ -249,19 +253,52 @@ var newConnectionPanel = (id) =>
   `;
 }
 
+var agentPanel = (id) => {
+  return `
+  ${css.MetroPanelStart(id, "Agent", 'mif-user-secret', 'fg-black')}
+  <div class="row pl-2 pr-2">
+    <div class="cell border text-left  bd-lightGray border-size-1 rounded">
+      <div id='id-agent-log' style='font-family: monospace;height:15em;overflow:scroll'>   
+      </div>
+    </div>
+  </div>
+  <div class="row pt-3">
+  <div class="cell-8">
+    <div class='input-control text'>
+      <input id='${id}-host' type="text" class="flex rounded" placeholder='Host' data-role="input" data-clear-button="false">
+    </div>
+  </div>
+  <div class="cell-4">
+    <div class="input-control text">
+      <input id='${id}-port' type="text" class="flex rounded" placeholder='Port' data-role="input" data-clear-button="false">
+    </div>
+  </div>
+</div>
+
+<div class="row pt-3">
+  <div class="cell-12">
+    <button class="flex button secondary outline rounded mb-2" onclick="onClickConnect('${id}')">CONNECT</button>
+  </div>
+</div>
+${css.MetroPanelEnd()}`;
+}
+
 function render(v, id)
 {
-  v.page.html.center += `
-    ${script()}
-    <div id='${id}-center' class="row" data-role="splitter" data-split-mode="vertical" data-gutter-size="5" style='display:none'>
-      <div class="">${css.listPanel(id + '-rl', 'Remote directory list', 'mif-folder-open2')}</div>      
-      <div class="">${css.listPanel(id + '-ll', 'Local directory list', 'mif-folder-open2')}</div>
-    </div>`;
-
-  v.page.html.right += `
-    <div id='${id}-right' style='display:none'>
+  v.page.html.left += `
+    <div id='${id}-right'>
       ${savedConnectionsPanel(id)}
       ${newConnectionPanel(id)}
+      ${agentPanel('id-agent')}
+    </div>`;
+
+  v.page.html.center += `
+    ${script()}
+    <div id='${id}-center' class="row" data-role="splitter" data-gutter-size="5">     
+      <div class="">${css.listPanel(id + '-ll', 'Agent file system', 'mif-folder-open2', 'fg-black', 'false')}</div>
+      <div class="">
+        ${css.listPanel(id + '-rl', 'Remote file system', 'mif-folder-open2', 'fg-black', 'false')}
+      </div>
     </div>`;
 }
 

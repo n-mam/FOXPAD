@@ -1,11 +1,13 @@
 var main = ({theme, accordian}) => { 
  return `
  <style>
- html {
-}
-
  body {
   font-family: 'Quicksand', sans-serif;
+  font-size: 0.8em;
+ }
+ input, select, textarea, button {
+   font-family: inherit;
+   font-size: inherit;
  }
  .h-line {
   display: inline-flex;
@@ -108,16 +110,17 @@ var nbsp = (multiplier = 2) =>
   return html;
 }
 
-var MetroPanelStart = (id, title, icon) => {
+var MetroPanelStart = (id, title, icon, color = 'fg-black', collapsed = 'true') => {
   return `
   <div 
    id='${id}' 
-   class="mx-auto rounded"
+   class="mx-auto rounded mb-3"
    data-role="panel"
    data-title-caption="${title}"
    data-cls-title="text-bold bg-lightGray fg-black"
-   data-title-icon="<span class='${icon}'></span>"
+   data-title-icon="<span class='${icon} ${color}'></span>"
    data-collapsible="true"
+   data-collapsed="${collapsed}"
    data-draggable="false">  
   `;
 }
@@ -128,9 +131,9 @@ var MetroPanelEnd = () => {
 
 // <li data-icon="<span class='mif-folder fg-green'>" data-caption="Documents"></li>
 // <li data-icon="<span class='mif-folder-download fg-blue'>" data-caption="Downloads"></li>
-var listPanel = (id, title, icon) => {
+var listPanel = (id, title, icon, color = 'fg-black', collapsed = 'true') => {
   return `
-  ${MetroPanelStart(id, title,icon)}
+  ${MetroPanelStart(id, title, icon, color, collapsed)}
   <div class="">
   <table id="${id}-table" class="table text-left striped table-border mt-4"
   data-role="table" data-static-view="true"

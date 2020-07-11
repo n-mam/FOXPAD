@@ -72,8 +72,8 @@ var preJS = () =>
       return true;
      }
     }
+    var initActions = [];    
     var windowOnLoadCbk = [];
-    var initActions = [];
     var MessageListeners = [];
    </script>  
   `;
@@ -81,7 +81,10 @@ var preJS = () =>
 
 var postJS = () => 
 {
-  return `<script src='/js/main.js'></script>`;
+  return `
+  <script src='/js/main.js'></script>
+  <script src='/js/ws.js'></script>
+  `;
 }
 
 var message = (m) => 
