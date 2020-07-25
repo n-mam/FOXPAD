@@ -44,7 +44,7 @@ var Header = ({page, json}) =>
     <div class="app-bar-menu ml-auto">
      <li>
       <a href="#" class="dropdown-toggle">
-       <img src="${image}" width=32 height=32> ${name}
+       <img src="${image}" width=30 height=30> ${name}
       </a>
       <ul class="d-menu place-right" data-role="dropdown">
        <li><a href="#">Windows 10</a></li>

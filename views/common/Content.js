@@ -8,9 +8,9 @@ var horizontal = (v) =>
    <div class="container-fluid text-center pt-16">
      <div class="grid">
        <div class="row">
-         <div class="cell-3"><div class="">${v.page.html.left}</div></div>
-         <div class="cell-9"><div class="">${v.page.html.center}</div></div>
-         <!--div class="cell-2"><div class="">${v.page.html.right}</div></div-->
+         <div class="cell-2 "><div class="">${v.page.html.left}</div></div>
+         <div class="cell-10 d-flex flex-justify-center"><div class="">${v.page.html.center}</div></div>
+         <!--div class="cell-2 d-flex flex-justify-center"><div class="">${v.page.html.right}</div></div-->
        </div>
      <div class="row">${u.DEBUG()}</div>        
    </div>

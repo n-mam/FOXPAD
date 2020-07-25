@@ -1,11 +1,11 @@
 var u = require('../../lib/util');
 var ftpView = require('./FTPView');
+var camView = require('./CameraView'); 
 var sshView = require('./SSHView');
 var agentView = require('./AgentView');
 var kissView = require('./KissView');
 var backupView = require('./BackupView');
 var recoveryView = require('./RecoveryView');
-var accordion = require('../common/Accordion');
 
 function index(v)
 {
@@ -27,23 +27,8 @@ function ShowUserDashBoard(v)
   v.page.html.right = "";
   v.page.html.left = "";  
 
-  ftpView.render(v, 'id-ftp');
-
-  // let sections = [];
-
-  // sections.push(
-  //   {
-  //     title : 'FTP',
-  //     link : 'id-ftp'
-  //   });
-
-  // sections.push(
-  //   {
-  //     title : 'AGENT',
-  //     link : 'id-agent'
-  //   });
-  
-  // v.page.html.left = accordion.render('', sections);
+  //ftpView.render(v, 'id-ftp');
+  camView.render(v, 'id-camera');
 }
 
 function ShowAdminDashBoard(v)

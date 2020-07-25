@@ -10,31 +10,24 @@ var script = () =>
 {
   return `
   <script>
-   let currentCenterView = null;
-   let currentRightView = null;   
+   let linkedView = null;
+
    function onFrameOpen(frame)
    {
-     console.log(frame);
-     if (currentCenterView)
+     if (linkedView)
      {
-       currentCenterView.style.display = 'none';
+       linkedView.style.display = 'none';
      }
-     if (currentRightView)
-     {
-      currentRightView.style.display = 'none';
-     }
-     currentCenterView = document.getElementById(frame.dataset.link + '-center');
-     currentRightView = document.getElementById(frame.dataset.link + '-right');     
-     if (currentCenterView) currentCenterView.style.display = 'flex'; //center is flex
-     if (currentRightView) currentRightView.style.display = 'block';  //right is block   
+
+     linkedView = document.getElementById(frame.dataset.link);   
+     
+     if (linkedView) linkedView.style.display = 'flex';
    }
+
    function onFrameClose(frame)
    {
-     console.log(frame);
-     let cv = document.getElementById(frame.dataset.link + '-center');
-     let rv = document.getElementById(frame.dataset.link + '-right');     
-     if (cv) cv.style.display = 'none';
-     if (rv) rv.style.display = 'none';     
+     let lv = document.getElementById(frame.dataset.link);
+     if (lv) cv.style.display = 'none';
    }   
   </script>
   `;
@@ -57,7 +50,7 @@ var render = (title, sections) =>
     data-on-frame-open="onFrameOpen(arguments[0])"
     data-on-frame-close="onFrameClose(arguments[0])"    
     data-active-heading-class="bg-lightCyan fg-white"
-    data-active-content-class="bg-lightGray fg-black">`;
+    data-active-content-class="fg-black">`;
 
   sections.forEach(
     element => {
@@ -65,7 +58,7 @@ var render = (title, sections) =>
     <div class="frame" data-link='${element.link}'>
       <div class="heading"><b>${element.title}</b></div>
       <div class="content">
-        <div class="p-2">Cur luba manducare? Pol, a bene ionicis tormento...</div>
+        ${element.content}
       </div>
     </div>
     ${css.spacer(1)}`;
