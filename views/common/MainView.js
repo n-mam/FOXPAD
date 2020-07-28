@@ -36,15 +36,15 @@ var Header = ({page, json}) =>
   <header class="app-bar fg-black app-bar-expand" data-role="appbar" data-expand="true" data-role-appbar="true">
     ${css.spacer(4, 'h-spacer')}
     <div class='flex' style='cursor:pointer'>
-      <img style='' src='/image/fox1.png' alt='logo' width='32' height='32'>
+      <img style='' src='/image/fox1.png' alt='logo' width='28' height='28'>
       ${css.spacer(2, 'h-spacer')}
       <b>${page.title}</b>
     </div>
     ${css.spacer(4, 'h-spacer')}
     <div class="app-bar-menu ml-auto">
      <li>
-      <a href="#" class="dropdown-toggle">
-       <img src="${image}" width=30 height=30> ${name}
+      <a href="#" class="dropdown-toggle" style="font-weight:bold;">
+       <img src="${image}" width=28 height=28> ${name}
       </a>
       <ul class="d-menu place-right" data-role="dropdown">
        <li><a href="#">Windows 10</a></li>

@@ -33,3 +33,10 @@ create table Session (
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 desc Session;
+
+create table Camera (
+   id            int unsigned NOT NULL AUTO_INCREMENT,
+   name          varchar(128) NOT NULL,
+   url           varchar(128) NOT NULL,
+   primary key (id)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;

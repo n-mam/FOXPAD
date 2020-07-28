@@ -27,7 +27,7 @@ var script = () =>
    function onFrameClose(frame)
    {
      let lv = document.getElementById(frame.dataset.link);
-     if (lv) cv.style.display = 'none';
+     if (lv) lv.style.display = 'none';
    }   
   </script>
   `;
@@ -58,7 +58,7 @@ var render = (title, sections) =>
     <div class="frame" data-link='${element.link}'>
       <div class="heading"><b>${element.title}</b></div>
       <div class="content">
-        ${element.content}
+          ${element.content}
       </div>
     </div>
     ${css.spacer(1)}`;

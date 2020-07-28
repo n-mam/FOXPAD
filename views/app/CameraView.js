@@ -9,12 +9,6 @@ var xxx = `
   <li data-icon="<span class='mif-video-camera'>" data-caption="Lifestyle"></li>
 </ul>
 `
-
-function ZoneView()
-{
-  return ``;
-}
-
 function CameraView(id)
 {
   return `
@@ -62,12 +56,7 @@ function NodesView(id)
   `;
 }
 
-function ZoneView()
-{
-  return ``;
-}
-
-function AnalyticsView()
+function ReportsView()
 {
   return ``;
 }
@@ -76,15 +65,6 @@ function render(v, id)
 {
   let sections = [];
 
-  sections.push(
-    {
-      title : 'ZONES',
-      link : 'id-zone',
-      content : ''
-    });
-
-  v.page.html.center += ZoneView();
-  
   sections.push(
     {
       title : 'CAMERAS',
@@ -110,7 +90,7 @@ function render(v, id)
       content : ''
     });
 
-  v.page.html.center += AnalyticsView();
+  v.page.html.center += ReportsView();
 
   sections.push(
     {
