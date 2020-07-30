@@ -1,6 +1,6 @@
 var u = require('../../lib/util');
 var ftpView = require('./FTPView');
-var camView = require('./CameraView'); 
+var cvview = require('./CvView'); 
 var sshView = require('./SSHView');
 var agentView = require('./AgentView');
 var kissView = require('./KissView');
@@ -9,6 +9,10 @@ var recoveryView = require('./RecoveryView');
 
 function index(v)
 {
+  v.page.html.center = [];
+  v.page.html.right = [];
+  v.page.html.left = [];
+
   if (v.isSU())
   {
     ShowAdminDashBoard(v);
@@ -23,12 +27,8 @@ function index(v)
 
 function ShowUserDashBoard(v)
 {
-  v.page.html.center = "";
-  v.page.html.right = "";
-  v.page.html.left = "";  
-
   //ftpView.render(v, 'id-ftp');
-  camView.render(v, 'id-camera');
+  cvview.render(v, 'id-cv');
 }
 
 function ShowAdminDashBoard(v)

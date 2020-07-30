@@ -10,18 +10,25 @@ var script = () =>
 {
   return `
   <script>
-   let linkedView = null;
+   let linkedViewCenter = null;
+   let linkedViewRight = null;
 
    function onFrameOpen(frame)
    {
-     if (linkedView)
+     if (linkedViewCenter)
      {
-       linkedView.style.display = 'none';
+      linkedViewCenter.style.display = 'none';
+     }
+     if (linkedViewRight)
+     {
+      linkedViewRight.style.display = 'none';
      }
 
-     linkedView = document.getElementById(frame.dataset.link);   
-     
-     if (linkedView) linkedView.style.display = 'flex';
+     linkedViewCenter = document.getElementById(frame.dataset.link + '-center');
+     linkedViewRight = document.getElementById(frame.dataset.link + '-right');
+
+     if (linkedViewCenter) linkedViewCenter.style.display = 'flex';
+     if (linkedViewRight) linkedViewRight.style.display = 'flex';     
    }
 
    function onFrameClose(frame)
@@ -44,13 +51,14 @@ var render = (title, sections) =>
   }
 
   html += `
-   <div class="w-20" data-role="accordion"
-    data-one-frame="false"
-    data-show-active="true"
-    data-on-frame-open="onFrameOpen(arguments[0])"
-    data-on-frame-close="onFrameClose(arguments[0])"    
-    data-active-heading-class="bg-lightCyan fg-white"
-    data-active-content-class="fg-black">`;
+  <div class="cell">
+    <div data-role="accordion"
+         data-one-frame="true"
+         data-show-active="true"
+         data-on-frame-open="onFrameOpen(arguments[0])"
+         data-on-frame-close="onFrameClose(arguments[0])"    
+         data-active-heading-class="bg-lightCyan fg-white"
+         data-active-content-class="fg-black">`;
 
   sections.forEach(
     element => {
@@ -58,13 +66,13 @@ var render = (title, sections) =>
     <div class="frame" data-link='${element.link}'>
       <div class="heading"><b>${element.title}</b></div>
       <div class="content">
-          ${element.content}
+        ${element.content}
       </div>
     </div>
     ${css.spacer(1)}`;
   });
 
-  html += `</div>`;
+  html += `</div></div>`;
 
   return `
     ${style()}

@@ -1,30 +1,114 @@
 var u = require('../../lib/util');
 var css = require('./CSS');
-var content = require('./Content');
 
 var render = (v) =>
 {
   return `
-   <!DOCTYPE html>
+  <!DOCTYPE html>
    <html lang='en'>
-    <head>
-     <title>${v.page.title}</title>
-     <meta charset="utf-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-     ${preJS()}
-     <link rel="stylesheet" href="js/metro-ui-css/css/metro.min.css">
-     <link rel="stylesheet" href="js/metro-ui-css/css/metro-colors.min.css">
-     <link rel="stylesheet" href="js/metro-ui-css/css/metro-rtl.min.css">
-     <link rel="stylesheet" href="js/metro-ui-css/css/metro-icons.min.css">    
-     ${css.main(v.page)}
-    </head>
-    <body>
-      ${u.isDefined(v.json.prv.user) ? Header(v) : ''}
-      ${content.render(v)}
-      ${postJS()}
-      <script src="js/metro-ui-css/js/metro.min.js"></script>
-    </body>
-   </html>`;
+     <head>
+       <title>${v.page.title}</title>
+       <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+       ${preJS()}
+       <!-- Metro 4 -->
+       <link rel="stylesheet" href="js/metro-ui-css/css/metro-all.min.css">
+       ${css.main(v.page)}
+     </head>
+     <body>
+       ${u.isDefined(v.json.prv.user) ? Header(v) : ''}
+       ${content(v)}
+       <script src="js/metro-ui-css/js/metro.min.js"></script>
+       ${postJS()}
+     </body>
+  </html>`;
+}
+
+var content = (v) =>
+{
+  if (u.isDefined(v.page.html.left) &&
+      u.isDefined(v.page.html.center) &&
+      u.isDefined(v.page.html.right))
+  {
+    return `
+    <div class="container-fluid text-center pt-16">
+      <div class="d-flex flex-row ">
+        <div class="grid w-25" id="main-view-left">
+          ${expandRows(v.page.html.left)}
+        </div>
+        <div class="grid w-50" id="main-view-center">
+          ${expandRows(v.page.html.center)}
+        </div>
+        <div class="grid w-25" id="main-view-right">
+          ${expandRows(v.page.html.right)}
+          <div class="row">${u.DEBUG()}</div>   
+        </div>
+      </div>
+    </div>`;
+  }
+  else
+  {
+    return LandingPage();
+  }
+}
+
+var expandRows = (l) => 
+{
+  let h = ``;
+  for (let i = 0; i < l.length; i++)
+  {
+    h += `<div class="row">${l[i]}</div>`;
+  }
+  return h;
+}
+
+var preJS = () =>
+{
+  return `
+  <script>
+    function isDefined(v) 
+    {
+      if (v === null || typeof v === 'undefined')
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    }
+    var initActions = [];
+    var windowOnLoadCbk = [];
+    var MessageListeners = [];
+  </script>`;
+}
+
+var postJS = () => 
+{
+  return `
+  <script src='/js/main.js'></script>
+  <script src='/js/ws.js'></script>
+  `;
+}
+
+function LandingPage()
+{
+  return `
+  <div class="flex row pos-fixed pos-center">
+    <img style='' src='/image/architecture.png' alt='logo'>
+    ${css.spacer(6, 'h-spacer')}
+    <div class="flex column">
+    ${cred.credentials()}
+    ${css.spacer(6)}
+    <a href="/content/foxpad/Foxpad-1.0.0-win64.exe">
+     <div id='btn-download' class='flex button action' style='background-color:var(--accordian-color);color:white;min-width:10em;padding:0.5em;'>
+      <b>DOWNLOAD</b>
+     </div>
+    </a>
+   </div>
+  </div>
+  ${u.DEBUG()}
+  `;
 }
 
 var Header = ({page, json}) =>
@@ -58,42 +142,6 @@ var Header = ({page, json}) =>
   </header>
   </div>
   `;
-}
-
-var preJS = () =>
-{
-  return `
-   <script>
-    var isDefined = (v) => {
-     if (v === null || typeof v === 'undefined') {
-      return false;
-     }
-     else {
-      return true;
-     }
-    }
-    var initActions = [];    
-    var windowOnLoadCbk = [];
-    var MessageListeners = [];
-   </script>  
-  `;
-}
-
-var postJS = () => 
-{
-  return `
-  <script src='/js/main.js'></script>
-  <script src='/js/ws.js'></script>
-  `;
-}
-
-var message = (m) => 
-{
-  console.log(m);
-  return `
-   <div class='flex column' style=''>
-    <p><b>${m}</b></p>
-   </div>`;
 }
 
 var getView = (context) => 
@@ -184,4 +232,4 @@ var getView = (context) =>
   return context.view;
 }
 
-module.exports = { render, message, getView };
+module.exports = { render, getView };
