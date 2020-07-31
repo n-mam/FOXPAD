@@ -1,13 +1,12 @@
 var u = require('../../lib/util');
 var ftpView = require('./FTPView');
-var cvview = require('./CvView'); 
 var sshView = require('./SSHView');
 var agentView = require('./AgentView');
 var kissView = require('./KissView');
 var backupView = require('./BackupView');
 var recoveryView = require('./RecoveryView');
 
-function index(v)
+function render(v, cbk)
 {
   v.page.html.center = [];
   v.page.html.right = [];
@@ -22,13 +21,12 @@ function index(v)
     ShowUserDashBoard(v);
   }
 
-  v.setStatus('ok', '');
+  cbk(null);
 }
 
 function ShowUserDashBoard(v)
 {
-  //ftpView.render(v, 'id-ftp');
-  cvview.render(v, 'id-cv');
+
 }
 
 function ShowAdminDashBoard(v)
@@ -36,4 +34,4 @@ function ShowAdminDashBoard(v)
 
 }
 
-module.exports = { index }
+module.exports = { render }

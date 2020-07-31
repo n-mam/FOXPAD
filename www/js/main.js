@@ -64,9 +64,12 @@
    {
      console.log(data);
 
-     var j = JSON.stringify({'token' : null,
-                               'api' : 'CRUD',
-                              'data' : data});
+     var j = JSON.stringify(
+       {
+         'token' : null,
+         'api' : 'CRUD',
+         'data' : data
+       });
 
      _xhr ('/api', 'POST', j, (res) => {
         if (res)

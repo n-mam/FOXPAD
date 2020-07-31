@@ -34,9 +34,27 @@ create table Session (
 
 desc Session;
 
-create table Camera (
+drop table if exists Cameras;
+drop table if exists Agents;
+
+create table Agents (
    id            int unsigned NOT NULL AUTO_INCREMENT,
    name          varchar(128) NOT NULL,
-   url           varchar(128) NOT NULL,
+   host          varchar(128) NOT NULL,
+   port          int unsigned NOT NULL,
    primary key (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+create table Cameras (
+   id            int unsigned NOT NULL AUTO_INCREMENT,
+   name          varchar(128) NOT NULL,
+   source        varchar(128) NOT NULL,
+   target        varchar(128) NOT NULL,
+   tracker       varchar(128) NOT NULL,
+   skipcount     int unsigned DEFAULT 1,
+   aid           int unsigned,
+   primary key (id),
+   foreign key (aid) REFERENCES Agents(id) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+insert into Agents (name, host, port) values ('local','127.0.0.1',8081);

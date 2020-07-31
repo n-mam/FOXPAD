@@ -1,4 +1,5 @@
 var u = require('../../lib/util');
+var cred = require('./Credentials');
 var css = require('./CSS');
 
 var render = (v) =>
@@ -26,20 +27,20 @@ var render = (v) =>
 
 var content = (v) =>
 {
-  if (u.isDefined(v.page.html.left) &&
-      u.isDefined(v.page.html.center) &&
+  if (u.isDefined(v.page.html.left) ||
+      u.isDefined(v.page.html.center) ||
       u.isDefined(v.page.html.right))
   {
     return `
     <div class="container-fluid text-center pt-16">
       <div class="d-flex flex-row ">
-        <div class="grid w-25" id="main-view-left">
+        <div class="grid cell-2" id="main-view-left">
           ${expandRows(v.page.html.left)}
         </div>
-        <div class="grid w-50" id="main-view-center">
+        <div class="grid cell-7" id="main-view-center">
           ${expandRows(v.page.html.center)}
         </div>
-        <div class="grid w-25" id="main-view-right">
+        <div class="grid cell-3" id="main-view-right">
           ${expandRows(v.page.html.right)}
           <div class="row">${u.DEBUG()}</div>   
         </div>
@@ -48,17 +49,22 @@ var content = (v) =>
   }
   else
   {
-    return LandingPage();
+    return landingPage();
   }
 }
 
 var expandRows = (l) => 
 {
   let h = ``;
-  for (let i = 0; i < l.length; i++)
+
+  if (u.isDefined(l))
   {
-    h += `<div class="row">${l[i]}</div>`;
+    for (let i = 0; i < l.length; i++)
+    {
+      h += `<div class="row">${l[i]}</div>`;
+    }
   }
+
   return h;
 }
 
@@ -91,7 +97,7 @@ var postJS = () =>
   `;
 }
 
-function LandingPage()
+function landingPage()
 {
   return `
   <div class="flex row pos-fixed pos-center">
@@ -107,8 +113,7 @@ function LandingPage()
     </a>
    </div>
   </div>
-  ${u.DEBUG()}
-  `;
+  ${u.DEBUG()}`;
 }
 
 var Header = ({page, json}) =>
@@ -174,6 +179,10 @@ var getView = (context) =>
       },
       isSU: function() {
         return this.context.view.json.prv.user.isSuper;
+      },
+      setError: function(e) {
+        this.context.view.page.html.center = [e];
+        this.context.view.send();
       },
       setStatus: function(type, message) {
         this.context.view.json.pub['status'] = type;
