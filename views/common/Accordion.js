@@ -57,7 +57,7 @@ var render = (title, sections) =>
          data-show-active="true"
          data-on-frame-open="onFrameOpen(arguments[0])"
          data-on-frame-close="onFrameClose(arguments[0])"    
-         data-active-heading-class="bg-lightCyan fg-white"
+         data-active-heading-class="bg-cyan fg-white"
          data-active-content-class="fg-black">`;
 
   sections.forEach(

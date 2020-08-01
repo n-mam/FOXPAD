@@ -42,7 +42,7 @@ function agent(name, host, port)
         }
   
         lv.data('listview').add(null, {
-          caption: res.sessions[i].sid,
+          caption: res.sessions[i].name,
           icon: `<span class=\'mif-video-camera ${color}\'>`,
           camera: res
         });
@@ -53,7 +53,7 @@ function agent(name, host, port)
       var lv = $('#id-active-cameras');
   
       lv.data('listview').add(null, {
-        caption: res.sid,
+        caption: res.name,
         icon: '<span class=\'mif-video-camera fg-black\'>'
       });
     }
@@ -88,20 +88,6 @@ function OnCameraSaveButton()
    });
 }
 
-function OnAgentSaveButton()
-{
-  let agent = GetAgentParams();
-
-  if (!isDefined(agent)) return;
-
-  _crud(
-   {
-     action: 'CREATE',
-     table: 'agents',
-     rows: [agent]
-   });
-}
-
 function OnCameraStartButton()
 {
   let cam = GetCameraParams();
@@ -116,7 +102,7 @@ function OnCameraStartButton()
 
   cmd = {
     app: 'cam',
-    sid: cam.sid,
+    sid: cam.name,
     req: 'camera-control',
     action: 'play'
   };
@@ -129,6 +115,20 @@ function OnCameraSelect(node)
   alert("OnCameraSelect");
 }
 
+function OnAgentSaveButton()
+{
+  let agent = GetAgentParams();
+
+  if (!isDefined(agent)) return;
+
+  _crud(
+   {
+     action: 'CREATE',
+     table: 'agents',
+     rows: [agent]
+   });
+}
+
 function OnAgentSelect(node)
 {
   alert("OnAgentSelect");
@@ -138,7 +138,7 @@ function OnCameraControl(action)
 {
   let cmd = {};
   cmd.app = 'cam';
-  cmd.sid = 'qq'; //todo
+  cmd.name = 'qq'; //todo
   cmd.req = 'camera-control';
   cmd.action = action;
   socksend(cmd);
@@ -164,7 +164,7 @@ function GetCameraParams()
   let cam = {};
 
   cam.name = name;
-  cam.source = source;
+  cam.source = source.replace("\\", "\\\\");
   cam.target = target;
   cam.tracker = trackers;
   cam.aid = aid;
@@ -192,4 +192,130 @@ function GetAgentParams()
   agent.port = port;
 
   return agent;
+}
+
+function OnAgentTableNodeClick(node)
+{
+  console.log('OnAgentTableNodeClick');
+  var table = $('#id-agent-center-table').data('table');
+  let items = table.getSelectedItems();
+  console.log(items);
+}
+function OnCameraTableNodeClick(node)
+{
+  console.log('OnCameraTableNodeClick');
+  var table = $('#id-camera-center-table').data('table');
+  let items = table.getSelectedItems();
+  console.log(items);
+}
+function OnCameraDeleteClick()
+{
+  console.log('OnCameraDeleteClick');
+  var table = $('#id-camera-center-table').data('table');
+  let items = table.getSelectedItems();
+  console.log(items);
+
+  if (!items.length) {
+    Metro.toast.create("Please select a camera to delete", null, null, "alert");
+  }
+
+  let o = [];
+
+  for (let i = 0; i < items.length; i++)
+  {
+    o.push({id: items[i][0]});  
+  }
+
+  _crud(
+    {
+      action: 'DELETE',
+      table: 'cameras',
+      rows: o
+    });
+}
+function OnAgentDeleteClick()
+{
+  console.log('OnAgentDeleteClick');
+  var table = $('#id-agent-center-table').data('table');
+  let items = table.getSelectedItems();
+  console.log(items);
+
+  if (!items.length) {
+    Metro.toast.create("Please select an agent to delete", null, null, "alert");
+  }
+
+  let o = [];
+
+  for (let i = 0; i < items.length; i++)
+  {
+    o.push({id: items[i][0]});  
+  }
+
+  _crud(
+    {
+      action: 'DELETE',
+      table: 'agents',
+      rows: o
+    });
+}
+function OnCameraAddClick()
+{
+  console.log('OnCameraAddClick');
+
+  Metro.dialog.create({
+    title: "New Camera",
+    content: addCameraView,
+    closeButton: true,
+    actions: [
+        {
+            caption: "SAVE",
+            cls: "js-dialog-close",
+            onclick: function(){
+                OnCameraSaveButton()
+            }
+        },
+        {
+            caption: "START",
+            cls: "js-dialog-close",
+            onclick: function(){
+              OnCameraStartButton();
+            }
+        }
+    ]
+  });
+}
+
+function OnAgentAddClick()
+{
+  console.log('OnAgentAddClick');
+
+  Metro.dialog.create({
+    title: "New Agent",
+    content: "<div>Bassus abactors ducunt ad triticum...</div>",
+    closeButton: true,
+    actions: [
+        {
+            caption: "Agree",
+            cls: "js-dialog-close alert",
+            onclick: function(){
+                alert("You clicked Agree action");
+            }
+        },
+        {
+            caption: "Disagree",
+            cls: "js-dialog-close",
+            onclick: function(){
+                alert("You clicked Disagree action");
+            }
+        }
+    ]
+  });
+}
+function OnCameraSaveClick()
+{
+  console.log('OnCameraSaveClick');
+}
+function OnAgentSaveClick()
+{
+  console.log('OnAgentSaveClick');
 }

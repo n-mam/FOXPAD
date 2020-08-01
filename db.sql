@@ -54,7 +54,6 @@ create table Cameras (
    skipcount     int unsigned DEFAULT 1,
    aid           int unsigned,
    primary key (id),
-   foreign key (aid) REFERENCES Agents(id) ON DELETE CASCADE
+   foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
-insert into Agents (name, host, port) values ('local','127.0.0.1',8081);

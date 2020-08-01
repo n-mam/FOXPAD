@@ -135,23 +135,24 @@ var listPanel = (id, title, icon, color = 'fg-black', collapsed = 'true') => {
   return `
   ${MetroPanelStart(id, title, icon, color, collapsed)}
   <div class="">
-  <table id="${id}-table" class="table text-left striped table-border mt-4"
-  data-role="table" data-static-view="true"
-  data-cls-table-top="row flex-nowrap"
-  data-cls-search="cell-md-8"
-  data-cls-rows-count="cell-md-4"
-  data-source="data/table.json"  
-  data-rows="5"
-  data-rows-steps="5, 10"
-  data-show-activity="false">
-<thead>
-</thead>
-<tbody>
-</tbody>
-</table>
+    <table id="${id}-table" 
+           class="table text-left striped table-border mt-4"
+           data-role="table" data-static-view="true"
+           data-cls-table-top="row flex-nowrap"
+           data-cls-search="cell-md-8"
+           data-cls-rows-count="cell-md-4"
+           data-source="data/table.json"  
+           data-rows="5"
+           data-rows-steps="5, 10"
+           data-show-activity="false">
+      <thead>
+      </thead>
+      <tbody>
+      </tbody>
+
+    </table>
   </div>
-  ${MetroPanelEnd()}
-  `;
+  ${MetroPanelEnd()}`;
 }
 
 module.exports = { main, profile, ll, spacer, nbsp, MetroPanelStart, MetroPanelEnd, listPanel};
