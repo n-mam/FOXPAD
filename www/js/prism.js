@@ -264,14 +264,14 @@ function OnCameraAddClick()
 
   Metro.dialog.create({
     title: "New Camera",
-    content: addCameraView,
+    content: decodeURI(addCameraView),
     closeButton: true,
     actions: [
         {
             caption: "SAVE",
             cls: "js-dialog-close",
             onclick: function(){
-                OnCameraSaveButton()
+              OnCameraSaveButton()
             }
         },
         {
@@ -291,21 +291,21 @@ function OnAgentAddClick()
 
   Metro.dialog.create({
     title: "New Agent",
-    content: "<div>Bassus abactors ducunt ad triticum...</div>",
+    content: decodeURI(addAgentView),
     closeButton: true,
     actions: [
         {
-            caption: "Agree",
-            cls: "js-dialog-close alert",
+            caption: "SAVE",
+            cls: "js-dialog-close",
             onclick: function(){
-                alert("You clicked Agree action");
+              OnAgentSaveButton();
             }
         },
         {
-            caption: "Disagree",
+            caption: "CANCEL",
             cls: "js-dialog-close",
             onclick: function(){
-                alert("You clicked Disagree action");
+                
             }
         }
     ]
