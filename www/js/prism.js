@@ -1,5 +1,6 @@
-function Agent(name, host, port)
+function Agent(id, name, host, port)
 {
+  this.dbid = id;
   this.name = name;
  
   this.getSessions = function() {
@@ -111,9 +112,32 @@ function Agent(name, host, port)
       };
       image.src = "data:image/png;base64," + res.frame;
     }
+    else if (isDefined(res.error))
+    {
+      Metro.toast.create(res.error, null, null, "alert");
+    }
   }
 
   this.socket = new Socket(host, port, [], this);
+}
+
+function Camera(id, name, source, target, tracker, skipcount, aid)
+{
+  this.dbid = id;
+  this.name = name;
+  this.source = source;
+  this.target = target;
+  this.tracker = tracker;
+  this.skipcount = skipcount;
+  this.aid = aid;
+
+  for (let i = 0; i < Agents.length; i++)
+  {
+    if (aid == Agents[i].dbid)
+    {
+      this.agent = Agents[i];
+    }
+  }
 }
 
 function OnCameraSaveButton()
@@ -154,7 +178,17 @@ function OnCameraStartButton()
 
 function OnCameraSelect(node)
 {
+  ($(".panel-title").children(".caption"))[0].innerHTML = '<b>' +node[0].innerText + '</b>';
 
+  let id = node.attr("data-value");
+
+  for (let i = 0; i < Cameras.length; i++)
+  {
+    if (id == Cameras[i].dbid)
+    {
+      selectedCamera = Cameras[i];
+    }
+  }
 }
 
 function OnAgentSaveButton()
@@ -178,12 +212,17 @@ function OnAgentSelect(node)
 
 function OnCameraControl(action)
 {
+  if (!isDefined(selectedCamera)){
+    Metro.toast.create("Please select a camera", null, null, "alert");
+    return;
+  }
+
   let cmd = {};
   cmd.app = 'cam';
-  cmd.name = 'qq'; //todo
+  cmd.sid = selectedCamera.name;
   cmd.req = 'camera-control';
   cmd.action = action;
-  socksend(cmd);
+  selectedCamera.agent.socket.send(JSON.stringify(cmd));
 }
 
 function GetCameraParams()
@@ -352,22 +391,41 @@ function OnAgentAddClick()
     ]
   });
 }
-function OnCameraSaveClick()
+function OnCameraSaveConfigClick()
 {
   console.log('OnCameraSaveClick');
 }
-function OnAgentSaveClick()
+function OnAgentSaveConfigClick()
 {
   console.log('OnAgentSaveClick');
 }
-function detectAgents()
+
+function InitAgentObjects()
 {
   let j = JSON.parse(g_agents);
 
   for (let i = 0; i < j.length; i++)
   {
-    let ag = new Agent(j[i].name, j[i].host, j[i].port);
+    let ag = new Agent(j[i].id, j[i].name, j[i].host, j[i].port);
+    Agents.push(ag);
   }
 }
 
-windowOnLoadCbk.push(detectAgents);
+function InitCameraObjects()
+{
+  let j = JSON.parse(decodeURI(g_cameras));
+
+  for (let i = 0; i < j.length; i++)
+  {
+    let cr = new Camera(j[i].id, j[i].name, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
+    Cameras.push(cr);
+  }
+}
+
+windowOnLoadCbk.push(InitAgentObjects);
+windowOnLoadCbk.push(InitCameraObjects);
+
+var Cameras = [];
+var Agents = [];
+
+var selectedCamera;
