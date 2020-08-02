@@ -6,16 +6,16 @@ function renderList(list, id, handler, icon)
 
   for (let i = 0; i < list.length; i++)
   {
-    h += `<li data-icon="<span class='${icon}'>" data-value="${list[i].id}" data-caption="${list[i].name}"></li>`
+    h += `<li data-icon="<span class='${icon} fg-black'>" data-value="${list[i]}" data-caption="${list[i].name}"></li>`
   }
 
   return `
-  <ul id="${id}"
-      class="p-3"
-      data-role="listview"
-      data-on-node-click=${handler}>
-    ${h}
-  </ul>`;
+   <ul id="${id}"
+       class="p-3"
+       data-role="listview"
+       data-on-node-click=${handler}>
+     ${h}
+   </ul>`;
 }
 
 function renderSelect(options, id, title, icon)
@@ -70,9 +70,7 @@ function renderTableView(id, rows, columnNames, handler)
   <div class="cell flex-justify-center" id='${id}' style="display:none">
 
    <div class="grid">
-     <div class="row">
 
-     </div>
      <div class="row">
      <table
       data-role="table" data-static-view="true"
@@ -98,7 +96,8 @@ function renderTableView(id, rows, columnNames, handler)
      </div>
      <div class="row">
        <style> .pagination {margin:0em} </style>
-       <div class="w-50 my-pagination-wrapper"></div>
+       <div class="w-50 my-pagination-wrapper">
+       </div>
        <div class="w-50 d-flex flex-align-center flex-justify-end">
         <button class="tool-button" onclick="${'On' + handler + 'AddClick()'}"><span class="mif-plus"></span></button>
         <button class="tool-button" onclick="${'On' + handler + 'DeleteClick()'}"><span class="mif-bin"></span></button>
@@ -106,20 +105,6 @@ function renderTableView(id, rows, columnNames, handler)
        </div>    
      </div>
    </div>
-
-    <!--div data-role="panel" 
-         data-title-caption="Panel title" 
-         data-collapsible="true" 
-         data-title-icon="<span class='mif-video-camera'></span>">
-      <canvas id="id-cam-canvas" width="500" height="400" style="border:1px solid #dbd5d5;"> </canvas>
-      <div class="d-flex flex-justify-center">
-        <button class="button m-1" onclick="OnCameraControl('backward');"><span class="mif-backward"></span></button>
-        <button class="button m-1" onclick="OnCameraControl('play');"><span class="mif-play"></span></button>
-        <button class="button m-1" onclick="OnCameraControl('pause');"><span class="mif-pause"></span></button>
-        <button class="button m-1" onclick="OnCameraControl('stop');"><span class="mif-stop"></span></button>
-        <button class="button m-1" onclick="OnCameraControl('forward');"><span class="mif-forward"></span></button>
-      </div>
-    </div-->
 
   </div>`;
 }
@@ -157,16 +142,6 @@ function addCameraView(agents)
      </div>`;
 }
 
-function AlertsView()
-{
-  return ``;
-}
-
-function ReportsView()
-{
-  return ``;
-}
-
 function addAgentView()
 {
   return `
@@ -179,6 +154,41 @@ function addAgentView()
     <div class="row">
       <div class="cell-12"><input id="new-agent-port" type="text" data-role="input" data-prepend="Port"></div>
     </div>`;
+}
+
+function cameraControlview(id)
+{
+  return `
+  <div class="cell flex-justify-center" id='${id}' style="display:none">
+     <div id="id-camera-control"
+          data-role="panel" 
+          data-title-caption="Panel title" 
+          data-collapsible="true" 
+          data-title-icon="<span class='mif-video-camera'></span>">
+       <div class="grid">
+        <div class="row">
+          <canvas id="row id-cam-canvas" width="500" height="400" style="border:1px solid #dbd5d5;"> </canvas>
+        </div>
+        <div class="row d-flex flex-justify-center">
+          <button class="button m-1" onclick="OnCameraControl('backward');"><span class="mif-backward"></span></button>
+          <button class="button m-1" onclick="OnCameraControl('play');"><span class="mif-play"></span></button>
+          <button class="button m-1" onclick="OnCameraControl('pause');"><span class="mif-pause"></span></button>
+          <button class="button m-1" onclick="OnCameraControl('stop');"><span class="mif-stop"></span></button>
+          <button class="button m-1" onclick="OnCameraControl('forward');"><span class="mif-forward"></span></button>
+        </div>
+       </div>
+    </div>
+  </div>`;
+}
+
+function AlertsView()
+{
+  return ``;
+}
+
+function ReportsView()
+{
+  return ``;
 }
 
 function render(v, id)
@@ -216,6 +226,7 @@ function render(v, id)
   v.page.html.left.push(accordion.render('', sections));
 
   v.page.html.center.push(renderTableView('id-camera-center', v.data.cameras, ['id', 'name', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
+  v.page.html.right.push(cameraControlview('id-camera-right'));
 
   v.page.html.center.push(renderTableView('id-agent-center', v.data.agents, ['id', 'name', 'host', 'port'], 'Agent'));
 
@@ -224,10 +235,12 @@ function render(v, id)
   v.page.html.center.push(ReportsView('id-reports'));
 
   v.page.html.center.push(`
-  <script>
-   var addCameraView = "${encodeURI(addCameraView(v.data.agents))}";
-   var addAgentView = "${encodeURI(addAgentView())}";
-  </script>
+   <script>
+     var g_agents = '${JSON.stringify(v.data.agents)}';
+     var g_cameras = "${encodeURI(JSON.stringify(v.data.cameras))}";
+     var addCameraView = "${encodeURI(addCameraView(v.data.agents))}";
+     var addAgentView = "${encodeURI(addAgentView())}";
+   </script>
  `);
 
   v.page.html.center.push(`<script src='/js/prism.js'></script>`);

@@ -1,26 +1,31 @@
 
-function socket(host, port, actions, listener)
+function Socket(host, port, actions, agent)
 {
   this.host = host;
   this.port = port;
   this.actions = actions;
-  this.listenter = listener;
+  this.agent = agent;
 
   this.ws = new WebSocket ('ws://' + host + ':' + port);
+
+  this.ws.socket = this;
 
   this.send = function(m) {
     this.ws.send(m);
   };
 
-  this.ws.Close = function() {
+  this.close = function() {
     this.ws.close();
   };
-
+  /*
+   * In the below ws events, this refers to the element that received the event
+   */
   this.ws.onerror = function(e) {
-    console.error("websocket error : " + host + ':' + port + ' ' + e.message);
+    this.socket.agent.onerror(e)
   };
 
   this.ws.onopen = function (e) {
+    this.socket.agent.onopen(e);
     actions.forEach(action => {
       console.log(action);
       this.ws.send(action);
@@ -28,11 +33,10 @@ function socket(host, port, actions, listener)
   };
 
   this.ws.onclose = function(e) {
-    console.warn('websocket closed : ' + host + ':' + port + ' reason : ' + e.reason);
+    this.socket.agent.onclose(e);
   };
 
   this.ws.onmessage = function(e) {
-    console.log(e);
-    listener(e.data);
+    this.socket.agent.onmessage(e);
   };
 }

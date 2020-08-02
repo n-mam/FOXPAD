@@ -37,10 +37,10 @@ var content = (v) =>
         <div class="grid cell-2" id="main-view-left">
           ${expandRows(v.page.html.left)}
         </div>
-        <div class="grid cell-7" id="main-view-center">
+        <div class="grid cell-5" id="main-view-center">
           ${expandRows(v.page.html.center)}
         </div>
-        <div class="grid cell-3" id="main-view-right">
+        <div class="grid cell-5" id="main-view-right">
           ${expandRows(v.page.html.right)}
           <div class="row">${u.DEBUG()}</div>   
         </div>
@@ -91,10 +91,9 @@ var preJS = () =>
 
 var postJS = () => 
 {
-  return `
+ return `
   <script src='/js/main.js'></script>
-  <script src='/js/ws.js'></script>
-  `;
+  <script src='/js/ws.js'></script>`;
 }
 
 function landingPage()

@@ -1,46 +1,91 @@
-function agent(name, host, port)
+function Agent(name, host, port)
 {
   this.name = name;
-
-  this.sock = new socket(host, port, {}, this.OnMessage)
  
-  this.getActiveSessions = function() {
+  this.getSessions = function() {
     let cmd = {};
     cmd.app = 'cam';
     cmd.req = 'get-active-sessions';
-    this.sock.send(cmd);
+    this.socket.send(JSON.stringify(cmd));
   };
 
-  this.OnMessage = function(m) {
+  this.onopen = function(e){
+    console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
+    this.socket.agent.getSessions();
+    let lv = $('#id-agent-list');
+    let items = lv.children();
+    for (let i = 0; i < items.length; i++)
+    {
+      if (items[i].innerText === this.socket.agent.name)
+      {
+        lv.data('listview').del(items[i]);
+      }
+    }
+    lv.data('listview').add(null, {
+      caption: this.socket.agent.name,
+      icon: `<span class=\'mif-display fg-green\'>`
+    });
+  }
 
-    console.log(`server : ${e.data}`);
+  this.onclose = function(e){
+    console.warn('agent websocket closed : ' + this.socket.host + ':' + this.socket.port + ' reason : ' + e.reason);
+    let lv = $('#id-agent-list');
+    let items = lv.children();
+    for (let i = 0; i < items.length; i++)
+    {
+      if (items[i].innerText === this.socket.agent.name)
+      {
+        lv.data('listview').del(items[i]);
+      }
+    }
+    lv.data('listview').add(null, {
+      caption: this.socket.agent.name,
+      icon: `<span class=\'mif-display fg-red\'>`
+    });
+  }
+
+  this.onerror = function(e){
+    console.error('agent websocket error : ' + this.socket.host + ':' + this.socket.port);
+  }
+
+  this.onmessage = function(e){
+
+    console.log("agent websocket message : " + e.data);
 
     let res = JSON.parse(e.data);
   
     if (res.req == 'get-active-sessions')
     {
-      var lv = $('#id-camera-list');
-  
-      lv.empty();
+      let lv = $('#id-camera-list');
   
       for (let i = 0; i < res.sessions.length; i++) 
       {
         let color = 'fg-black';
-  
+
         if (res.sessions[i].started == "true")
         {
           color = 'fg-green';
-  
+
           if (res.sessions[i].paused == "true")
           {
             color = 'fg-amber';
-          }        
+          }
         }
         else
         {
           color = 'fg-red';
         }
-  
+
+        let items = lv.children();
+
+        for (let i = 0; i < items.length; i++)
+        {
+          if (items[i].innerText === res.sessions[i].name)
+          {
+            lv.data('listview').del(items[i]);
+          }
+        }
+
         lv.data('listview').add(null, {
           caption: res.sessions[i].name,
           icon: `<span class=\'mif-video-camera ${color}\'>`,
@@ -50,16 +95,11 @@ function agent(name, host, port)
     }
     else if (res.req == 'camera-create')
     {
-      var lv = $('#id-active-cameras');
-  
-      lv.data('listview').add(null, {
-        caption: res.name,
-        icon: '<span class=\'mif-video-camera fg-black\'>'
-      });
+      this.socket.agent.getSessions();
     }
     else if (res.req == 'camera-control')
     {
-      getActiveSessions();
+      this.socket.agent.getSessions();
     }
     else if (res.req == 'play')
     {
@@ -72,6 +112,8 @@ function agent(name, host, port)
       image.src = "data:image/png;base64," + res.frame;
     }
   }
+
+  this.socket = new Socket(host, port, [], this);
 }
 
 function OnCameraSaveButton()
@@ -112,7 +154,7 @@ function OnCameraStartButton()
 
 function OnCameraSelect(node)
 {
-  alert("OnCameraSelect");
+
 }
 
 function OnAgentSaveButton()
@@ -153,7 +195,7 @@ function GetCameraParams()
   let aid = $('#new-cam-agent').data('select').val();
 
   if (!name.length ||
-      !agent.length ||    
+      !aid.length ||
       !source.length ||
       !target.length ||
       !trackers.length) {
@@ -284,7 +326,6 @@ function OnCameraAddClick()
     ]
   });
 }
-
 function OnAgentAddClick()
 {
   console.log('OnAgentAddClick');
@@ -305,7 +346,7 @@ function OnAgentAddClick()
             caption: "CANCEL",
             cls: "js-dialog-close",
             onclick: function(){
-                
+
             }
         }
     ]
@@ -319,3 +360,14 @@ function OnAgentSaveClick()
 {
   console.log('OnAgentSaveClick');
 }
+function detectAgents()
+{
+  let j = JSON.parse(g_agents);
+
+  for (let i = 0; i < j.length; i++)
+  {
+    let ag = new Agent(j[i].name, j[i].host, j[i].port);
+  }
+}
+
+windowOnLoadCbk.push(detectAgents);
