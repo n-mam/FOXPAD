@@ -39,7 +39,7 @@ drop table if exists Agents;
 
 create table Agents (
    id            int unsigned NOT NULL AUTO_INCREMENT,
-   name          varchar(128) NOT NULL,
+   sid           varchar(128) NOT NULL,
    host          varchar(128) NOT NULL,
    port          int unsigned NOT NULL,
    primary key (id)
@@ -47,7 +47,7 @@ create table Agents (
 
 create table Cameras (
    id            int unsigned NOT NULL AUTO_INCREMENT,
-   name          varchar(128) NOT NULL,
+   sid           varchar(128) NOT NULL,
    source        varchar(128) NOT NULL,
    target        varchar(128) NOT NULL,
    tracker       varchar(128) NOT NULL,

@@ -1,8 +1,8 @@
 
-function Agent(id, name, host, port)
+function Agent(id, sid, host, port)
 {
   this.dbid = id;
-  this.name = name;
+  this.sid = sid;
  
   this.getSessions = function() {
     let cmd = {};
@@ -15,6 +15,11 @@ function Agent(id, name, host, port)
     return this.socket.isConnected();
   }
 
+  this.send = function(m){
+    console.log("agent : " + JSON.stringify(m))
+    this.socket.send(JSON.stringify(m));
+  }
+
   this.onopen = function(e){
     console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
     this.socket.agent.getSessions();
@@ -22,13 +27,13 @@ function Agent(id, name, host, port)
     let items = lv.children();
     for (let i = 0; i < items.length; i++)
     {
-      if (items[i].innerText === this.socket.agent.name)
+      if (items[i].innerText === this.socket.agent.sid)
       {
         lv.data('listview').del(items[i]);
       }
     }
     lv.data('listview').add(null, {
-      caption: this.socket.agent.name,
+      caption: this.socket.agent.sid,
       icon: `<span class=\'mif-display fg-green\'>`
     });
   }
@@ -39,13 +44,13 @@ function Agent(id, name, host, port)
     let items = lv.children();
     for (let i = 0; i < items.length; i++)
     {
-      if (items[i].innerText === this.socket.agent.name)
+      if (items[i].innerText === this.socket.agent.sid)
       {
         lv.data('listview').del(items[i]);
       }
     }
     lv.data('listview').add(null, {
-      caption: this.socket.agent.name,
+      caption: this.socket.agent.sid,
       icon: `<span class=\'mif-display fg-red\'>`
     });
   }
@@ -56,10 +61,10 @@ function Agent(id, name, host, port)
 
   this.onmessage = function(e){
 
-    console.log("agent websocket message : " + e.data);
+    console.log("server : " + e.data);
 
     let res = JSON.parse(e.data);
-  
+
     if (res.req == 'get-active-sessions')
     {
       let lv = $('#id-camera-list');
@@ -86,14 +91,14 @@ function Agent(id, name, host, port)
 
         for (let i = 0; i < items.length; i++)
         {
-          if (items[i].innerText === res.sessions[i].name)
+          if (items[i].innerText === res.sessions[i].sid)
           {
             lv.data('listview').del(items[i]);
           }
         }
 
         lv.data('listview').add(null, {
-          caption: res.sessions[i].name,
+          caption: res.sessions[i].sid,
           icon: `<span class=\'mif-video-camera ${color}\'>`,
           camera: res
         });
@@ -126,10 +131,10 @@ function Agent(id, name, host, port)
   this.socket = new Socket(host, port, [], this);
 }
 
-function Camera(id, name, source, target, tracker, skipcount, aid)
+function Camera(id, sid, source, target, tracker, skipcount, aid)
 {
   this.dbid = id;
-  this.name = name;
+  this.sid = sid;
   this.source = source;
   this.target = target;
   this.tracker = tracker;
@@ -145,42 +150,6 @@ function Camera(id, name, source, target, tracker, skipcount, aid)
   }
 }
 
-function OnCameraSaveButton()
-{
-  let cam = GetCameraParams();
-
-  if (!isDefined(cam)) return;
-
-  _crud(
-   {
-     action: 'CREATE',
-     table: 'cameras',
-     rows: [cam]
-   });
-}
-
-function OnCameraStartButton()
-{
-  let cam = GetCameraParams();
-
-  let cmd = {
-    app: 'cam',
-    req: 'camera-create',
-    ...cam
-  };
-
-  socksend(cmd);
-
-  cmd = {
-    app: 'cam',
-    sid: cam.name,
-    req: 'camera-control',
-    action: 'play'
-  };
-
-  socksend(cmd);
-}
-
 function getCameraObject(id)
 {
   for (let i = 0; i < Cameras.length; i++)
@@ -191,91 +160,6 @@ function getCameraObject(id)
     }
   }
 }
-
-function OnCameraSelect(node)
-{
-  console.log(node[0].id);
-
-  let camera = getCameraObject(
-    parseInt(((node[0].id).split("-")).pop())
-  );
-
-  let ccid = "#" + node[0].id + "-control";
-
-  if (!$(ccid).length)
-  {
-    let e = Metro.window.create({
-      resizeable: true,
-      draggable: true,
-      width: 'auto',
-      id: ccid.substr(1),
-      icon: "<span class='mif-video-camera'></span>",
-      title: node[0].innerText,
-      content: decodeURI(cameraControl),
-      place: "center",
-      onShow: function(win){
-        alert(camera);
-      },
-      onClose: function(win){
-        alert('onclose');
-      }
-    });
-  }
-
-
-  // toggleCCWindowVisibility();
-  // ($(".window-caption").children(".title"))[0].innerHTML = '<b>' +node[0].innerText + '</b>';
-
-  let id = node.attr("data-value");
-
-  for (let i = 0; i < Cameras.length; i++)
-  {
-    if (id == Cameras[i].dbid)
-    {
-      selectedCamera = Cameras[i];
-    }
-  }
-}
-
-function OnAgentSaveButton()
-{
-  let agent = GetAgentParams();
-
-  if (!isDefined(agent)) return;
-
-  _crud(
-   {
-     action: 'CREATE',
-     table: 'agents',
-     rows: [agent]
-   });
-}
-
-function OnAgentSelect(node)
-{
-  alert("OnAgentSelect");
-}
-
-function OnCameraControl(action)
-{
-  if (!isDefined(selectedCamera)){
-    Metro.toast.create("Please select a camera", null, null, "alert");
-    return;
-  }
-
-  if (!selectedCamera.agent.isConnected()){
-    Metro.toast.create("Camera agent not running", null, null, "alert");
-    return;
-  }
-
-  let cmd = {};
-  cmd.app = 'cam';
-  cmd.sid = selectedCamera.name;
-  cmd.req = 'camera-control';
-  cmd.action = action;
-  selectedCamera.agent.socket.send(JSON.stringify(cmd));
-}
-
 function GetCameraParams()
 {
   let name = document.getElementById('new-cam-name').value;
@@ -295,7 +179,7 @@ function GetCameraParams()
 
   let cam = {};
 
-  cam.name = name;
+  cam.sid = name;
   cam.source = source.replace("\\", "\\\\");
   cam.target = target;
   cam.tracker = trackers;
@@ -303,35 +187,80 @@ function GetCameraParams()
 
   return cam;
 }
-
-function GetAgentParams()
+function OnCameraSaveButton()
 {
-  let name = document.getElementById('new-agent-name').value;
-  let host = document.getElementById('new-agent-host').value;
-  let port = document.getElementById('new-agent-port').value;
+  let cam = GetCameraParams();
 
-  if (!name.length ||
-      !host.length ||    
-      !port.length) {
-    Metro.toast.create("Please specify all agent parameters", null, null, "alert");
+  if (!isDefined(cam)) return;
+
+  _crud(
+   {
+     action: 'CREATE',
+     table: 'cameras',
+     rows: [cam]
+   });
+}
+function OnCameraStartButton(id)
+{
+  let cam = GetCameraParams();
+
+  let cmd = {
+    app: 'cam',
+    req: 'camera-create',
+    ...cam
+  };
+
+  socksend(cmd);
+}
+function OnCameraSelect(node)
+{
+  console.log(node[0].id);
+
+  let cid = ((node[0].id).split("-")).pop();
+
+  let camera = getCameraObject(parseInt(cid));
+
+  let ccid = "#" + node[0].id + "-control";
+
+  if (!$(ccid).length)
+  {
+    Metro.window.create({
+      resizeable: true,
+      draggable: true,
+      width: 'auto',
+      btnMin: false,
+      btnMax: false,
+      id: ccid.substr(1),
+      icon: "<span class='mif-video-camera'></span>",
+      title: node[0].innerText,
+      content: CameraControlView(cid),
+      place: "center",
+      onShow: function(w){
+
+      },
+      onClose: function(w){
+
+      }
+    });
+  }
+}
+function OnCameraControl(cid, action)
+{
+  let cam = getCameraObject(parseInt(cid));
+
+  if (!cam.agent.isConnected()){
+    Metro.toast.create("Camera agent not running", null, null, "alert");
     return;
   }
 
-  let agent = {};
+  let cmd = {
+    app: 'cam',
+    sid: cam.sid,
+    req: 'camera-control',
+    action: action
+  };
 
-  agent.name = name;
-  agent.host = host;
-  agent.port = port;
-
-  return agent;
-}
-
-function OnAgentTableNodeClick(node)
-{
-  console.log('OnAgentTableNodeClick');
-  var table = $('#id-agent-center-table').data('table');
-  let items = table.getSelectedItems();
-  console.log(items);
+  cam.agent.send(cmd);
 }
 function OnCameraTableNodeClick(node)
 {
@@ -343,7 +272,7 @@ function OnCameraTableNodeClick(node)
 function OnCameraDeleteClick()
 {
   console.log('OnCameraDeleteClick');
-  var table = $('#id-camera-center-table').data('table');
+  var table = $('#id-camera-right-table').data('table');
   let items = table.getSelectedItems();
   console.log(items);
 
@@ -365,10 +294,107 @@ function OnCameraDeleteClick()
       rows: o
     });
 }
+function OnCameraAddClick()
+{
+  console.log('OnCameraAddClick');
+
+  Metro.dialog.create({
+    title: "New Camera",
+    content: decodeURI(addCameraView),
+    closeButton: true,
+    actions: [
+        {
+            caption: "SAVE",
+            cls: "js-dialog-close",
+            onclick: function(){
+              OnCameraSaveButton()
+            }
+        },
+        {
+            caption: "CANCEL",
+            cls: "js-dialog-close",
+            onclick: function(){
+              
+            }
+        }
+    ]
+  });
+}
+function OnCameraSaveConfigClick()
+{
+  console.log('OnCameraSaveClick');
+}
+function CameraControlView(id)
+{
+  return `
+   <div class="grid d-flex flex-justify-center">
+    <div class="row d-flex flex-justify-center p-2">
+      <button class="button m-1 mt-2 small outline rounded primary" onclick="OnCameraControl('${id}', 'create');">PROV</button>
+      <button class="button m-1 mt-2 small outline rounded alert" onclick="OnCameraControl('${id}', 'delete');">DELETE</button>
+      <button class="button m-1 mt-2 small outline rounded success" onclick="OnCameraControl('${id}', 'start');">START</button>
+      <button class="button m-1 mt-2 small outline rounded warning" onclick="OnCameraControl('${id}', 'stop');">STOP</button>
+    </div>
+    <div class="row p-2">
+      <canvas id="id-cam-canvas" style="border:1px solid #e1e1e1;"> </canvas>
+    </div>
+    <div class="row d-flex flex-justify-center p-2">
+      <button class="button m-1" onclick="OnCameraControl('${id}', 'backward');"><span class="mif-backward"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('${id}', 'play');"><span class="mif-play"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('${id}', 'pause');"><span class="mif-pause"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('${id}', 'forward');"><span class="mif-forward"></span></button>
+    </div>
+   </div>`;
+}
+
+function GetAgentParams()
+{
+  let name = document.getElementById('new-agent-name').value;
+  let host = document.getElementById('new-agent-host').value;
+  let port = document.getElementById('new-agent-port').value;
+
+  if (!name.length ||
+      !host.length ||    
+      !port.length) {
+    Metro.toast.create("Please specify all agent parameters", null, null, "alert");
+    return;
+  }
+
+  let agent = {};
+
+  agent.sid = name;
+  agent.host = host;
+  agent.port = port;
+
+  return agent;
+}
+function OnAgentSaveButton()
+{
+  let agent = GetAgentParams();
+
+  if (!isDefined(agent)) return;
+
+  _crud(
+   {
+     action: 'CREATE',
+     table: 'agents',
+     rows: [agent]
+   });
+}
+function OnAgentSelect(node)
+{
+  alert("OnAgentSelect");
+}
+function OnAgentTableNodeClick(node)
+{
+  console.log('OnAgentTableNodeClick');
+  var table = $('#id-agent-center-table').data('table');
+  let items = table.getSelectedItems();
+  console.log(items);
+}
 function OnAgentDeleteClick()
 {
   console.log('OnAgentDeleteClick');
-  var table = $('#id-agent-center-table').data('table');
+  var table = $('#id-agent-right-table').data('table');
   let items = table.getSelectedItems();
   console.log(items);
 
@@ -389,32 +415,6 @@ function OnAgentDeleteClick()
       table: 'agents',
       rows: o
     });
-}
-function OnCameraAddClick()
-{
-  console.log('OnCameraAddClick');
-
-  Metro.dialog.create({
-    title: "New Camera",
-    content: decodeURI(addCameraView),
-    closeButton: true,
-    actions: [
-        {
-            caption: "SAVE",
-            cls: "js-dialog-close",
-            onclick: function(){
-              OnCameraSaveButton()
-            }
-        },
-        {
-            caption: "START",
-            cls: "js-dialog-close",
-            onclick: function(){
-              OnCameraStartButton();
-            }
-        }
-    ]
-  });
 }
 function OnAgentAddClick()
 {
@@ -442,10 +442,6 @@ function OnAgentAddClick()
     ]
   });
 }
-function OnCameraSaveConfigClick()
-{
-  console.log('OnCameraSaveClick');
-}
 function OnAgentSaveConfigClick()
 {
   console.log('OnAgentSaveClick');
@@ -457,18 +453,17 @@ function InitAgentObjects()
 
   for (let i = 0; i < j.length; i++)
   {
-    let ag = new Agent(j[i].id, j[i].name, j[i].host, j[i].port);
+    let ag = new Agent(j[i].id, j[i].sid, j[i].host, j[i].port);
     Agents.push(ag);
   }
 }
-
 function InitCameraObjects()
 {
   let j = JSON.parse(decodeURI(g_cameras));
 
   for (let i = 0; i < j.length; i++)
   {
-    let cr = new Camera(j[i].id, j[i].name, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
+    let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
 }
@@ -478,5 +473,3 @@ windowOnLoadCbk.push(InitCameraObjects);
 
 var Cameras = [];
 var Agents = [];
-
-var selectedCamera;

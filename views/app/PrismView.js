@@ -6,7 +6,7 @@ function renderList(list, id, handler, icon)
 
   for (let i = 0; i < list.length; i++)
   {
-    h += `<li id="${'id-cam-li-' + list[i].id}" data-icon="<span class='${icon} fg-black'>" data-value="${list[i].id}" data-caption="${list[i].name}"></li>`
+    h += `<li id="${'id-cam-li-' + list[i].id}" data-icon="<span class='${icon} fg-black'>" data-value="${list[i].id}" data-caption="${list[i].sid}"></li>`
   }
 
   return `
@@ -24,7 +24,7 @@ function renderSelect(options, id, title, icon)
 
   for (let i = 0; i < options.length; i++)
   {
-    h += `<option value="${options[i].id}" data-template="<span class='${icon} icon'></span> $1">${options[i].name}</option>`
+    h += `<option value="${options[i].id}" data-template="<span class='${icon} icon'></span> $1">${options[i].sid}</option>`
   }
 
   return `
@@ -228,10 +228,10 @@ function render(v, id)
 
   v.page.html.left.push(accordion.render('', sections));
 
-  v.page.html.right.push(renderTableView('id-camera-right', v.data.cameras, ['id', 'name', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
+  v.page.html.right.push(renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
   v.page.html.center.push(cameraControlConainer('id-camera-center'));
 
-  v.page.html.right.push(renderTableView('id-agent-right', v.data.agents, ['id', 'name', 'host', 'port'], 'Agent'));
+  v.page.html.right.push(renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port'], 'Agent'));
 
   v.page.html.center.push(AlertsView('id-alerts'));
 
@@ -241,9 +241,8 @@ function render(v, id)
    <script>
      var g_agents = '${JSON.stringify(v.data.agents)}';
      var g_cameras = '${encodeURI(JSON.stringify(v.data.cameras))}';
-     var cameraControl = "${encodeURI(CameraControlView())}";
-     var addCameraView = "${encodeURI(addCameraView(v.data.agents))}";
-     var addAgentView = "${encodeURI(addAgentView())}";
+     var addCameraView = "${encodeURI(addCameraView(v.data.agents))}"; //move to ui
+     var addAgentView = "${encodeURI(addAgentView())}"; //move to ui
    </script>
  `);
 
