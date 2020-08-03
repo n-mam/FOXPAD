@@ -161,7 +161,7 @@ function CameraControlView()
   return `
    <div class="grid d-flex flex-justify-center p-2">
     <div class="row">
-      <canvas id="id-cam-canvas" style="border:1px solid;"> </canvas>
+      <canvas id="id-cam-canvas" style="border:1px solid #e1e1e1;"> </canvas>
     </div>
     <div class="row d-flex flex-justify-center">
       <button class="button m-1 mt-2" onclick="OnCameraControl('start');">START</button>
@@ -228,10 +228,10 @@ function render(v, id)
 
   v.page.html.left.push(accordion.render('', sections));
 
-  v.page.html.right.push(renderTableView('id-camera-center', v.data.cameras, ['id', 'name', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
-  v.page.html.center.push(cameraControlConainer('id-camera-right'));
+  v.page.html.right.push(renderTableView('id-camera-right', v.data.cameras, ['id', 'name', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
+  v.page.html.center.push(cameraControlConainer('id-camera-center'));
 
-  v.page.html.center.push(renderTableView('id-agent-center', v.data.agents, ['id', 'name', 'host', 'port'], 'Agent'));
+  v.page.html.right.push(renderTableView('id-agent-right', v.data.agents, ['id', 'name', 'host', 'port'], 'Agent'));
 
   v.page.html.center.push(AlertsView('id-alerts'));
 

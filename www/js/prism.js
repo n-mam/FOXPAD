@@ -181,9 +181,24 @@ function OnCameraStartButton()
   socksend(cmd);
 }
 
+function getCameraObject(id)
+{
+  for (let i = 0; i < Cameras.length; i++)
+  {
+    if (id === Cameras[i].dbid)
+    {
+      return Cameras[i];
+    }
+  }
+}
+
 function OnCameraSelect(node)
 {
   console.log(node[0].id);
+
+  let camera = getCameraObject(
+    parseInt(((node[0].id).split("-")).pop())
+  );
 
   let ccid = "#" + node[0].id + "-control";
 
@@ -199,7 +214,7 @@ function OnCameraSelect(node)
       content: decodeURI(cameraControl),
       place: "center",
       onShow: function(win){
-        alert('onshow');
+        alert(camera);
       },
       onClose: function(win){
         alert('onclose');
@@ -456,12 +471,6 @@ function InitCameraObjects()
     let cr = new Camera(j[i].id, j[i].name, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
-}
-
-function toggleCCWindowVisibility()
-{
-  var win = $('#id-camera-control').data('window');
-  win.win.toggleClass('no-visible');
 }
 
 windowOnLoadCbk.push(InitAgentObjects);
