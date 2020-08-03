@@ -6,7 +6,7 @@ function renderList(list, id, handler, icon)
 
   for (let i = 0; i < list.length; i++)
   {
-    h += `<li data-icon="<span class='${icon} fg-black'>" data-value="${list[i].id}" data-caption="${list[i].name}"></li>`
+    h += `<li id="${'id-cam-li-' + list[i].id}" data-icon="<span class='${icon} fg-black'>" data-value="${list[i].id}" data-caption="${list[i].name}"></li>`
   }
 
   return `
@@ -156,31 +156,31 @@ function addAgentView()
     </div>`;
 }
 
-function cameraControlview(id)
+function CameraControlView()
 {
   return `
-  <div class="cell flex-justify-center" id='${id}' style="display:none">
-     <div id="id-camera-control"
-          data-role="panel"
-          data-title-caption="Panel title" 
-          data-collapsible="true" 
-          data-title-icon="<span class='mif-video-camera'></span>">
-       <div class="grid">
-        <div class="row">
-          <canvas id="row id-cam-canvas" width="500" height="400" style="border:1px solid #dbd5d5;"> </canvas>
-        </div>
-        <div class="row d-flex flex-justify-center">
-          <button class="button m-1 mt-2" onclick="OnCameraControl('stop');">START</button>
-          <button class="button m-1 mt-2" onclick="OnCameraControl('stop');">STOP</button>
-        </div>
-        <div class="row d-flex flex-justify-center">
-          <button class="button m-1" onclick="OnCameraControl('backward');"><span class="mif-backward"></span></button>
-          <button class="button m-1" onclick="OnCameraControl('play');"><span class="mif-play"></span></button>
-          <button class="button m-1" onclick="OnCameraControl('pause');"><span class="mif-pause"></span></button>
-          <button class="button m-1" onclick="OnCameraControl('forward');"><span class="mif-forward"></span></button>
-        </div>
-       </div>
+   <div class="grid d-flex flex-justify-center p-2">
+    <div class="row">
+      <canvas id="id-cam-canvas" style="border:1px solid;"> </canvas>
     </div>
+    <div class="row d-flex flex-justify-center">
+      <button class="button m-1 mt-2" onclick="OnCameraControl('start');">START</button>
+      <button class="button m-1 mt-2" onclick="OnCameraControl('stop');">STOP</button>
+    </div>
+    <div class="row d-flex flex-justify-center">
+      <button class="button m-1" onclick="OnCameraControl('backward');"><span class="mif-backward"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('play');"><span class="mif-play"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('pause');"><span class="mif-pause"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('forward');"><span class="mif-forward"></span></button>
+    </div>
+   </div>`;
+}
+
+function cameraControlConainer(id)
+{
+  return `
+  <div id='${id}' class="d-flex flex-justify-center" style="width:600px;height:400px" style="display:none">
+
   </div>`;
 }
 
@@ -228,8 +228,8 @@ function render(v, id)
 
   v.page.html.left.push(accordion.render('', sections));
 
-  v.page.html.center.push(renderTableView('id-camera-center', v.data.cameras, ['id', 'name', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
-  v.page.html.right.push(cameraControlview('id-camera-right'));
+  v.page.html.right.push(renderTableView('id-camera-center', v.data.cameras, ['id', 'name', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
+  v.page.html.center.push(cameraControlConainer('id-camera-right'));
 
   v.page.html.center.push(renderTableView('id-agent-center', v.data.agents, ['id', 'name', 'host', 'port'], 'Agent'));
 
@@ -241,6 +241,7 @@ function render(v, id)
    <script>
      var g_agents = '${JSON.stringify(v.data.agents)}';
      var g_cameras = '${encodeURI(JSON.stringify(v.data.cameras))}';
+     var cameraControl = "${encodeURI(CameraControlView())}";
      var addCameraView = "${encodeURI(addCameraView(v.data.agents))}";
      var addAgentView = "${encodeURI(addAgentView())}";
    </script>

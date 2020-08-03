@@ -1,3 +1,4 @@
+
 function Agent(id, name, host, port)
 {
   this.dbid = id;
@@ -9,6 +10,10 @@ function Agent(id, name, host, port)
     cmd.req = 'get-active-sessions';
     this.socket.send(JSON.stringify(cmd));
   };
+
+  this.isConnected = function(){
+    return this.socket.isConnected();
+  }
 
   this.onopen = function(e){
     console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
@@ -178,7 +183,33 @@ function OnCameraStartButton()
 
 function OnCameraSelect(node)
 {
-  ($(".panel-title").children(".caption"))[0].innerHTML = '<b>' +node[0].innerText + '</b>';
+  console.log(node[0].id);
+
+  let ccid = "#" + node[0].id + "-control";
+
+  if (!$(ccid).length)
+  {
+    let e = Metro.window.create({
+      resizeable: true,
+      draggable: true,
+      width: 'auto',
+      id: ccid.substr(1),
+      icon: "<span class='mif-video-camera'></span>",
+      title: node[0].innerText,
+      content: decodeURI(cameraControl),
+      place: "center",
+      onShow: function(win){
+        alert('onshow');
+      },
+      onClose: function(win){
+        alert('onclose');
+      }
+    });
+  }
+
+
+  // toggleCCWindowVisibility();
+  // ($(".window-caption").children(".title"))[0].innerHTML = '<b>' +node[0].innerText + '</b>';
 
   let id = node.attr("data-value");
 
@@ -214,6 +245,11 @@ function OnCameraControl(action)
 {
   if (!isDefined(selectedCamera)){
     Metro.toast.create("Please select a camera", null, null, "alert");
+    return;
+  }
+
+  if (!selectedCamera.agent.isConnected()){
+    Metro.toast.create("Camera agent not running", null, null, "alert");
     return;
   }
 
@@ -420,6 +456,12 @@ function InitCameraObjects()
     let cr = new Camera(j[i].id, j[i].name, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
+}
+
+function toggleCCWindowVisibility()
+{
+  var win = $('#id-camera-control').data('window');
+  win.win.toggleClass('no-visible');
 }
 
 windowOnLoadCbk.push(InitAgentObjects);

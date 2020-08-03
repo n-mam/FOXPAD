@@ -10,6 +10,10 @@ function Socket(host, port, actions, agent)
 
   this.ws.socket = this;
 
+  this.isConnected = function(){
+    return (this.ws.readyState === 1)
+  }
+
   this.send = function(m) {
     this.ws.send(m);
   };
