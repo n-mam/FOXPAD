@@ -5,8 +5,8 @@ function renderList(list, id, handler, icon)
   let h = ``;
 
   for (let i = 0; i < list.length; i++)
-  {
-    h += `<li id="${'id-cam-li-' + list[i].id}" data-icon="<span class='${icon} fg-black'>" data-value="${list[i].id}" data-caption="${list[i].sid}"></li>`
+  { // id-camera-list-li-1, id-agent-list-li-2
+    h += `<li id="${id + '-li-' + list[i].id}" data-icon="<span class='${icon} fg-black'>" data-caption="${list[i].sid}"></li>`
   }
 
   return `

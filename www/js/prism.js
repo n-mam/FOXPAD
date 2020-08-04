@@ -87,13 +87,17 @@ function Agent(id, sid, host, port)
           color = 'fg-red';
         }
 
+        let cid = '';
+
         let items = lv.children();
 
-        for (let i = 0; i < items.length; i++)
+        for (let j = 0; j < items.length; j++)
         {
-          if (items[i].innerText === res.sessions[i].sid)
+          if (items[j].innerText === res.sessions[i].sid)
           {
-            lv.data('listview').del(items[i]);
+            cid = items[j].id;
+            lv.data('listview').del(items[j]);
+            break;
           }
         }
 
@@ -101,7 +105,7 @@ function Agent(id, sid, host, port)
           caption: res.sessions[i].sid,
           icon: `<span class=\'mif-video-camera ${color}\'>`,
           camera: res
-        });
+        }).id(cid);
       }
     }
     else if (res.req == 'camera-create')
@@ -114,13 +118,21 @@ function Agent(id, sid, host, port)
     }
     else if (res.req == 'play')
     {
-      let canvas = document.getElementById("id-cam-canvas");
-      let ctx = canvas.getContext("2d");
-      let image = new Image();
-      image.onload = function() {
-        ctx.drawImage(image, 0, 0);
-      };
-      image.src = "data:image/png;base64," + res.frame;
+      let cam = getCameraObjectBySid(res.sid);
+
+      let canvas = document.getElementById('id-cam-canvas-' + cam.dbid);
+
+      if (canvas)
+      {
+        let ctx = canvas.getContext("2d");
+        let image = new Image();
+        image.onload = function() {
+          canvas.width = image.naturalWidth;
+          canvas.height = image.naturalHeight;
+          ctx.drawImage(image, 0, 0);
+        };
+        image.src = "data:image/png;base64," + res.frame;
+      }
     }
     else if (isDefined(res.error))
     {
@@ -155,6 +167,16 @@ function getCameraObject(id)
   for (let i = 0; i < Cameras.length; i++)
   {
     if (id === Cameras[i].dbid)
+    {
+      return Cameras[i];
+    }
+  }
+}
+function getCameraObjectBySid(sid)
+{
+  for (let i = 0; i < Cameras.length; i++)
+  {
+    if (sid === Cameras[i].sid)
     {
       return Cameras[i];
     }
@@ -200,18 +222,6 @@ function OnCameraSaveButton()
      rows: [cam]
    });
 }
-function OnCameraStartButton(id)
-{
-  let cam = GetCameraParams();
-
-  let cmd = {
-    app: 'cam',
-    req: 'camera-create',
-    ...cam
-  };
-
-  socksend(cmd);
-}
 function OnCameraSelect(node)
 {
   console.log(node[0].id);
@@ -239,7 +249,7 @@ function OnCameraSelect(node)
 
       },
       onClose: function(w){
-
+        OnCameraControl(cid, 'stop-play');
       }
     });
   }
@@ -255,9 +265,14 @@ function OnCameraControl(cid, action)
 
   let cmd = {
     app: 'cam',
-    sid: cam.sid,
-    req: 'camera-control',
-    action: action
+    req: 'camera-control',   
+    action: action,
+    sid: cam.sid, 
+    source: cam.source,
+    target: cam.target,
+    tracker: cam.tracker,
+    skipcount: cam.skipcount,
+    aid: cam.aid
   };
 
   cam.agent.send(cmd);
@@ -329,13 +344,13 @@ function CameraControlView(id)
   return `
    <div class="grid d-flex flex-justify-center">
     <div class="row d-flex flex-justify-center p-2">
-      <button class="button m-1 mt-2 small outline rounded primary" onclick="OnCameraControl('${id}', 'create');">PROV</button>
-      <button class="button m-1 mt-2 small outline rounded alert" onclick="OnCameraControl('${id}', 'delete');">DELETE</button>
+      <button class="button m-1 mt-2 small outline rounded primary" onclick="OnCameraControl('${id}', 'create');">CREATE</button>
       <button class="button m-1 mt-2 small outline rounded success" onclick="OnCameraControl('${id}', 'start');">START</button>
       <button class="button m-1 mt-2 small outline rounded warning" onclick="OnCameraControl('${id}', 'stop');">STOP</button>
+      <button class="button m-1 mt-2 small outline rounded alert" onclick="OnCameraControl('${id}', 'delete');">DELETE</button>      
     </div>
     <div class="row p-2">
-      <canvas id="id-cam-canvas" style="border:1px solid #e1e1e1;"> </canvas>
+      <canvas id="id-cam-canvas-${id}" style="border:1px solid #e1e1e1;"> </canvas>
     </div>
     <div class="row d-flex flex-justify-center p-2">
       <button class="button m-1" onclick="OnCameraControl('${id}', 'backward');"><span class="mif-backward"></span></button>
