@@ -55,7 +55,7 @@ function renderTD(rows, keys)
 
     for (let j = 0; j < keys.length; j++)
     {
-      h += `<td contenteditable="true">${rows[i][keys[j]]}</td>`;
+      h += `<td contentEditable="true">${rows[i][keys[j]]}</td>`;
     }
 
     h += `</tr>`
@@ -179,7 +179,7 @@ function CameraControlView()
 function cameraControlConainer(id)
 {
   return `
-  <div id='${id}' class="d-flex flex-justify-center" style="width:600px;height:400px" style="display:none">
+  <div id='${id}' class="d-flex flex-justify-center" style="display:none">
 
   </div>`;
 }
@@ -189,9 +189,99 @@ function AlertsView()
   return ``;
 }
 
-function ReportsView()
+function ReportsView(id)
 {
-  return ``;
+  return `
+  <div class="cell flex-justify-center" id='${id}' style="display:none">
+
+  <script src='js/Chart.min.js'></script>
+
+  <div class="grid w-100">
+    <div class="row">
+      <div class="cell-12">
+        <div>
+          <canvas id="myChart" width="300" height:"200"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="row  flex-justify-center">
+      <div class="cell-3">
+        <div>
+         <select id="www" data-prepend="Camera:" data-role="select">
+          <option value="Today">TV</option>
+          <option value="Day">Road</option>
+          <option value="Week">Mall</option>
+         </select>
+        </div>
+      </div>
+      <div class="cell-4">
+        <div>
+         <select id="dsds" data-prepend="Range:" data-role="select">
+          <option value="Today">Today</option>
+          <option value="Day">Day</option>
+          <option value="Week">Week</option>
+          <option value="Month">Month</option>
+         </select>
+        </div>
+      </div>
+  </div>
+
+</div>
+
+
+  <script>
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var barChartData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [{
+      label: 'IN',
+      backgroundColor: 'rgb(154, 208, 245)',
+      borderColor: 'rgb(106, 183, 235)',
+      borderWidth: 1,
+      data: [
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4
+      ]
+    }, {
+      label: 'OUT',
+      backgroundColor: 'rgb(255, 177, 193)',
+      borderColor: 'rgb(255, 134, 160)',
+      borderWidth: 1,
+      data: [
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4,
+        (Math.floor(Math.random() * 10) + 1) * 4
+      ]
+    }]
+  };
+
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: barChartData,
+    options: {
+      responsive: true,
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Visitor Count'
+      }
+    }
+  });
+  </script>
+
+  </div>
+  `;
 }
 
 function render(v, id)
@@ -235,7 +325,7 @@ function render(v, id)
 
   v.page.html.center.push(AlertsView('id-alerts'));
 
-  v.page.html.center.push(ReportsView('id-reports'));
+  v.page.html.center.push(ReportsView('id-report-center'));
 
   v.page.html.center.push(`
    <script>
