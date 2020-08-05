@@ -27,6 +27,15 @@ var script = () =>
      linkedViewCenter = document.getElementById(frame.dataset.link + '-center');
      linkedViewRight = document.getElementById(frame.dataset.link + '-right');
 
+     let rightSize = linkedViewCenter.getAttribute('right-size');
+
+     if (rightSize && rightSize.length)
+     {
+       let centerSize = 12 - parseInt(rightSize) - 2;
+       document.getElementById('main-view-right').setAttribute('class', 'grid cell-' + rightSize);
+       document.getElementById('main-view-center').setAttribute('class', 'grid cell-' + centerSize.toString());
+     }
+
      if (linkedViewCenter) linkedViewCenter.style.display = 'flex';
      if (linkedViewRight) linkedViewRight.style.display = 'flex';     
    }

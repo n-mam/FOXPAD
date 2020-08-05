@@ -179,7 +179,7 @@ function CameraControlView()
 function cameraControlConainer(id)
 {
   return `
-  <div id='${id}' class="d-flex flex-justify-center" style="display:none">
+  <div id='${id}' class="d-flex flex-justify-center" right-size="5" style="display:none">
 
   </div>`;
 }
@@ -192,19 +192,19 @@ function AlertsView()
 function ReportsView(id)
 {
   return `
-  <div class="cell flex-justify-center" id='${id}' style="display:none">
+  <div class="cell flex-justify-center" id='${id}' right-size="2" style="display:none">
 
   <script src='js/Chart.min.js'></script>
 
   <div class="grid w-100">
-    <div class="row">
-      <div class="cell-12">
+    <div class="row flex-justify-center">
+      <div class="cell-9">
         <div>
           <canvas id="myChart" width="300" height:"200"></canvas>
         </div>
       </div>
     </div>
-    <div class="row  flex-justify-center">
+    <div class="row flex-justify-center">
       <div class="cell-3">
         <div>
          <select id="www" data-prepend="Camera:" data-role="select">
@@ -214,7 +214,7 @@ function ReportsView(id)
          </select>
         </div>
       </div>
-      <div class="cell-4">
+      <div class="cell-3">
         <div>
          <select id="dsds" data-prepend="Range:" data-role="select">
           <option value="Today">Today</option>
