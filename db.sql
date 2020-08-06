@@ -57,3 +57,12 @@ create table Cameras (
    foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
+create table Trails (
+   id            int unsigned NOT NULL AUTO_INCREMENT,
+   cid           int unsigned,
+   aid           int unsigned,
+   path          MULTIPOINT,
+   primary key (id),
+   foreign key (cid) REFERENCES Cameras(id) ON DELETE SET NULL,
+   foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
