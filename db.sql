@@ -61,8 +61,14 @@ create table Trails (
    id            int unsigned NOT NULL AUTO_INCREMENT,
    cid           int unsigned,
    aid           int unsigned,
+   ts            DATETIME,
    path          MULTIPOINT,
    primary key (id),
    foreign key (cid) REFERENCES Cameras(id) ON DELETE SET NULL,
    foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+/*
+ * insert into trails (cid, aid, ts, path) values (1, 1, NOW(), ST_GeomFromText('MULTIPOINT(0 0,10 10,10 20,20 20)'));
+ * SELECT cid,aid,ts,ST_AsText(path) FROM trails;
+ */

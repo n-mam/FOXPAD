@@ -267,12 +267,13 @@ function OnCameraControl(cid, action)
     app: 'cam',
     req: 'camera-control',   
     action: action,
-    sid: cam.sid, 
+    cid: cam.dbid.toString(),
+    sid: cam.sid.toString(),
+    aid: cam.aid.toString(),
     source: cam.source,
     target: cam.target,
     tracker: cam.tracker,
-    skipcount: cam.skipcount,
-    aid: cam.aid
+    skipcount: cam.skipcount
   };
 
   cam.agent.send(cmd);
@@ -460,6 +461,41 @@ function OnAgentAddClick()
 function OnAgentSaveConfigClick()
 {
   console.log('OnAgentSaveClick');
+}
+
+function OnClickAnalyzeTrail()
+{
+  let cid = $('#id-report-cam').data('select').val();
+  let inv = $('#id-report-int').data('select').val();
+
+  _crud(
+    {
+      action: 'READ',
+      columns: 'cid, aid, ts, ST_AsText(path)',
+      table: 'Trails',
+      where: `cid = ${cid}`,
+      rows: [{x: 'y'}]
+    }, "", (r) => {
+      alert(r);
+    });
+
+  // Metro.window.create({
+  //   resizeable: true,
+  //   draggable: true,
+  //   width: 'auto',
+  //   height: '375px',
+  //   btnMin: false,
+  //   btnMax: false,
+  //   id: 'id-analyzer-win',
+  //   icon: "<span class='mif-video-camera'></span>",
+  //   title: "Trail Analyzer",
+  //   content: '<canvas id="id-trail-analyzer" style="border:1px dotted grey; width:600px; height:450px" ></canvas>',
+  //   place: "right",
+  //   onShow: function(w){
+  //   },
+  //   onClose: function(w){
+  //   }
+  // });
 }
 
 function InitAgentObjects()

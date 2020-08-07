@@ -27,7 +27,12 @@ var script = () =>
      linkedViewCenter = document.getElementById(frame.dataset.link + '-center');
      linkedViewRight = document.getElementById(frame.dataset.link + '-right');
 
-     let rightSize = linkedViewCenter.getAttribute('right-size');
+     let rightSize = '';
+     
+     if (linkedViewCenter) 
+     {
+      rightSize = linkedViewCenter.getAttribute('right-size');
+     }
 
      if (rightSize && rightSize.length)
      {
@@ -42,6 +47,7 @@ var script = () =>
 
    function onFrameClose(frame)
    {
+     console.log(new Date().toISOString().slice(0, 19).replace('T', ' '));
      let lv = document.getElementById(frame.dataset.link);
      if (lv) lv.style.display = 'none';
    }   

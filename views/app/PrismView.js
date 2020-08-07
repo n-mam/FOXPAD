@@ -189,7 +189,7 @@ function AlertsView()
   return ``;
 }
 
-function ReportsView(id)
+function ReportsView(id, cameras)
 {
   return `
   <div class="cell flex-justify-center" id='${id}' right-size="2" style="display:none">
@@ -198,30 +198,31 @@ function ReportsView(id)
 
   <div class="grid w-100">
     <div class="row flex-justify-center">
-      <div class="cell-9">
+      <div class="cell-10">
         <div>
           <canvas id="myChart" width="300" height:"200"></canvas>
         </div>
       </div>
     </div>
-    <div class="row flex-justify-center">
+    <div class="row pt-5 flex-justify-center">
       <div class="cell-3">
         <div>
-         <select id="www" data-prepend="Camera:" data-role="select">
-          <option value="Today">TV</option>
-          <option value="Day">Road</option>
-          <option value="Week">Mall</option>
-         </select>
+          ${renderSelect(cameras, 'id-report-cam', 'Camera:')}
         </div>
       </div>
       <div class="cell-3">
         <div>
-         <select id="dsds" data-prepend="Range:" data-role="select">
+         <select id="id-report-int" data-prepend="Interval:" data-role="select">
           <option value="Today">Today</option>
           <option value="Day">Day</option>
           <option value="Week">Week</option>
           <option value="Month">Month</option>
          </select>
+        </div>
+      </div>
+      <div class="cell-2">
+        <div class="d-flex flex-align-left">
+          <button class="button" onclick="OnClickAnalyzeTrail();">ANALYZE</button>
         </div>
       </div>
   </div>
@@ -278,6 +279,7 @@ function ReportsView(id)
       }
     }
   });
+
   </script>
 
   </div>
@@ -325,7 +327,7 @@ function render(v, id)
 
   v.page.html.center.push(AlertsView('id-alerts'));
 
-  v.page.html.center.push(ReportsView('id-report-center'));
+  v.page.html.center.push(ReportsView('id-report-center', v.data.cameras));
 
   v.page.html.center.push(`
    <script>

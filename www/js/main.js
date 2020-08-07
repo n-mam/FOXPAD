@@ -66,9 +66,9 @@
 
      var j = JSON.stringify(
        {
-         'token' : null,
-         'api' : 'CRUD',
-         'data' : data
+         'token': null,
+         'api': 'CRUD',
+         'data': data
        });
 
      _xhr ('/api', 'POST', j, (res) => {
@@ -78,12 +78,15 @@
           {
             if (isDefined(cbk))
             {
-               cbk(undefined);
+              cbk(res);
             }
 
             if(isDefined(backTo))
             {
-              window.location = document.referrer;
+              if (backTo === true)
+              {
+                window.location = document.referrer;
+              }
             }
             else
             {
