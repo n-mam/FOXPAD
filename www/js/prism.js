@@ -495,7 +495,10 @@ function Report(cid)
 
     for (let i = 0; i < res.result.length; i++)
     {
-      this.paths.push((res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","))
+      let p = {};
+      p['trail'] = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","); 
+      p['ts'] = (res.result[i]).ts;
+      this.paths.push(p)
     }
   }
 
@@ -515,7 +518,7 @@ function Report(cid)
         let canvas = document.getElementById("id-trail-analyzer");
         canvas.addEventListener("click", function(e){
           let ref = getMousePosition("id-trail-analyzer", e);
-          let counts = computePathIntersectionsWithRefLines(ref, paths);
+          let counts = computeRefIntersectionsCount(ref, paths);
           drawRefrenceLinesAndCounts(ref, counts);
         }, false);
         renderPaths("id-trail-analyzer", paths);
@@ -536,13 +539,13 @@ function getMousePosition(id, e) {
   };
 }
 
-function computePathIntersectionsWithRefLines(ref, paths)
+function computeRefIntersectionsCount(ref, paths)
 {
   let counts = {up: 0, down: 0, left: 0,  right: 0};
 
   for (let i = 0; i < paths.length; i++)
   {
-    let points = paths[i];
+    let points = paths[i].trail;
 
     if (points.length > 20)
     {
@@ -587,6 +590,7 @@ function drawRefrenceLinesAndCounts(pos, counts)
   context.beginPath();         
   context.strokeStyle = "#000000";
   context.lineWidth = 1;
+  context.setLineDash([5, 3]);
   context.moveTo(pos.x, 0);
   context.lineTo(pos.x, canvas.height);
   context.stroke();
@@ -594,6 +598,7 @@ function drawRefrenceLinesAndCounts(pos, counts)
   context.beginPath();
   context.strokeStyle = "#000000";
   context.lineWidth = 1;
+  context.setLineDash([5, 3]);
   context.moveTo(0, pos.y);
   context.lineTo(canvas.width, pos.y);
   context.stroke();
@@ -606,7 +611,7 @@ function renderPaths(id, paths)
 
   for (let i = 0; i < paths.length; i++)
   {
-    let points = paths[i];
+    let points = paths[i].trail;
 
     if (points.length > 20)
     {
