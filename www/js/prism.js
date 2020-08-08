@@ -463,39 +463,215 @@ function OnAgentSaveConfigClick()
   console.log('OnAgentSaveClick');
 }
 
+function Report(cid)
+{
+  this.cid = cid;
+  this.paths = [];
+
+  this.analyze = function(interval){
+    this.getIntervalData(interval)
+  }
+
+  this.getIntervalData = function(interval){
+    _crud(
+      {
+        action: 'READ',
+        columns: 'cid, aid, ts, ST_AsText(path)',
+        table: 'Trails',
+        where: `cid = ${this.cid}`,
+        rows: [{x: 'y'}]
+      }, "", (res) => {
+        this.processIntervalData(res);
+        this.showPathAnalyzerCanvas(this.paths);
+      });
+  }
+
+  this.processIntervalData = function(res) {
+    if (!res.result.length)
+    {
+      Metro.toast.create("No data found for the selected camera and interval", null, null, "alert");
+      return;
+    }
+
+    for (let i = 0; i < res.result.length; i++)
+    {
+      this.paths.push((res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","))
+    }
+  }
+
+  this.showPathAnalyzerCanvas = function(paths){
+    Metro.window.create({
+      resizeable: true,
+      draggable: true,
+      width: 'auto',
+      btnMin: false,
+      btnMax: false,
+      id: 'id-analyzer-win',
+      icon: "<span class='mif-video-camera'></span>",
+      title: "Trail Analyzer",
+      content: '<canvas id="id-trail-analyzer" width="600" height="400" style="border:1px dotted grey" ></canvas>',
+      place: "right",
+      onShow: function(w){
+        let canvas = document.getElementById("id-trail-analyzer");
+        canvas.addEventListener("click", function(e){
+          let ref = getMousePosition("id-trail-analyzer", e);
+          let counts = computePathIntersectionsWithRefLines(ref, paths);
+          drawRefrenceLinesAndCounts(ref, counts);
+        }, false);
+        renderPaths("id-trail-analyzer", paths);
+      },
+      onClose: function(w){
+
+      }
+    });
+  }
+}
+
+function getMousePosition(id, e) {
+  let canvas = document.getElementById(id);
+  let rect = canvas.getBoundingClientRect();
+  return {
+    x: e.clientX - rect.left,
+    y: e.clientY - rect.top
+  };
+}
+
+function computePathIntersectionsWithRefLines(ref, paths)
+{
+  let counts = {up: 0, down: 0, left: 0,  right: 0};
+
+  for (let i = 0; i < paths.length; i++)
+  {
+    let points = paths[i];
+
+    if (points.length > 20)
+    {
+      let sp = points[0].split(" ");
+      let ep = points[points.length - 1].split(" ");
+
+      //horizontal ref line
+      if ((sp[1] < ref.y) && (ep[1] >= ref.y))
+      {
+        counts.down++;
+      }
+      else if ((sp[1] > ref.y) && (ep[1] <= ref.y))
+      {
+        counts.up++;
+      }
+      //vertical ref line
+      if ((sp[0] < ref.x) && (ep[0] >= ref.x))
+      {
+        counyts.right++;
+      }
+      else if ((sp[0] > ref.x) && (ep[0] <= ref.x))
+      {
+        counts.left++;
+      }
+    }
+  }
+
+  return counts;
+}
+
+function drawRefrenceLinesAndCounts(pos, counts)
+{
+  let canvas = document.getElementById("id-trail-analyzer");
+  let context = canvas.getContext('2d');
+
+  context.clearRect(0, 30, 100, 30);
+  context.font = '10pt Calibri';
+  context.fillStyle = 'black';
+  context.fillText(" u: " + counts.up + " d: " + counts.down + " l: " + counts.left + " r: " + counts.right, 5, 40);
+
+  //draw h ref line 
+  context.beginPath();         
+  context.strokeStyle = "#000000";
+  context.lineWidth = 1;
+  context.moveTo(pos.x, 0);
+  context.lineTo(pos.x, canvas.height);
+  context.stroke();
+  //draw v ref line
+  context.beginPath();
+  context.strokeStyle = "#000000";
+  context.lineWidth = 1;
+  context.moveTo(0, pos.y);
+  context.lineTo(canvas.width, pos.y);
+  context.stroke();
+}
+
+function renderPaths(id, paths)
+{
+  canvas = document.getElementById(id);
+  let context = canvas.getContext("2d");
+
+  for (let i = 0; i < paths.length; i++)
+  {
+    let points = paths[i];
+
+    if (points.length > 20)
+    {
+      // draw path
+      context.beginPath();
+      context.strokeStyle = "#000000";
+
+      for (let j = 0; j < points.length; j++)
+      {
+        let cords = points[j].split(" ");
+        context.fillStyle = "#5b5b5b";
+        context.fillRect(cords[0], cords[1], 1, 1);
+      }
+
+      let sp = points[0].split(" ");
+      let ep = points[points.length - 1].split(" ");
+      // draw start-end displacement
+      context.beginPath();
+      context.moveTo(sp[0], sp[1]);
+      context.lineTo(ep[0], ep[1]);
+      context.strokeStyle = "#00b0ff";
+      context.stroke();
+      // draw end point red square
+      context.beginPath();
+      context.fillStyle = "#FF0000";
+      context.fillRect(ep[0], ep[1], 5, 5);
+    }
+  }
+}
+
 function OnClickAnalyzeTrail()
 {
   let cid = $('#id-report-cam').data('select').val();
   let inv = $('#id-report-int').data('select').val();
 
-  _crud(
-    {
-      action: 'READ',
-      columns: 'cid, aid, ts, ST_AsText(path)',
-      table: 'Trails',
-      where: `cid = ${cid}`,
-      rows: [{x: 'y'}]
-    }, "", (r) => {
-      alert(r);
-    });
+  let report = new Report(cid);
 
-  // Metro.window.create({
-  //   resizeable: true,
-  //   draggable: true,
-  //   width: 'auto',
-  //   height: '375px',
-  //   btnMin: false,
-  //   btnMax: false,
-  //   id: 'id-analyzer-win',
-  //   icon: "<span class='mif-video-camera'></span>",
-  //   title: "Trail Analyzer",
-  //   content: '<canvas id="id-trail-analyzer" style="border:1px dotted grey; width:600px; height:450px" ></canvas>',
-  //   place: "right",
-  //   onShow: function(w){
-  //   },
-  //   onClose: function(w){
+  report.analyze(inv);
+
+  // if (inv === "Daily")
+  // {
+  //   while (visitorChart.data.labels.length)
+  //   {
+  //     visitorChart.data.labels.pop();
   //   }
-  // });
+
+  //   for (let i = 29; i >= 0; i--)
+  //   {
+  //     let d = new Date((new Date()).getTime() - i*24*60*60*1000);
+      
+  //     visitorChart.data.labels.push(d.getMonth() + '-' + d.getDate());
+  //   }
+  // }
+  // else if (inv === "Today")
+  // {
+  //   while (visitorChart.data.labels.length)
+  //   {
+  //     visitorChart.data.labels.pop();
+  //   }
+
+  //   visitorChart.data.labels = dailyLabels;
+  // }
+
+
+
 }
 
 function InitAgentObjects()

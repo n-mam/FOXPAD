@@ -193,18 +193,9 @@ function ReportsView(id, cameras)
 {
   return `
   <div class="cell flex-justify-center" id='${id}' right-size="2" style="display:none">
-
   <script src='js/Chart.min.js'></script>
-
   <div class="grid w-100">
     <div class="row flex-justify-center">
-      <div class="cell-10">
-        <div>
-          <canvas id="myChart" width="300" height:"200"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="row pt-5 flex-justify-center">
       <div class="cell-3">
         <div>
           ${renderSelect(cameras, 'id-report-cam', 'Camera:')}
@@ -214,9 +205,9 @@ function ReportsView(id, cameras)
         <div>
          <select id="id-report-int" data-prepend="Interval:" data-role="select">
           <option value="Today">Today</option>
-          <option value="Day">Day</option>
-          <option value="Week">Week</option>
-          <option value="Month">Month</option>
+          <option value="Daily">Daily</option>
+          <option value="Weekly">Weekly</option>
+          <option value="Monthly">Monthly</option>
          </select>
         </div>
       </div>
@@ -225,63 +216,15 @@ function ReportsView(id, cameras)
           <button class="button" onclick="OnClickAnalyzeTrail();">ANALYZE</button>
         </div>
       </div>
-  </div>
-
-</div>
-
-
-  <script>
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var barChartData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [{
-      label: 'IN',
-      backgroundColor: 'rgb(154, 208, 245)',
-      borderColor: 'rgb(106, 183, 235)',
-      borderWidth: 1,
-      data: [
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4
-      ]
-    }, {
-      label: 'OUT',
-      backgroundColor: 'rgb(255, 177, 193)',
-      borderColor: 'rgb(255, 134, 160)',
-      borderWidth: 1,
-      data: [
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4,
-        (Math.floor(Math.random() * 10) + 1) * 4
-      ]
-    }]
-  };
-
-  var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: barChartData,
-    options: {
-      responsive: true,
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Visitor Count'
-      }
-    }
-  });
-
-  </script>
-
+    </div>
+    <div class="row flex-justify-center">
+      <div class="cell-10">
+        <div>
+          <canvas id="myChart" width="300" height:"200"></canvas>
+        </div>
+      </div>
+    </div>
+   </div>
   </div>
   `;
 }

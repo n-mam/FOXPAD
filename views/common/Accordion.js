@@ -47,7 +47,8 @@ var script = () =>
 
    function onFrameClose(frame)
    {
-     console.log(new Date().toISOString().slice(0, 19).replace('T', ' '));
+     console.log(new Date((new Date()).getTime() - 30*24*60*60*1000));
+     console.log((new Date((new Date()).getTime() - 30*24*60*60*1000)).toISOString().slice(0, 19).replace('T', ' '));
      let lv = document.getElementById(frame.dataset.link);
      if (lv) lv.style.display = 'none';
    }   
