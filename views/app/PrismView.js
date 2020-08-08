@@ -176,7 +176,15 @@ function CameraControlView()
    </div>`;
 }
 
-function cameraControlConainer(id)
+function cameraControlContainer(id)
+{
+  return `
+  <div id='${id}' class="d-flex flex-justify-center" right-size="5" style="display:none">
+
+  </div>`;
+}
+
+function agentControlContainer(id)
 {
   return `
   <div id='${id}' class="d-flex flex-justify-center" right-size="5" style="display:none">
@@ -263,9 +271,10 @@ function render(v, id)
 
   v.page.html.left.push(accordion.render('', sections));
 
+  v.page.html.center.push(cameraControlContainer('id-camera-center'));
   v.page.html.right.push(renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
-  v.page.html.center.push(cameraControlConainer('id-camera-center'));
 
+  v.page.html.center.push(agentControlContainer('id-agent-center'));
   v.page.html.right.push(renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port'], 'Agent'));
 
   v.page.html.center.push(AlertsView('id-alerts'));
