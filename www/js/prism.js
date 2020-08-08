@@ -468,11 +468,12 @@ function Report(cid)
   this.cid = cid;
   this.paths = [];
 
-  this.analyze = function(interval){
-    this.getIntervalData(interval)
+  this.analyze = function(inv){
+    this.getIntervalData(inv)
   }
 
-  this.getIntervalData = function(interval){
+  this.getIntervalData = function(inv){
+
     _crud(
       {
         action: 'READ',
@@ -481,28 +482,29 @@ function Report(cid)
         where: `cid = ${this.cid}`,
         rows: [{x: 'y'}]
       }, "", (res) => {
-        this.processIntervalData(res);
+        this.processIntervalData(res, inv);
         this.showPathAnalyzerCanvas(this.paths);
       });
   }
 
-  this.processIntervalData = function(res) {
-    if (!res.result.length)
-    {
+  this.processIntervalData = function(res, inv) {
+    if (!res.result.length) {
       Metro.toast.create("No data found for the selected camera and interval", null, null, "alert");
       return;
     }
 
-    for (let i = 0; i < res.result.length; i++)
-    {
+    for (let i = 0; i < res.result.length; i++) {
       let p = {};
       p['trail'] = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","); 
       p['ts'] = (res.result[i]).ts;
-      this.paths.push(p)
+
+      p['bucket'] = 1;
+      this.paths.push(p);
     }
   }
 
   this.showPathAnalyzerCanvas = function(paths){
+    let ref = {};
     Metro.window.create({
       resizeable: true,
       draggable: true,
@@ -517,14 +519,14 @@ function Report(cid)
       onShow: function(w){
         let canvas = document.getElementById("id-trail-analyzer");
         canvas.addEventListener("click", function(e){
-          let ref = getMousePosition("id-trail-analyzer", e);
-          let counts = computeRefIntersectionsCount(ref, paths);
+          ref = getMousePosition("id-trail-analyzer", e);
+          let counts = computeRefLineIntersectionsCount(ref, paths);
           drawRefrenceLinesAndCounts(ref, counts);
         }, false);
         renderPaths("id-trail-analyzer", paths);
       },
       onClose: function(w){
-
+        console.log(ref);
       }
     });
   }
@@ -539,7 +541,7 @@ function getMousePosition(id, e) {
   };
 }
 
-function computeRefIntersectionsCount(ref, paths)
+function computeRefLineIntersectionsCount(ref, paths)
 {
   let counts = {up: 0, down: 0, left: 0,  right: 0};
 
@@ -674,9 +676,6 @@ function OnClickAnalyzeTrail()
 
   //   visitorChart.data.labels = dailyLabels;
   // }
-
-
-
 }
 
 function InitAgentObjects()
