@@ -212,6 +212,7 @@ function ReportsView(id, cameras)
       <div class="cell-3">
         <div>
          <select id="id-report-int" data-prepend="Interval:" data-role="select">
+          <option value="1Hour">1 Hour</option>
           <option value="Today">Today</option>
           <option value="Daily">Daily</option>
           <option value="Weekly">Weekly</option>

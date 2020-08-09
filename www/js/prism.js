@@ -465,7 +465,9 @@ function OnAgentSaveConfigClick()
 function dateFromOffset(off) {
   return new Date((new Date()).getTime() - off*24*60*60*1000);
 }
-
+function dateFromHourOffset(off) {
+  return new Date((new Date()).getTime() - off*60*60*1000);
+}
 function dateToMySql(d) {
   return d.getFullYear() + '-' + (parseInt(d.getMonth()) + 1) + '-' + d.getDate() + " " + 
   d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
@@ -481,11 +483,13 @@ function Report(cid)
     let range = {};
 
     range.end = dateFromOffset(0);
-    
-    if (inv == 'Today') {
+
+    if (inv == '1Hour') {
+      range.start = dateFromHourOffset(1);
+    } else if (inv == 'Today') {
       range.start = dateFromOffset(1);
     } else if (inv == 'Daily') {
-      range.start = dateFromOffset(7);
+      range.start = dateFromOffset(6); //7 days including current end date
     } else if (inv == 'weekly') {
       range.start = dateFromOffset(7*4);
     } else if (inv == 'monthly') {
@@ -523,9 +527,13 @@ function Report(cid)
       p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","); 
       p.ts = (res.result[i]).ts;
 
-      let diff = Math.abs((new Date(p.ts)) - range.start);
+      let diff = Math.abs((new Date(p.ts)).getTime() - range.start.getTime());
 
-      if (inv === 'Today') 
+      if (inv === "1Hour")
+      {
+        p.bucket = Math.ceil(diff / (1000 * 60 * 60 * 5)); // 5min buckets 
+      }
+      else if (inv === 'Today')
       {
         p.bucket = Math.ceil(diff / (1000 * 60 * 60)); // hour buckets 
       }
@@ -700,13 +708,17 @@ function displayIntervalGraph(ref, paths, inv, range)
   reportchart.data.datasets[0].data = [];
   reportchart.data.datasets[1].data = [];
 
-  if (inv === 'Today')
+  if (inv === '1Hour')
+  {
+    reportchart.data.labels = ['5m', '10m','15m','20m','25m','30m','35m','40m','45m','50m','55m','60m'];
+  }
+  else if (inv === 'Today')
   {
     xAxis = [
       '0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9','9-10','10-11','11-12','12-13',
       '13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22','22-23', '23-24'];
     
-      reportchart.data.labels = xAxis;
+    reportchart.data.labels = xAxis;
   }
   else if (inv === 'Daily') 
   {
@@ -756,30 +768,6 @@ function OnClickAnalyzeTrail()
   let report = new Report(cid);
 
   report.analyze(inv);
-
-  // if (inv === "Daily")
-  // {
-  //   while (visitorChart.data.labels.length)
-  //   {
-  //     visitorChart.data.labels.pop();
-  //   }
-
-  //   for (let i = 29; i >= 0; i--)
-  //   {
-  //     let d = new Date((new Date()).getTime() - i*24*60*60*1000);
-      
-  //     visitorChart.data.labels.push(d.getMonth() + '-' + d.getDate());
-  //   }
-  // }
-  // else if (inv === "Today")
-  // {
-  //   while (visitorChart.data.labels.length)
-  //   {
-  //     visitorChart.data.labels.pop();
-  //   }
-
-  //   visitorChart.data.labels = dailyLabels;
-  // }
 }
 
 function InitAgentObjects()
