@@ -234,6 +234,42 @@ function ReportsView(id, cameras)
     </div>
    </div>
   </div>
+  <script>
+   let context = document.getElementById('id-chart-canvas').getContext('2d');
+   var barChartData = {
+    labels: [],
+    datasets: 
+    [
+     {
+      label: 'IN',
+      backgroundColor: 'rgb(154, 208, 245)',
+      borderColor: 'rgb(106, 183, 235)',
+      borderWidth: 1,
+      data: []
+     },
+     {
+      label: 'OUT',
+      backgroundColor: 'rgb(255, 177, 193)',
+      borderColor: 'rgb(255, 134, 160)',
+      borderWidth: 1,
+      data: []
+    }]
+  };   
+   reportchart = new Chart(context, {
+     type: 'bar',
+     data: barChartData,
+     options: {
+       responsive: true,
+       legend: {
+        position: 'top',
+       },
+       title: {
+        display: true,
+        text: 'Visitor Count'
+       }
+     }
+   });
+  </script>  
   `;
 }
 

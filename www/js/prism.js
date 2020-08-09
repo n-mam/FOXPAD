@@ -523,13 +523,15 @@ function Report(cid)
       p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","); 
       p.ts = (res.result[i]).ts;
 
-      let diff = Math.abs(new Date(p.ts) - range.start);
-      
-      if (inv === 'Today') {
-        p.bucket = Math.ceil(diff / (1000 * 60 * 60)); // hour buckets
+      let diff = Math.abs((new Date(p.ts)) - range.start);
+
+      if (inv === 'Today') 
+      {
+        p.bucket = Math.ceil(diff / (1000 * 60 * 60)); // hour buckets 
       }
-      else if (inv === 'Daily') {
-        p.bucket = Math.ceil(diff / (1000 * 60 * 60 * 24)) - 1; // days bucket
+      else if (inv === 'Daily')
+      {
+        p.bucket = Math.ceil(diff / (1000 * 60 * 60 * 24)); // days bucket
       }
 
       this.paths.push(p);
@@ -540,6 +542,7 @@ function Report(cid)
 
   this.showPathAnalyzerCanvas = function(paths, inv, range){
     let ref;
+    let chart = this.chart;
     Metro.window.create({
       resizeable: true,
       draggable: true,
@@ -608,7 +611,7 @@ function computeRefLineIntersectionsCount(ref, paths)
       //vertical ref line
       if ((sp[0] < ref.x) && (ep[0] >= ref.x))
       {
-        counyts.right++;
+        counts.right++;
       }
       else if ((sp[0] > ref.x) && (ep[0] <= ref.x))
       {
@@ -690,58 +693,20 @@ function displayIntervalGraph(ref, paths, inv, range)
 {
   let xAxis = [];
 
-  var barChartData = {
-    labels: xAxis,
-    datasets: 
-    [
-     {
-      label: 'IN',
-      backgroundColor: 'rgb(154, 208, 245)',
-      borderColor: 'rgb(106, 183, 235)',
-      borderWidth: 1,
-      data: 
-       [
-
-       ]
-     },
-     {
-      label: 'OUT',
-      backgroundColor: 'rgb(255, 177, 193)',
-      borderColor: 'rgb(255, 134, 160)',
-      borderWidth: 1,
-      data: [
-
-      ]
-    }]
-  };
-
-  let context = document.getElementById('id-chart-canvas').getContext('2d');
-  let reportChart = new Chart(context, {
-    type: 'bar',
-    data: barChartData,
-    options: {
-      responsive: true,
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Visitor Count'
-      }
-    }
-  });
-
-
-  if (inv === 'Today') 
+  while (reportchart.data.labels.length)
   {
-    xAxis = ['10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22','22-23'];
+    reportchart.data.labels.pop();
+  }
+  reportchart.data.datasets[0].data = [];
+  reportchart.data.datasets[1].data = [];
+
+  if (inv === 'Today')
+  {
+    xAxis = [
+      '0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9','9-10','10-11','11-12','12-13',
+      '13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22','22-23', '23-24'];
     
-    reportChart.data.labels = xAxis;
-
-    for (let i = 0; i < xAxis.length; i++)
-    {
-
-    }
+      reportchart.data.labels = xAxis;
   }
   else if (inv === 'Daily') 
   {
@@ -751,34 +716,36 @@ function displayIntervalGraph(ref, paths, inv, range)
       
       xAxis[i] = d.getDate() + '/' + parseInt(d.getMonth() + 1);
 
-      reportChart.data.labels = xAxis;
-
-      let bucketPaths = [];
-      
-      for (j = 0; j < paths.length; j++)
-      {
-        let p = paths[j];
-
-        if (p.bucket === i)
-        {
-          bucketPaths.push(p);
-        }
-      }
-      
-      let counts = {up: 0, down: 0, left: 0,  right: 0};
-
-      if (bucketPaths.length)
-      {
-        counts = computeRefLineIntersectionsCount(ref, bucketPaths);
-      }
-
-      reportChart.data.datasets[0].data.push(counts.up);
-      reportChart.data.datasets[1].data.push(counts.down);
+      reportchart.data.labels = xAxis;
     }
-
-    reportChart.update();
   }
 
+  for (let i = 0; i < reportchart.data.labels.length; i++)
+  {
+    let bucketPaths = [];
+      
+    for (let j = 0; j < paths.length; j++)
+    {
+      let p = paths[j];
+
+      if (p.bucket === i)
+      {
+        bucketPaths.push(p);
+      }
+    }
+
+    let bucketCounts = {up: 0, down: 0, left: 0,  right: 0};
+
+    if (bucketPaths.length)
+    {
+      bucketCounts = computeRefLineIntersectionsCount(ref, bucketPaths);
+    }
+
+    reportchart.data.datasets[0].data.push(bucketCounts.up);
+    reportchart.data.datasets[1].data.push(bucketCounts.down);
+  }
+
+  reportchart.update();
 }
 
 function OnClickAnalyzeTrail()
