@@ -1,4 +1,3 @@
-
 function Agent(id, sid, host, port)
 {
   this.dbid = id;
@@ -463,48 +462,84 @@ function OnAgentSaveConfigClick()
   console.log('OnAgentSaveClick');
 }
 
+function dateFromOffset(off) {
+  return new Date((new Date()).getTime() - off*24*60*60*1000);
+}
+
+function dateToMySql(d) {
+  return d.getFullYear() + '-' + (parseInt(d.getMonth()) + 1) + '-' + d.getDate() + " " + 
+  d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+}
+
 function Report(cid)
 {
   this.cid = cid;
   this.paths = [];
 
   this.analyze = function(inv){
-    this.getIntervalData(inv)
+    
+    let range = {};
+
+    range.end = dateFromOffset(0);
+    
+    if (inv == 'Today') {
+      range.start = dateFromOffset(1);
+    } else if (inv == 'Daily') {
+      range.start = dateFromOffset(7);
+    } else if (inv == 'weekly') {
+      range.start = dateFromOffset(7*4);
+    } else if (inv == 'monthly') {
+      range.start = dateFromOffset(30*12);
+    }
+
+    this.getIntervalData(inv, range)
   }
 
-  this.getIntervalData = function(inv){
-
+  this.getIntervalData = function(inv, range){
     _crud(
       {
         action: 'READ',
         columns: 'cid, aid, ts, ST_AsText(path)',
         table: 'Trails',
-        where: `cid = ${this.cid}`,
+        where: `cid = ${this.cid} and ts between '${dateToMySql(range.start)}' and NOW()`,
         rows: [{x: 'y'}]
       }, "", (res) => {
-        this.processIntervalData(res, inv);
-        this.showPathAnalyzerCanvas(this.paths);
+        if (this.processIntervalData(res, inv, range)){
+          this.showPathAnalyzerCanvas(this.paths, inv, range);
+        }
       });
   }
 
-  this.processIntervalData = function(res, inv) {
+  this.processIntervalData = function(res, inv, range) {
     if (!res.result.length) {
       Metro.toast.create("No data found for the selected camera and interval", null, null, "alert");
-      return;
+      return false;
     }
 
-    for (let i = 0; i < res.result.length; i++) {
+    for (let i = 0; i < res.result.length; i++) 
+    {
       let p = {};
-      p['trail'] = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","); 
-      p['ts'] = (res.result[i]).ts;
+      
+      p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","); 
+      p.ts = (res.result[i]).ts;
 
-      p['bucket'] = 1;
+      let diff = Math.abs(new Date(p.ts) - range.start);
+      
+      if (inv === 'Today') {
+        p.bucket = Math.ceil(diff / (1000 * 60 * 60)); // hour buckets
+      }
+      else if (inv === 'Daily') {
+        p.bucket = Math.ceil(diff / (1000 * 60 * 60 * 24)) - 1; // days bucket
+      }
+
       this.paths.push(p);
     }
+
+    return true;
   }
 
-  this.showPathAnalyzerCanvas = function(paths){
-    let ref = {};
+  this.showPathAnalyzerCanvas = function(paths, inv, range){
+    let ref;
     Metro.window.create({
       resizeable: true,
       draggable: true,
@@ -526,7 +561,14 @@ function Report(cid)
         renderPaths("id-trail-analyzer", paths);
       },
       onClose: function(w){
-        console.log(ref);
+        if (isDefined(ref))
+        {
+          displayIntervalGraph(ref, paths, inv, range);
+        }
+        else
+        {
+          Metro.toast.create("No refrence point selected", null, null, "alert");
+        }
       }
     });
   }
@@ -642,6 +684,101 @@ function renderPaths(id, paths)
       context.fillRect(ep[0], ep[1], 5, 5);
     }
   }
+}
+
+function displayIntervalGraph(ref, paths, inv, range)
+{
+  let xAxis = [];
+
+  var barChartData = {
+    labels: xAxis,
+    datasets: 
+    [
+     {
+      label: 'IN',
+      backgroundColor: 'rgb(154, 208, 245)',
+      borderColor: 'rgb(106, 183, 235)',
+      borderWidth: 1,
+      data: 
+       [
+
+       ]
+     },
+     {
+      label: 'OUT',
+      backgroundColor: 'rgb(255, 177, 193)',
+      borderColor: 'rgb(255, 134, 160)',
+      borderWidth: 1,
+      data: [
+
+      ]
+    }]
+  };
+
+  let context = document.getElementById('id-chart-canvas').getContext('2d');
+  let reportChart = new Chart(context, {
+    type: 'bar',
+    data: barChartData,
+    options: {
+      responsive: true,
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: 'Visitor Count'
+      }
+    }
+  });
+
+
+  if (inv === 'Today') 
+  {
+    xAxis = ['10-11','11-12','12-13','13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22','22-23'];
+    
+    reportChart.data.labels = xAxis;
+
+    for (let i = 0; i < xAxis.length; i++)
+    {
+
+    }
+  }
+  else if (inv === 'Daily') 
+  {
+    for (let i = 0; i < 7; i++) 
+    {
+      let d = new Date(range.start.getTime() + i*86400000);
+      
+      xAxis[i] = d.getDate() + '/' + parseInt(d.getMonth() + 1);
+
+      reportChart.data.labels = xAxis;
+
+      let bucketPaths = [];
+      
+      for (j = 0; j < paths.length; j++)
+      {
+        let p = paths[j];
+
+        if (p.bucket === i)
+        {
+          bucketPaths.push(p);
+        }
+      }
+      
+      let counts = {up: 0, down: 0, left: 0,  right: 0};
+
+      if (bucketPaths.length)
+      {
+        counts = computeRefLineIntersectionsCount(ref, bucketPaths);
+      }
+
+      reportChart.data.datasets[0].data.push(counts.up);
+      reportChart.data.datasets[1].data.push(counts.down);
+    }
+
+    reportChart.update();
+  }
+
 }
 
 function OnClickAnalyzeTrail()
