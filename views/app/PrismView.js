@@ -259,7 +259,8 @@ function ReportsView(id, cameras)
    reportchart = new Chart(context, {
      type: 'bar',
      data: barChartData,
-     options: {
+     options:
+      {
        responsive: true,
        legend: {
         position: 'top',
@@ -267,6 +268,20 @@ function ReportsView(id, cameras)
        title: {
         display: true,
         text: 'Visitor Count'
+       },
+       scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'count'
+          }
+        }],
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'iii'
+          }
+        }]
        }
      }
    });

@@ -479,21 +479,30 @@ function Report(cid)
   this.paths = [];
 
   this.analyze = function(inv){
-    
+
     let range = {};
 
-    range.end = dateFromOffset(0);
+    let now = new Date();
 
     if (inv == '1Hour') {
+      /** 60 mins back from now */
       range.start = dateFromHourOffset(1);
+      range.end = dateFromOffset(0);
     } else if (inv == 'Today') {
-      range.start = dateFromOffset(1);
+      /**  9 from today morning to 11 midnight, today */
+      range.start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9);
+      range.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 59,59);
     } else if (inv == 'Daily') {
-      range.start = dateFromOffset(6); //7 days including current end date
+      /** 14 days earlier from today */
+      range.start = dateFromOffset(13);
+      range.start.setHours(0);
+      range.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
     } else if (inv == 'weekly') {
       range.start = dateFromOffset(7*4);
+      range.end = dateFromOffset(0);
     } else if (inv == 'monthly') {
       range.start = dateFromOffset(30*12);
+      range.end = dateFromOffset(0);
     }
 
     this.getIntervalData(inv, range)
@@ -531,7 +540,7 @@ function Report(cid)
 
       if (inv === "1Hour")
       {
-        p.bucket = Math.ceil(diff / (1000 * 60 * 60 * 5)); // 5min buckets 
+        p.bucket = Math.ceil(diff / (1000 * 60 * 5)); // 5min buckets 
       }
       else if (inv === 'Today')
       {
@@ -710,19 +719,21 @@ function displayIntervalGraph(ref, paths, inv, range)
 
   if (inv === '1Hour')
   {
-    reportchart.data.labels = ['5m', '10m','15m','20m','25m','30m','35m','40m','45m','50m','55m','60m'];
+    reportchart.data.labels = [
+      '5m', '10m','15m','20m','25m','30m',
+      '35m','40m','45m','50m','55m','60m'];
+      reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 1 hour'
   }
   else if (inv === 'Today')
   {
-    xAxis = [
-      '0-1','1-2','2-3','3-4','4-5','5-6','6-7','7-8','8-9','9-10','10-11','11-12','12-13',
-      '13-14','14-15','15-16','16-17','17-18','18-19','19-20','20-21','21-22','22-23', '23-24'];
-    
-    reportchart.data.labels = xAxis;
+    reportchart.data.labels = [
+      '9','10','11','12','13',
+      '14','15','16','17','18','19','20','21','22','23'];
+    reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Active Hours'
   }
   else if (inv === 'Daily') 
   {
-    for (let i = 0; i < 7; i++) 
+    for (let i = 0; i < 14; i++) 
     {
       let d = new Date(range.start.getTime() + i*86400000);
       
@@ -730,9 +741,10 @@ function displayIntervalGraph(ref, paths, inv, range)
 
       reportchart.data.labels = xAxis;
     }
+    reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 14 days'
   }
 
-  for (let i = 0; i < reportchart.data.labels.length; i++)
+  for (let i = 1; i <= reportchart.data.labels.length; i++)
   {
     let bucketPaths = [];
       
