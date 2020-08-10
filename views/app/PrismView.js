@@ -279,7 +279,7 @@ function ReportsView(id, cameras)
         xAxes: [{
           scaleLabel: {
             display: true,
-            labelString: 'iii'
+            labelString: ''
           }
         }]
        }

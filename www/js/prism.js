@@ -350,7 +350,7 @@ function CameraControlView(id)
       <button class="button m-1 mt-2 small outline rounded alert" onclick="OnCameraControl('${id}', 'delete');">DELETE</button>      
     </div>
     <div class="row p-2">
-      <canvas id="id-cam-canvas-${id}" style="border:1px solid #e1e1e1;"> </canvas>
+      <canvas id="id-cam-canvas-${id}" width="400" height="200" style="border:1px dotted #e1e1e1;"> </canvas>
     </div>
     <div class="row d-flex flex-justify-center p-2">
       <button class="button m-1" onclick="OnCameraControl('${id}', 'backward');"><span class="mif-backward"></span></button>
@@ -514,7 +514,7 @@ function Report(cid)
         action: 'READ',
         columns: 'cid, aid, ts, ST_AsText(path)',
         table: 'Trails',
-        where: `cid = ${this.cid} and ts between '${dateToMySql(range.start)}' and NOW()`,
+        where: `cid = ${this.cid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
         rows: [{x: 'y'}]
       }, "", (res) => {
         if (this.processIntervalData(res, inv, range)){
@@ -559,7 +559,6 @@ function Report(cid)
 
   this.showPathAnalyzerCanvas = function(paths, inv, range){
     let ref;
-    let chart = this.chart;
     Metro.window.create({
       resizeable: true,
       draggable: true,
@@ -571,16 +570,20 @@ function Report(cid)
       title: "Trail Analyzer",
       content: '<canvas id="id-trail-analyzer" width="600" height="400" style="border:1px dotted grey" ></canvas>',
       place: "right",
-      onShow: function(w){
+      onShow: function(w)
+      {
         let canvas = document.getElementById("id-trail-analyzer");
+        
         canvas.addEventListener("click", function(e){
           ref = getMousePosition("id-trail-analyzer", e);
           let counts = computeRefLineIntersectionsCount(ref, paths);
           drawRefrenceLinesAndCounts(ref, counts);
         }, false);
+
         renderPaths("id-trail-analyzer", paths);
       },
-      onClose: function(w){
+      onClose: function(w)
+      {
         if (isDefined(ref))
         {
           displayIntervalGraph(ref, paths, inv, range);

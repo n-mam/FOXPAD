@@ -68,7 +68,13 @@ create table Trails (
    foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
+insert into trails (cid, aid, ts, path) values (4, 1, '2020-08-01 13:30:00', ST_GeomFromText('MULTIPOINT(
+   200 0,
+   200 300
+   )'));
+
 /*
  * insert into trails (cid, aid, ts, path) values (1, 1, NOW(), ST_GeomFromText('MULTIPOINT(0 0,10 10,10 20,20 20)'));
  * SELECT cid,aid,ts,ST_AsText(path) FROM trails;
  */
+
