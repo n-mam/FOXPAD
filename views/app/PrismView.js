@@ -55,7 +55,7 @@ function renderTD(rows, keys)
 
     for (let j = 0; j < keys.length; j++)
     {
-      h += `<td contentEditable="true">${rows[i][keys[j]]}</td>`;
+      h += `<td>${rows[i][keys[j]]}</td>`;
     }
 
     h += `</tr>`

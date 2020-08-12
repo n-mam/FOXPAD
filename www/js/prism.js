@@ -293,6 +293,7 @@ function OnCameraDeleteClick()
 
   if (!items.length) {
     Metro.toast.create("Please select a camera to delete", null, null, "alert");
+    return;
   }
 
   let o = [];
@@ -415,6 +416,7 @@ function OnAgentDeleteClick()
 
   if (!items.length) {
     Metro.toast.create("Please select an agent to delete", null, null, "alert");
+    return;
   }
 
   let o = [];
@@ -801,12 +803,30 @@ function InitCameraObjects()
   let j = JSON.parse(decodeURI(g_cameras));
 
   for (let i = 0; i < j.length; i++)
-  {
+  { 
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
 }
 
+function makeEditable() {
+  let td = $('#id-camera-right-table td');
+  $.each(td, function(){
+    if (!$(this).hasClass('rownum-cell') && 
+        !$(this).hasClass('check-cell')) {
+      $(this).attr("contenteditable", true);
+    }
+  });
+  td = $('#id-agent-right-table td');
+  $.each(td, function(){
+    if (!$(this).hasClass('rownum-cell') && 
+        !$(this).hasClass('check-cell')) {
+      $(this).attr("contenteditable", true);
+    }
+  });
+}
+
+windowOnLoadCbk.push(makeEditable);
 windowOnLoadCbk.push(InitAgentObjects);
 windowOnLoadCbk.push(InitCameraObjects);
 
