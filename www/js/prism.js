@@ -725,14 +725,14 @@ function displayIntervalGraph(ref, paths, inv, range)
     reportchart.data.labels = [
       '5m', '10m','15m','20m','25m','30m',
       '35m','40m','45m','50m','55m','60m'];
-      reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 1 hour'
+      reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'last 1 hour'
   }
   else if (inv === 'Today')
   {
     reportchart.data.labels = [
       '9','10','11','12','13',
       '14','15','16','17','18','19','20','21','22','23'];
-    reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Active Hours'
+    reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'active hours'
   }
   else if (inv === 'Daily') 
   {
