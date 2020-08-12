@@ -717,6 +717,7 @@ function displayIntervalGraph(ref, paths, inv, range)
   {
     reportchart.data.labels.pop();
   }
+
   reportchart.data.datasets[0].data = [];
   reportchart.data.datasets[1].data = [];
 
