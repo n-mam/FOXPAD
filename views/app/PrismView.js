@@ -156,26 +156,6 @@ function addAgentView()
     </div>`;
 }
 
-function CameraControlView()
-{
-  return `
-   <div class="grid d-flex flex-justify-center p-2">
-    <div class="row">
-      <canvas id="id-cam-canvas" style="border:1px solid #e1e1e1;"> </canvas>
-    </div>
-    <div class="row d-flex flex-justify-center">
-      <button class="button m-1 mt-2" onclick="OnCameraControl('start');">START</button>
-      <button class="button m-1 mt-2" onclick="OnCameraControl('stop');">STOP</button>
-    </div>
-    <div class="row d-flex flex-justify-center">
-      <button class="button m-1" onclick="OnCameraControl('backward');"><span class="mif-backward"></span></button>
-      <button class="button m-1" onclick="OnCameraControl('play');"><span class="mif-play"></span></button>
-      <button class="button m-1" onclick="OnCameraControl('pause');"><span class="mif-pause"></span></button>
-      <button class="button m-1" onclick="OnCameraControl('forward');"><span class="mif-forward"></span></button>
-    </div>
-   </div>`;
-}
-
 function cameraControlContainer(id)
 {
   return `
@@ -309,13 +289,6 @@ function render(v, id)
 
   sections.push(
     {
-      title : 'ALERTS',
-      link : 'id-alert',
-      content : ''      
-    });
-
-  sections.push(
-    {
       title : 'REPORTS',
       link : 'id-report',
       content : ''
@@ -328,8 +301,6 @@ function render(v, id)
 
   v.page.html.center.push(agentControlContainer('id-agent-center'));
   v.page.html.right.push(renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port'], 'Agent'));
-
-  v.page.html.center.push(AlertsView('id-alerts'));
 
   v.page.html.center.push(ReportsView('id-report-center', v.data.cameras));
 
