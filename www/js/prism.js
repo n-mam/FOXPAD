@@ -55,9 +55,13 @@ function Agent(id, sid, host, port)
     let res = JSON.parse(e.data);
 
     if (res.req == 'get-active-sessions')
-    {
-      let lv = $('#id-camera-list');
-  
+    {     
+      let li = $('#id-camera-list').children();
+
+      $.each(li, function(){
+        $(this).children(".icon")[0].innerHTML = `<span class=\'mif-video-camera fg-black\'>`;
+      });
+
       for (let i = 0; i < res.sessions.length; i++) 
       {
         let color = 'fg-black';
@@ -68,7 +72,7 @@ function Agent(id, sid, host, port)
 
           if (res.sessions[i].paused == "true")
           {
-            color = 'fg-amber';
+            color = 'fg-orange';
           }
         }
         else
@@ -76,20 +80,12 @@ function Agent(id, sid, host, port)
           color = 'fg-red';
         }
 
-        let cid = '';
-
-        let items = lv.children();
-
-        $.each(items, function(){
+        $.each(li, function(){
           if ($(this).innerText() === res.sessions[i].sid) {
             $(this).children(".icon")[0].innerHTML = `<span class=\'mif-video-camera ${color}\'>`;
           }
         });
       }
-    }
-    else if (res.req == 'camera-create')
-    {
-      this.socket.agent.getSessions();
     }
     else if (res.req == 'camera-control')
     {
@@ -224,10 +220,10 @@ function OnCameraSelect(node)
       title: node[0].innerText,
       content: CameraControlView(cid),
       place: "center",
-      onShow: function(w){
+      onShow: function(w) {
 
       },
-      onClose: function(w){
+      onClose: function(w) {
         OnCameraControl(cid, 'stop-play');
       }
     });
