@@ -24,16 +24,11 @@ function Agent(id, sid, host, port)
     this.socket.agent.getSessions();
     let lv = $('#id-agent-list');
     let items = lv.children();
-    for (let i = 0; i < items.length; i++)
-    {
-      if (items[i].innerText === this.socket.agent.sid)
-      {
-        lv.data('listview').del(items[i]);
+    let self = this;
+    $.each(items, function(){
+      if ($(this).innerText() === self.socket.agent.sid) {
+        $(this).children(".icon")[0].innerHTML = `<span class=\'mif-display fg-green\'>`;
       }
-    }
-    lv.data('listview').add(null, {
-      caption: this.socket.agent.sid,
-      icon: `<span class=\'mif-display fg-green\'>`
     });
   }
 
@@ -41,16 +36,11 @@ function Agent(id, sid, host, port)
     console.warn('agent websocket closed : ' + this.socket.host + ':' + this.socket.port + ' reason : ' + e.reason);
     let lv = $('#id-agent-list');
     let items = lv.children();
-    for (let i = 0; i < items.length; i++)
-    {
-      if (items[i].innerText === this.socket.agent.sid)
-      {
-        lv.data('listview').del(items[i]);
+    let self = this;
+    $.each(items, function(){
+      if ($(this).innerText() === self.socket.agent.sid) {
+        $(this).children(".icon")[0].innerHTML = `<span class=\'mif-display fg-red\'>`;
       }
-    }
-    lv.data('listview').add(null, {
-      caption: this.socket.agent.sid,
-      icon: `<span class=\'mif-display fg-red\'>`
     });
   }
 
@@ -90,21 +80,11 @@ function Agent(id, sid, host, port)
 
         let items = lv.children();
 
-        for (let j = 0; j < items.length; j++)
-        {
-          if (items[j].innerText === res.sessions[i].sid)
-          {
-            cid = items[j].id;
-            lv.data('listview').del(items[j]);
-            break;
+        $.each(items, function(){
+          if ($(this).innerText() === res.sessions[i].sid) {
+            $(this).children(".icon")[0].innerHTML = `<span class=\'mif-video-camera ${color}\'>`;
           }
-        }
-
-        lv.data('listview').add(null, {
-          caption: res.sessions[i].sid,
-          icon: `<span class=\'mif-video-camera ${color}\'>`,
-          camera: res
-        }).id(cid);
+        });
       }
     }
     else if (res.req == 'camera-create')
