@@ -34,6 +34,7 @@ function Agent(id, sid, host, port)
 
   this.onclose = function(e){
     console.warn('agent websocket closed : ' + this.socket.host + ':' + this.socket.port + ' reason : ' + e.reason);
+    Metro.toast.create("Agent '" + this.socket.agent.sid + "' connection broken" , null, null, "alert");
     let lv = $('#id-agent-list');
     let items = lv.children();
     let self = this;
