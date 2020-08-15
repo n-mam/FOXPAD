@@ -21,10 +21,10 @@ function Agent(id, sid, host, port)
 
   this.onopen = function(e){
     console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
+    let self = this;
     this.socket.agent.getSessions();
     let lv = $('#id-agent-list');
     let items = lv.children();
-    let self = this;
     $.each(items, function(){
       if ($(this).innerText() === self.socket.agent.sid) {
         $(this).children(".icon")[0].innerHTML = `<span class=\'mif-display fg-green\'>`;

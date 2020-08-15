@@ -101,16 +101,14 @@ function landingPage()
   return `
   <div class="flex row pos-fixed pos-center">
     <img style='' src='/image/architecture.png' alt='logo'>
-    ${css.spacer(6, 'h-spacer')}
-    <div class="flex column">
-    ${cred.credentials()}
-    ${css.spacer(6)}
-    <a href="/content/foxpad/Foxpad-1.0.0-win64.exe">
-     <div id='btn-download' class='flex button action' style='background-color:var(--accordian-color);color:white;min-width:10em;padding:0.5em;'>
-      <b>DOWNLOAD</b>
-     </div>
-    </a>
-   </div>
+    <div class="flex column pl-5">
+      ${cred.credentials()}
+      <a href="/content/foxpad/fpd.exe">
+        <div id='btn-download' class='flex button action' style='min-width:10em;padding:0.5em;'>
+          <b>DOWNLOAD</b>
+        </div>
+      </a>
+    </div>
   </div>
   ${u.DEBUG()}`;
 }
@@ -135,7 +133,6 @@ var Header = ({page, json}) =>
        <img src="${image}" width=28 height=28> ${name}
       </a>
       <ul class="d-menu place-right" data-role="dropdown">
-       <li><a href="#">Windows 10</a></li>
        <li><a href="#">Profile</a></li>
        <li class="divider bg-lightGray"></li>
        <li><a href="#" onclick="_auth('LOGOUT')">Sign out</a></li>

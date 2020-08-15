@@ -51,13 +51,9 @@
      else if (toshow === 'SIGNUP')
      {
        e.innerHTML = 'Already registered ? <b style="color:blue;border-bottom:solid 1px blue;padding:0.1em;cursor:pointer;" onclick="toggleaction()">LOGIN</b>';
-       let ee = document.getElementById('btn-login');
-       ee.style.display = 'none';
-       ee  = document.getElementById('btn-signup');
-       ee.style.display = 'inline-flex';
-     }       
-
-     show_error('', false);
+       document.getElementById('btn-login').style.display = 'none';
+       document.getElementById('btn-signup').style.display = 'inline-flex';
+     }
    }
 
    var _crud = (data, backTo, cbk) =>
