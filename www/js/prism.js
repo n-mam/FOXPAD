@@ -460,7 +460,6 @@ function Report(cid)
   this.analyze = function(inv){
 
     let range = {};
-
     let now = new Date();
 
     if (inv == '1Hour') {
@@ -497,12 +496,15 @@ function Report(cid)
         rows: [{x: 'y'}]
       }, "", (res) => {
         if (this.processIntervalData(res, inv, range)){
+          let ref = computeHorizontalMaxima(this.paths, false);
+          displayIntervalGraph(ref, this.paths, inv, range);
           this.showPathAnalyzerCanvas(this.paths, inv, range);
         }
       });
   }
 
   this.processIntervalData = function(res, inv, range) {
+
     if (!res.result.length) {
       Metro.toast.create("No data found for the selected camera and interval", null, null, "alert");
       return false;
@@ -552,14 +554,13 @@ function Report(cid)
       onShow: function(w)
       {
         let canvas = document.getElementById("id-trail-analyzer");
-        
         canvas.addEventListener("click", function(e){
           ref = getMousePosition("id-trail-analyzer", e);
           let counts = computeRefLineIntersectionsCount(ref, paths);
-          drawRefrenceLinesAndCounts(ref, counts);
+          drawRefrenceLineAndCounts(ref, counts);
         }, false);
-
         renderPaths("id-trail-analyzer", paths);
+        computeHorizontalMaxima(paths, true);
       },
       onClose: function(w)
       {
@@ -567,13 +568,76 @@ function Report(cid)
         {
           displayIntervalGraph(ref, paths, inv, range);
         }
-        else
-        {
-          Metro.toast.create("No refrence point selected", null, null, "alert");
-        }
       }
     });
   }
+}
+
+function computeHorizontalMaxima(paths, draw) 
+{
+  let ref = { x: 5, y: 5 };
+  let steps = [];
+  let max = 0;
+
+  while (ref.y <= 400)
+  {
+    let counts = computeRefLineIntersectionsCount(ref, paths);
+
+    if ((counts.up + counts.down) > max) 
+    {
+      max = counts.up + counts.down;
+    }
+
+    if (draw) 
+    {
+      drawRefrenceLineAndCounts(ref, counts);
+    }
+
+    steps.push({counts: counts, x: ref.x, y: ref.y});
+    ref.y += 20;
+  }
+
+  for (let i = steps.length - 1; i >= 0; i--)
+  {
+    let step = steps[i];
+    if((step.counts.up + step.counts.down) != max)
+    {
+      steps.splice(i, 1);
+    }
+  }
+
+  let yMid = (steps[0].y + steps[steps.length-1].y) / 2;
+
+  if (draw)
+  {
+    let canvas = document.getElementById("id-trail-analyzer");
+    let context = canvas.getContext('2d');
+  
+    context.beginPath();
+    context.strokeStyle = "#FF0000";
+    context.lineWidth = 1;
+    context.setLineDash([5, 3]);
+    context.moveTo(steps[0].x, steps[0].y);
+    context.lineTo(canvas.width, steps[0].y);
+    context.stroke();
+  
+    context.beginPath();
+    context.strokeStyle = "#FF0000";
+    context.lineWidth = 1;
+    context.setLineDash([5, 3]);
+    context.moveTo(steps[steps.length-1].x, steps[steps.length-1].y);
+    context.lineTo(canvas.width, steps[steps.length-1].y);
+    context.stroke();
+  
+    context.beginPath();
+    context.strokeStyle = "#196F3D";
+    context.lineWidth = 1;
+    context.moveTo(steps[0].x, yMid);
+    context.lineTo(canvas.width, yMid);
+    context.stroke();
+  }
+
+  return {x: 0, y: yMid};
 }
 
 function getMousePosition(id, e) {
@@ -622,27 +686,26 @@ function computeRefLineIntersectionsCount(ref, paths)
   return counts;
 }
 
-function drawRefrenceLinesAndCounts(pos, counts)
+function drawRefrenceLineAndCounts(pos, counts)
 {
   let canvas = document.getElementById("id-trail-analyzer");
   let context = canvas.getContext('2d');
 
-  context.clearRect(0, 30, 100, 30);
   context.font = '10pt Calibri';
   context.fillStyle = 'black';
-  context.fillText(" u: " + counts.up + " d: " + counts.down + " l: " + counts.left + " r: " + counts.right, 5, 40);
+  context.fillText(" u: " + counts.up + " d: " + counts.down + " l: " + counts.left + " r: " + counts.right, pos.x + 5, pos.y -5);
 
-  //draw h ref line 
+  //draw v ref line 
   context.beginPath();         
-  context.strokeStyle = "#000000";
+  context.strokeStyle = "#BFC9CA";
   context.lineWidth = 1;
   context.setLineDash([5, 3]);
   context.moveTo(pos.x, 0);
   context.lineTo(pos.x, canvas.height);
   context.stroke();
-  //draw v ref line
+  //draw h ref line
   context.beginPath();
-  context.strokeStyle = "#000000";
+  context.strokeStyle = "#BFC9CA";
   context.lineWidth = 1;
   context.setLineDash([5, 3]);
   context.moveTo(0, pos.y);
