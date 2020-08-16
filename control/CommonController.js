@@ -40,7 +40,7 @@ function Initialize(cbk)
     }
     else
     {
-      v.setStatus('Error', 'User not logged in');
+      v.setStatus('Error', 'user not logged in');
     }
   });
 }

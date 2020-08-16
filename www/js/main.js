@@ -10,8 +10,6 @@
      document.getElementById('email').value = '';
 
      document.getElementById('password').value = '';
-    
-     show_error('', false);
 
      toggleaction(toshow);
 
@@ -74,7 +72,7 @@
           {
             if (isDefined(cbk))
             {
-              cbk(res);
+              cbk(res, null);
             }
 
             if(isDefined(backTo))
@@ -91,11 +89,12 @@
           }
           else
           {
+            show_error(res.msg);
+
             if (isDefined(cbk))
             {
-              cbk(res.msg);
+              cbk(null, res.msg);
             }
-            show_error(res.msg);
           }
         }
         else
@@ -218,30 +217,14 @@
      x.send(data);
   }
 
-  var show_error = (message, show = true, e) =>
+  var show_error = (message, top = true) =>
   {
-    var flash = document.getElementById(isDefined(e) ? e : 'flash');
-
-    if (flash)
-    {
-      flash.innerHTML = '<b>' + message + '</b>';
-
-      if (show)
-      {
-        flash.style.display = 'inline-flex';
-        flash.style.visibility = 'visible';
-      }
-      else
-      {
-        flash.style.display = 'none';
-        flash.style.visibility = 'hidden';
-      }
+    let opt = {
+      showTop: top,
+      timeout: 3000
     }
-    else
-    {
-      alert(message);
-      console.log(message);
-    }
+    Metro.toast.create(message, null, null, "alert", opt);
+    console.log(message);
   }
 
   function onDocumentMouseDown(e)

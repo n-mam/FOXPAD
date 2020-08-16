@@ -41,7 +41,7 @@ function renderTH(columnNames)
   {
     h += `<th>${columnNames[i]}</th>`;
   }
-
+ 
   return h;
 }
 
@@ -55,7 +55,17 @@ function renderTD(rows, keys)
 
     for (let j = 0; j < keys.length; j++)
     {
-      h += `<td>${rows[i][keys[j]]}</td>`;
+      let content = rows[i][keys[j]].toString();
+
+      if (content.indexOf(" ") === -1 && content.length > 10)
+      {
+        style = `style="white-space: nowrap;overflow:hidden;text-overflow:ellipsis;width: 100px;"`;
+        h += `<td><div ${style}>${content}</div></td>`;
+      }
+      else
+      {
+        h += `<td>${content}</td>`;
+      }
     }
 
     h += `</tr>`
@@ -296,16 +306,18 @@ function render(v, id)
 
   v.page.html.left.push(accordion.render('', sections));
 
+
   v.page.html.center.push(cameraControlContainer('id-camera-center'));
-  v.page.html.right.push(renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skipcount', 'aid'], 'Camera'));
+  v.page.html.right.push(renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera'));
 
   v.page.html.center.push(agentControlContainer('id-agent-center'));
-  v.page.html.right.push(renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port'], 'Agent'));
+  v.page.html.right.push(renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent'));
 
   v.page.html.center.push(ReportsView('id-report-center', v.data.cameras));
 
   v.page.html.center.push(`
    <script>
+     var uid = ${v.json.prv.user.id};
      var g_agents = '${JSON.stringify(v.data.agents)}';
      var g_cameras = '${encodeURI(JSON.stringify(v.data.cameras))}';
      var addCameraView = "${encodeURI(addCameraView(v.data.agents))}"; //move to ui

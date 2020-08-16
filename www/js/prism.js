@@ -112,7 +112,7 @@ function Agent(id, sid, host, port)
     }
     else if (isDefined(res.error))
     {
-      Metro.toast.create(res.error, null, null, "alert");
+      show_error(res.error);
     }
   }
 
@@ -166,12 +166,12 @@ function GetCameraParams()
   let trackers = $('#new-cam-tracker').data('select').val();
   let aid = $('#new-cam-agent').data('select').val();
 
-  if (!name.length ||
-      !aid.length ||
-      !source.length ||
-      !target.length ||
-      !trackers.length) {
-    Metro.toast.create("Please specify all camera parameters", null, null, "alert");
+  if (!isDefined(name) || !name.length ||
+      !isDefined(aid) || !aid.length ||
+      !isDefined(source) || !source.length ||
+      !isDefined(target) || !target.length ||
+      !isDefined(trackers) || !trackers.length) {
+    show_error("Please specify all camera parameters");
     return;
   }
 
@@ -188,8 +188,9 @@ function GetCameraParams()
 function OnCameraSaveButton()
 {
   let cam = GetCameraParams();
-
   if (!isDefined(cam)) return;
+
+  cam.uid = uid.toString();
 
   _crud(
    {
@@ -256,20 +257,16 @@ function OnCameraControl(cid, action)
 }
 function OnCameraTableNodeClick(node)
 {
-  console.log('OnCameraTableNodeClick');
-  var table = $('#id-camera-center-table').data('table');
+  var table = $('#id-camera-right-table').data('table');
   let items = table.getSelectedItems();
   console.log(items);
 }
 function OnCameraDeleteClick()
 {
-  console.log('OnCameraDeleteClick');
   var table = $('#id-camera-right-table').data('table');
   let items = table.getSelectedItems();
-  console.log(items);
-
   if (!items.length) {
-    Metro.toast.create("Please select a camera to delete", null, null, "alert");
+    show_error("Please select a camera to delete");
     return;
   }
 
@@ -345,15 +342,14 @@ function GetAgentParams()
   let host = document.getElementById('new-agent-host').value;
   let port = document.getElementById('new-agent-port').value;
 
-  if (!name.length ||
-      !host.length ||    
-      !port.length) {
-    Metro.toast.create("Please specify all agent parameters", null, null, "alert");
+  if (!isDefined(name) || !name.length ||
+      !isDefined(host) || !host.length ||
+      !isDefined(port) || !port.length) {
+    show_error("Please specify all agent parameters");
     return;
   }
 
   let agent = {};
-
   agent.sid = name;
   agent.host = host;
   agent.port = port;
@@ -365,6 +361,8 @@ function OnAgentSaveButton()
   let agent = GetAgentParams();
 
   if (!isDefined(agent)) return;
+
+  agent.uid = uid.toString();
 
   _crud(
    {
@@ -386,13 +384,11 @@ function OnAgentTableNodeClick(node)
 }
 function OnAgentDeleteClick()
 {
-  console.log('OnAgentDeleteClick');
   var table = $('#id-agent-right-table').data('table');
   let items = table.getSelectedItems();
-  console.log(items);
 
   if (!items.length) {
-    Metro.toast.create("Please select an agent to delete", null, null, "alert");
+    show_error("Please select agents to delete");
     return;
   }
 
@@ -494,8 +490,8 @@ function Report(cid)
         table: 'Trails',
         where: `cid = ${this.cid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
         rows: [{x: 'y'}]
-      }, "", (res) => {
-        if (this.processIntervalData(res, inv, range)){
+      }, "", (res, e) => {
+        if (!e && this.processIntervalData(res, inv, range)){
           let ref = computeHorizontalMaxima(this.paths, false);
           displayIntervalGraph(ref, this.paths, inv, range);
           this.showPathAnalyzerCanvas(this.paths, inv, range);
@@ -572,7 +568,6 @@ function Report(cid)
     });
   }
 }
-
 function computeHorizontalMaxima(paths, draw) 
 {
   let ref = { x: 5, y: 5 };
@@ -639,7 +634,6 @@ function computeHorizontalMaxima(paths, draw)
 
   return {x: 0, y: yMid};
 }
-
 function getMousePosition(id, e) {
   let canvas = document.getElementById(id);
   let rect = canvas.getBoundingClientRect();
@@ -648,7 +642,6 @@ function getMousePosition(id, e) {
     y: e.clientY - rect.top
   };
 }
-
 function computeRefLineIntersectionsCount(ref, paths)
 {
   let counts = {up: 0, down: 0, left: 0,  right: 0};
@@ -685,7 +678,6 @@ function computeRefLineIntersectionsCount(ref, paths)
 
   return counts;
 }
-
 function drawRefrenceLineAndCounts(pos, counts)
 {
   let canvas = document.getElementById("id-trail-analyzer");
@@ -712,7 +704,6 @@ function drawRefrenceLineAndCounts(pos, counts)
   context.lineTo(canvas.width, pos.y);
   context.stroke();
 }
-
 function renderPaths(id, paths)
 {
   canvas = document.getElementById(id);
@@ -750,7 +741,6 @@ function renderPaths(id, paths)
     }
   }
 }
-
 function displayIntervalGraph(ref, paths, inv, range)
 {
   let xAxis = [];
@@ -817,11 +807,16 @@ function displayIntervalGraph(ref, paths, inv, range)
 
   reportchart.update();
 }
-
 function OnClickAnalyzeTrail()
 {
   let cid = $('#id-report-cam').data('select').val();
   let inv = $('#id-report-int').data('select').val();
+
+  if (!isDefined(cid) || 
+      !isDefined(inv)) {
+    show_error("Please select camera and the interval");
+    return;
+  }
 
   let report = new Report(cid);
 
