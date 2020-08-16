@@ -95,7 +95,6 @@ function Agent(id, sid, host, port)
     else if (res.req == 'play')
     {
       let cam = getCameraObjectBySid(res.sid);
-
       let canvas = document.getElementById('id-cam-canvas-' + cam.dbid);
 
       if (canvas)
@@ -244,9 +243,10 @@ function OnCameraControl(cid, action)
     app: 'cam',
     req: 'camera-control',   
     action: action,
-    cid: cam.dbid.toString(),
     sid: cam.sid.toString(),
+    cid: cam.dbid.toString(),
     aid: cam.aid.toString(),
+    uid: uid.toString(),
     source: cam.source,
     target: cam.target,
     tracker: cam.tracker,
@@ -412,7 +412,7 @@ function OnAgentAddClick()
 
   Metro.dialog.create({
     title: "New Agent",
-    content: decodeURI(addAgentView),
+    content: addNewAgentView(),
     closeButton: true,
     actions: [
         {
@@ -435,6 +435,18 @@ function OnAgentAddClick()
 function OnAgentSaveConfigClick()
 {
   console.log('OnAgentSaveClick');
+}
+function addNewAgentView() {
+  return `
+    <div class="row">
+      <div class="cell-12"><input id="new-agent-name" type="text" data-role="input" data-prepend="Name"></div>
+    </div>
+    <div class="row">
+      <div class="cell-12"><input id="new-agent-host" type="text" data-role="input" data-prepend="Host"></div>
+    </div>
+    <div class="row">
+      <div class="cell-12"><input id="new-agent-port" type="text" data-role="input" data-prepend="Port"></div>
+    </div>`;
 }
 
 function dateFromOffset(off) {
@@ -488,7 +500,7 @@ function Report(cid)
         action: 'READ',
         columns: 'cid, aid, ts, ST_AsText(path)',
         table: 'Trails',
-        where: `cid = ${this.cid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
+        where: `cid = ${this.cid} and uid = ${uid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
         rows: [{x: 'y'}]
       }, "", (res, e) => {
         if (!e && this.processIntervalData(res, inv, range)){
@@ -843,7 +855,6 @@ function InitCameraObjects()
     Cameras.push(cr);
   }
 }
-
 function makeEditable() {
   let td = $('#id-camera-right-table td');
   $.each(td, function(){

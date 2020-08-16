@@ -4,7 +4,7 @@ function index(v, cbk)
 {
   let data = {};
 
-  let sql = `select * from Cameras`;
+  let sql = `select * from Cameras where uid = ${v.json.prv.user.id}`;
 
   db.exec (sql, (e, results) => {
     if (e)
@@ -15,7 +15,7 @@ function index(v, cbk)
     {
       data.cameras = results;
       
-      sql = `select * from Agents`;
+      sql = `select * from Agents where uid = ${v.json.prv.user.id}`;
 
       db.exec (sql, (e, results) => {
         if (e)

@@ -152,20 +152,6 @@ function addCameraView(agents)
      </div>`;
 }
 
-function addAgentView()
-{
-  return `
-    <div class="row">
-      <div class="cell-12"><input id="new-agent-name" type="text" data-role="input" data-prepend="Name"></div>
-    </div>
-    <div class="row">
-      <div class="cell-12"><input id="new-agent-host" type="text" data-role="input" data-prepend="Host"></div>
-    </div>
-    <div class="row">
-      <div class="cell-12"><input id="new-agent-port" type="text" data-role="input" data-prepend="Port"></div>
-    </div>`;
-}
-
 function cameraControlContainer(id)
 {
   return `
@@ -306,7 +292,6 @@ function render(v, id)
 
   v.page.html.left.push(accordion.render('', sections));
 
-
   v.page.html.center.push(cameraControlContainer('id-camera-center'));
   v.page.html.right.push(renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera'));
 
@@ -321,7 +306,6 @@ function render(v, id)
      var g_agents = '${JSON.stringify(v.data.agents)}';
      var g_cameras = '${encodeURI(JSON.stringify(v.data.cameras))}';
      var addCameraView = "${encodeURI(addCameraView(v.data.agents))}"; //move to ui
-     var addAgentView = "${encodeURI(addAgentView())}"; //move to ui
    </script>
  `);
 
