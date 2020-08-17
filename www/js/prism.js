@@ -34,7 +34,7 @@ function Agent(id, sid, host, port)
 
   this.onclose = function(e){
     console.warn('agent websocket closed : ' + this.socket.host + ':' + this.socket.port + ' reason : ' + e.reason);
-    Metro.toast.create("Agent '" + this.socket.agent.sid + "' connection broken" , null, null, "alert");
+    show_error("Agent '" + this.socket.agent.sid + "' connection broken");
     let lv = $('#id-agent-list');
     let items = lv.children();
     let self = this;
@@ -482,6 +482,8 @@ function Report(cid)
       /** 14 days earlier from today */
       range.start = dateFromOffset(13);
       range.start.setHours(0);
+      range.start.setMinutes(0);
+      range.start.setSeconds(0);
       range.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
     } else if (inv == 'weekly') {
       range.start = dateFromOffset(7*4);
