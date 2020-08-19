@@ -1,6 +1,6 @@
 var accordion = require('../common/Accordion');
 
-function renderList(list, id, handler, icon) 
+function renderrrList(list, id, handler, icon) 
 {
   let h = ``;
 
@@ -273,14 +273,14 @@ function render(v, id)
     {
       title : 'CAMERAS',
       link : 'id-camera',
-      content : renderList(v.data.cameras, 'id-camera-list', 'OnCameraSelect', 'mif-video-camera')
+      content : '' //renderList(v.data.cameras, 'id-camera-list', 'OnCameraSelect', 'mif-video-camera')
     });
 
   sections.push(
     {
       title : 'AGENTS',
       link : 'id-agent',
-      content : renderList(v.data.agents, 'id-agent-list', 'OnAgentSelect', 'mif-display')
+      content : '' //renderList(v.data.agents, 'id-agent-list', 'OnAgentSelect', 'mif-display')
     });
 
   sections.push(

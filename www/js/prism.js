@@ -841,20 +841,38 @@ function InitAgentObjects()
 {
   let j = JSON.parse(g_agents);
 
+  let lv = $('#id-agent-list');
+
   for (let i = 0; i < j.length; i++)
   {
     let ag = new Agent(j[i].id, j[i].sid, j[i].host, j[i].port);
     Agents.push(ag);
+    lv.append(
+    `<li class="bg-white" id=${'id-agent-list-li-' + j[i].id}>
+      <a href="#">
+        <span class="icon"><span class="mif-display fg-black"></span></span>
+        <span class="caption">${j[i].sid}</span>
+      </a>
+    </li>`);
   }
 }
 function InitCameraObjects()
 {
   let j = JSON.parse(decodeURI(g_cameras));
 
+  let lv = $('#id-camera-list');
+
   for (let i = 0; i < j.length; i++)
-  { 
+  {
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
+    lv.append(
+      `<li class="bg-white" id=${'id-camera-list-li-' + j[i].id}>
+        <a href="#">
+          <span class="icon"><span class="mif-video-camera fg-black"></span></span>
+          <span class="caption">${j[i].sid}</span>
+        </a>
+      </li>`);
   }
 }
 function makeEditable() {
