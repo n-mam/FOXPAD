@@ -198,15 +198,11 @@ function OnCameraSaveButton()
      rows: [cam]
    });
 }
-function OnCameraSelect(node)
+function OnCameraSelect(cid)
 {
-  console.log(node[0].id);
-
-  let cid = ((node[0].id).split("-")).pop();
-
   let camera = getCameraObject(parseInt(cid));
 
-  let ccid = "#" + node[0].id + "-control";
+  let ccid = "#cam-" + cid + "-control";
 
   if (!$(ccid).length)
   {
@@ -218,7 +214,7 @@ function OnCameraSelect(node)
       btnMax: false,
       id: ccid.substr(1),
       icon: "<span class='mif-video-camera'></span>",
-      title: node[0].innerText,
+      title: camera.sid,
       content: CameraControlView(cid),
       place: "center",
       onShow: function(w) {
@@ -868,7 +864,7 @@ function InitCameraObjects()
     Cameras.push(cr);
     lv.append(
       `<li class="bg-white" id=${'id-camera-list-li-' + j[i].id}>
-        <a href="#">
+        <a href="#" onclick='return OnCameraSelect(${j[i].id})'>
           <span class="icon"><span class="mif-video-camera fg-black"></span></span>
           <span class="caption">${j[i].sid}</span>
         </a>

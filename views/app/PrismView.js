@@ -1,23 +1,5 @@
 var accordion = require('../common/Accordion');
 
-function renderrrList(list, id, handler, icon) 
-{
-  let h = ``;
-
-  for (let i = 0; i < list.length; i++)
-  { // id-camera-list-li-1, id-agent-list-li-2
-    h += `<li id="${id + '-li-' + list[i].id}" data-icon="<span class='${icon} fg-black'>" data-caption="${list[i].sid}"></li>`
-  }
-
-  return `
-   <ul id="${id}"
-       class="p-3"
-       data-role="listview"
-       data-on-node-click=${handler}>
-     ${h}
-   </ul>`;
-}
-
 function renderSelect(options, id, title, icon)
 {
   let h = ``;
@@ -72,16 +54,16 @@ function renderTD(rows, keys)
   }
 
   return h;
-};
+}
 
 function renderTableView(id, rows, columnNames, handler)
 {
   return `
-  <div class="cell flex-justify-center" id='${id}' style="display:none">
+  <div class="cell d-flex flex-justify-center" id='${id}'>
 
    <div class="grid">
 
-     <div class="row">
+    <div class="row">
      <table
       data-role="table" data-static-view="true"
       data-cls-table-top="row flex-nowrap"
@@ -103,8 +85,8 @@ function renderTableView(id, rows, columnNames, handler)
         ${renderTD(rows, columnNames)}
       </tbody>
      </table>
-     </div>
-     <div class="row">
+    </div>
+    <div class="row">
        <style> .pagination {margin:0em} </style>
        <div class="w-50 my-pagination-wrapper">
        </div>
@@ -113,9 +95,8 @@ function renderTableView(id, rows, columnNames, handler)
         <button class="tool-button" onclick="${'On' + handler + 'DeleteClick()'}"><span class="mif-bin"></span></button>
         <button class="tool-button" onclick="${'On' + handler + 'SaveConfigClick()'}"><span class="mif-floppy-disk"></span></button>
        </div>    
-     </div>
+    </div>
    </div>
-
   </div>`;
 }
 
@@ -155,16 +136,16 @@ function addCameraView(agents)
 function cameraControlContainer(id)
 {
   return `
-  <div id='${id}' class="d-flex flex-justify-center" right-size="5" style="display:none">
-
+  <div id='${id}' class="d-flex flex-justify-center" right-size="5" >
+    cameraControlContainer
   </div>`;
 }
 
 function agentControlContainer(id)
 {
   return `
-  <div id='${id}' class="d-flex flex-justify-center" right-size="5" style="display:none">
-
+  <div id='${id}' class="d-flex flex-justify-center" right-size="5">
+    agentControlContainer
   </div>`;
 }
 
@@ -176,10 +157,10 @@ function AlertsView()
 function ReportsView(id, cameras)
 {
   return `
-  <div class="cell flex-justify-center" id='${id}' right-size="2" style="display:none">
+  <div class="cell d-flex flex-justify-center" id='${id}'>
   <script src='js/Chart.min.js'></script>
   <div class="grid w-100">
-    <div class="row flex-justify-center">
+    <div class="row d-flex flex-justify-center">
       <div class="cell-3">
         <div>
           ${renderSelect(cameras, 'id-report-cam', 'Camera:')}
@@ -261,55 +242,86 @@ function ReportsView(id, cameras)
        }
      }
    });
-  </script>  
+  </script>
   `;
 }
 
 function render(v, id)
 {
-  let sections = [];
+  v.page.html = `
+  <h3 id="id-home">Home</h3>
+   <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+   </p>
+   <div class="d-flex flex-row h-100">
+     <div class="grid cell-6" id="main-view-left">
+      A
+     </div>
+     <div class="grid cell-6" id="main-view-right">
+      B      
+     </div>
+   </div>
 
-  sections.push(
-    {
-      title : 'CAMERAS',
-      link : 'id-camera',
-      content : '' //renderList(v.data.cameras, 'id-camera-list', 'OnCameraSelect', 'mif-video-camera')
-    });
+  <h3 id="id-cameras">Cameras</h3>
+   <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+   </p>
+   <div class="d-flex flex-row h-100">
+     <div class="grid cell-6" id="main-view-left">
+      ${cameraControlContainer('id-camera-left')}
+     </div>
+     <div class="grid cell-6" id="main-view-right">
+      ${renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera')}
+     </div>
+   </div>
 
-  sections.push(
-    {
-      title : 'AGENTS',
-      link : 'id-agent',
-      content : '' //renderList(v.data.agents, 'id-agent-list', 'OnAgentSelect', 'mif-display')
-    });
+   <h3 id="id-agents">Agents</h3>
+   <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+   </p>
+   <div class="d-flex flex-row h-100">
+     <div class="grid cell-6" id="main-view-left">
+      ${agentControlContainer('id-agent-center')}
+     </div>
+     <div class="grid cell-6" id="main-view-right">
+      ${renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
+     </div>
+   </div>
 
-  sections.push(
-    {
-      title : 'REPORTS',
-      link : 'id-report',
-      content : ''
-    });
+   <h3 id="id-reports">Reports</h3>
+   <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+   </p>
+   <div class="d-flex flex-row h-100">
+     <div class="grid cell-6" id="main-view-left">
+      ${ReportsView('id-report-center', v.data.cameras)}
+     </div>
+     <div class="grid cell-6" id="main-view-right">
+      B
+     </div>
+   </div>
 
-  v.page.html.left.push(accordion.render('', sections));
+   <h3 id="id-alerts">Alerts</h3>
+   <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+   </p>
+   <div class="d-flex flex-row h-100">
+     <div class="grid cell-6" id="main-view-left">
+      A
+     </div>
+     <div class="grid cell-6" id="main-view-right">
+      B      
+     </div>
+   </div>
 
-  v.page.html.center.push(cameraControlContainer('id-camera-center'));
-  v.page.html.right.push(renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera'));
-
-  v.page.html.center.push(agentControlContainer('id-agent-center'));
-  v.page.html.right.push(renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent'));
-
-  v.page.html.center.push(ReportsView('id-report-center', v.data.cameras));
-
-  v.page.html.center.push(`
    <script>
      var uid = ${v.json.prv.user.id};
      var g_agents = '${JSON.stringify(v.data.agents)}';
      var g_cameras = '${encodeURI(JSON.stringify(v.data.cameras))}';
      var addCameraView = "${encodeURI(addCameraView(v.data.agents))}"; //move to ui
    </script>
- `);
-
-  v.page.html.center.push(`<script src='/js/prism.js'></script>`);
+   <script src='/js/prism.js'></script>
+   `;
 }
 
 module.exports = { render }

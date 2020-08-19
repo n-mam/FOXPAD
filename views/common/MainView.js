@@ -15,8 +15,7 @@ var render = (v) =>
        <link rel="stylesheet" href="js/metro-ui-css/css/metro-all.min.css">
        ${css.main(v.page)}
      </head>
-     <body>
-       ${u.isDefined(v.json.prv.user) ? Header(v) : ''}
+     <body class="m4-cloak h-vh-100">
        ${content(v)}
        <script src="js/metro-ui-css/js/metro.min.js"></script>
        ${postJS()}
@@ -26,139 +25,106 @@ var render = (v) =>
 
 var contentt = (v) => {
   return `
-  <div class="container-fluid text-center pt-15" style="height: 700px;">
-    
-    <div data-role="navview" class="compacted js-compact" data-compact="md" data-expand="md" data-toggle="#pane-toggle" data-active-state="true">
+  <div data-role="navview" class="compacted js-compact " data-compact="md" data-expand="md" data-toggle="#pane-toggle" data-active-state="true">
      
-     <nav class="navview-pane">
-
-      <button class="pull-button">
-          <span class="mif-menu"></span>
-      </button>
-
-      <ul class="navview-menu">
-          <li>
-              <a href="#id-home">
-                  <span class="icon"><span class="mif-home"></span></span>
-                  <span class="caption">Home</span>
-              </a>
-          </li>
-
-          <li class="item-separator"></li>
-
-          <li>
-              <a href="#" class="dropdown-toggle">
-                  <span class="icon"><span class="mif-video-camera"></span></span>
-                  <span class="caption">Cameras</span>
-              </a>
-              <ul id="id-camera-list" class="navview-menu" data-role="dropdown">
-
-
-              </ul>
-          </li>
-
-          <li class="item-separator"></li>
-
-          <li>
-              <a href="#" class="dropdown-toggle">
-                  <span class="icon"><span class="mif-display"></span></span>
-                  <span class="caption">Agents</span>
-              </a>
-              <ul id="id-agent-list" class="navview-menu" data-role="dropdown">
-
-              </ul>
-          </li>
-
-          <li class="item-separator"></li>
-
-          <li>
-              <a href="#">
-                  <span class="icon"><span class="mif-warning"></span></span>
-                  <span class="caption">Alerts</span>
-                  <div class="badges">
-                      <span class="badge inline">10</span>
-                      <span class="badge inline">5</span>
-                  </div>
-              </a>
-          </li>
-
-          <li class="item-separator"></li>
-
-          <li>
-              <a href="#">
-                  <span class="icon"><span class="mif-chart-line"></span></span>
-                  <span class="caption">Reports</span>
-              </a>
-          </li>
-
-          <li class="item-separator"></li>
-
-          <li>
-              <a href="#" class="dropdown-toggle">
-                  <span class="icon"><span class="mif-user"></span></span>
-                  <span class="caption">User</span>
-              </a>
-              <ul class="navview-menu" data-role="dropdown">
-               <li class="bg-white">
-                 <a href="#">
-                  <span class="icon"><span class="mif-profile"></span></span>
-                  <span class="caption">Profile</span>
-                 </a>
-               </li>
-               <li class="bg-white">
-                 <a href="#">
-                  <span class="icon"><span class="mif-exit"></span></span>
-                  <span class="caption">Sign out</span>
-                 </a>
-               </li>
-              </ul>
-          </li>
-      </ul>
+  <nav class="navview-pane" style="">
+ 
+       <button class="pull-button">
+           <span class="mif-menu"></span>
+       </button>
+ 
+       <ul class="navview-menu">
+           <li>
+               <a href="#id-home">
+                   <span class="icon"><span class="mif-home"></span></span>
+                   <span class="caption">Home</span>
+               </a>
+           </li>
+ 
+           <li class="item-separator"></li>
+ 
+           <li>
+               <a href="#id-cameras" class="dropdown-toggle">
+                   <span class="icon"><span class="mif-video-camera"></span></span>
+                   <span class="caption">Cameras</span>
+               </a>
+               <ul id="id-camera-list" class="navview-menu" data-role="dropdown" data-on-node-click="OnCameraSelect">
+ 
+ 
+               </ul>
+           </li>
+ 
+           <li class="item-separator"></li>
+ 
+           <li>
+               <a href="#id-agents" class="dropdown-toggle">
+                   <span class="icon"><span class="mif-display"></span></span>
+                   <span class="caption">Agents</span>
+               </a>
+               <ul id="id-agent-list" class="navview-menu" data-role="dropdown">
+ 
+               </ul>
+           </li>
+ 
+           <li class="item-separator"></li>
+ 
+           <li>
+               <a href="#id-alerts">
+                   <span class="icon"><span class="mif-warning"></span></span>
+                   <span class="caption">Alerts</span>
+                   <div class="badges">
+                       <span class="badge inline">10</span>
+                       <span class="badge inline">5</span>
+                   </div>
+               </a>
+           </li>
+ 
+           <li class="item-separator"></li>
+ 
+           <li>
+               <a href="#id-reports">
+                   <span class="icon"><span class="mif-chart-line"></span></span>
+                   <span class="caption">Reports</span>
+               </a>
+           </li>
+ 
+           <li class="item-separator"></li>
+ 
+           <li>
+               <a href="#" class="dropdown-toggle">
+                   <span class="icon"><span class="mif-user"></span></span>
+                   <span class="caption">User</span>
+               </a>
+               <ul class="navview-menu" data-role="dropdown">
+                <li class="bg-white">
+                  <a href="#">
+                   <span class="icon"><span class="mif-profile"></span></span>
+                   <span class="caption">Profile</span>
+                  </a>
+                </li>
+                <li class="bg-white">
+                  <a href="#">
+                   <span class="icon"><span class="mif-exit"></span></span>
+                   <span class="caption">Sign out</span>
+                  </a>
+                </li>
+               </ul>
+           </li>
+       </ul>
   </nav>
 
-  <div class="navview-content pl-4-md pr-4-md">
-      <h1>
-          <button id="pane-toggle" class="button square d-none-md"><span class="mif-menu" ></span></button>
-          What is?
-      </h1>
-      <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-          Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-      </p>
-
-      <div class="d-flex flex-row ">
-        <div class="grid cell-2" id="main-view-left">
-          ${expandRows(v.page.html.left)}
-        </div>
-        <div class="grid cell-5" id="main-view-center">
-          ${expandRows(v.page.html.center)}
-        </div>
-        <div class="grid cell-5" id="main-view-right">
-          ${expandRows(v.page.html.right)}
-          <div class="row">${u.DEBUG()}</div>   
-        </div>
-      </div>
-
-      <div data-role="panel"
-           data-title-caption="Panel title"
-           data-title-icon="<span class='mif-apps'></span>"
-           data-width="240"
-           data-collapsible="true"
-           data-draggable="true">
-          Raptus capios ducunt ad genetrix. Joy doesn’t beautifully respect any believer — but the power is what flies.
-      </div>
-  </div>
-</div>
-</div>
-  </div>
-
+   <div class="navview-content h-100 text-center">
+     <div id="content-wrapper" class="content-inner h-100" style="overflow-y: auto">
+       ${v.page.html}
+       ${u.DEBUG()}
+     </div>
+   </div>
+ </div>
   `;
 }
 var content = (v) =>
 {
-  if (u.isDefined(v.page.html.left) ||
-      u.isDefined(v.page.html.center) ||
-      u.isDefined(v.page.html.right))
+  if (u.isDefined(v.json.prv.user))
   {
     return contentt(v);
     // return `
