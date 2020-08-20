@@ -832,7 +832,7 @@ function OnClickAnalyzeTrail()
 
   if (!isDefined(cid) || 
       !isDefined(inv)) {
-    show_error("Please select camera and the interval");
+    show_error("Please select the camera and an interval");
     return;
   }
 

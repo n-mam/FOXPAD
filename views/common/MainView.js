@@ -94,7 +94,7 @@ var content = (v) =>
              <li>
                  <a href="#" class="dropdown-toggle">
                      <span class="icon"><span class="mif-user"></span></span>
-                     <span class="caption">User</span>
+                     <span class="caption">${v.json.prv.user.name}</span>
                  </a>
                  <ul class="navview-menu" data-role="dropdown">
                   <li class="bg-white">

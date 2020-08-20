@@ -270,7 +270,7 @@ function render(v, id)
   <h3 id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-5" id="main-view-right">
-      <div class="cell d-flex flex-justify-center">
+      <div class="cell d-flex flex-justify-center h-100">
        <div data-role="panel"
           data-title-caption="<b>Cameras</b>"
           data-title-icon="<span class='mif-apps'></span>"
@@ -289,7 +289,7 @@ function render(v, id)
    <h3 id="id-agents">Agents</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-5" id="main-view-right">
-      <div class="cell d-flex flex-justify-center">
+      <div class="cell d-flex flex-justify-center h-100">
        <div data-role="panel"
           data-title-caption="<b>Agents</b>"
           data-title-icon="<span class='mif-apps'></span>"
