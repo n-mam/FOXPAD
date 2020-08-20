@@ -176,13 +176,13 @@ function landingPage()
 {
   return `
   <div class="flex row pos-fixed pos-center">
-    <img style='' src='/image/architecture.png' alt='logo'>
+    <div class="flex column">
+      <img style='' src='/image/architecture.png' alt='logo'>
+    </div>
     <div class="flex column pl-5">
       ${cred.credentials()}
-      <a href="/content/foxpad/fpd.exe">
-        <div id='btn-download' class='flex button action' style='min-width:10em;padding:0.5em;'>
-          <b>DOWNLOAD</b>
-        </div>
+      <a class="pt-4" href="/content/foxpad/fpd.zip">
+        <button class="button rounded"><span class="pr-2 mif-download mif-2x icon"></span><b>AGENT</b></button>
       </a>
     </div>
   </div>

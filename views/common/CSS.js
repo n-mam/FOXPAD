@@ -6,30 +6,16 @@ var main = ({theme, accordian}) => {
   font-size: 0.8em;
  }
  input, select, textarea, button {
-   font-family: inherit;
-   font-size: inherit;
+   font-family: inherit !important;
+   font-size: inherit !important;
  }
- .h-line {
-  display: inline-flex;
-  height: 1px;
-  border-top: 1px solid #ccc;
-  width: 100%;
- }
- .v-spacer {
-  width: 100%;
-  height: 0.3em;
-}
-.h-spacer {
-  width: 0.3em;
-  height: 100%;
-}
 .flex {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 a, u {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 .column {
   flex-direction: column;
