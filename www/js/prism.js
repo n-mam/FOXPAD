@@ -224,7 +224,10 @@ function OnCameraSelect(cid)
         OnCameraControl(cid, 'stop-play');
       }
     });
+    return true;
   }
+
+  return true;
 }
 function OnCameraControl(cid, action)
 {
@@ -553,7 +556,7 @@ function Report(cid)
       btnMin: false,
       btnMax: false,
       id: 'id-analyzer-win',
-      icon: "<span class='mif-video-camera'></span>",
+      icon: "<span class='mif-chart-dots'></span>",
       title: "Trail Analyzer",
       content: '<canvas id="id-trail-analyzer" width="600" height="400" style="border:1px dotted grey" ></canvas>',
       place: "right",
@@ -816,6 +819,9 @@ function displayIntervalGraph(ref, paths, inv, range)
   }
 
   reportchart.update();
+
+  document.getElementById('id-chart-canvas').style = "display:flex"
+
 }
 function OnClickAnalyzeTrail()
 {
@@ -845,7 +851,7 @@ function InitAgentObjects()
     Agents.push(ag);
     lv.append(
     `<li class="bg-white" id=${'id-agent-list-li-' + j[i].id}>
-      <a href="#">
+      <a href="#id-agents">
         <span class="icon"><span class="mif-display fg-black"></span></span>
         <span class="caption">${j[i].sid}</span>
       </a>
@@ -864,7 +870,7 @@ function InitCameraObjects()
     Cameras.push(cr);
     lv.append(
       `<li class="bg-white" id=${'id-camera-list-li-' + j[i].id}>
-        <a href="#" onclick='return OnCameraSelect(${j[i].id})'>
+        <a href="#id-cameras" onclick='return OnCameraSelect(${j[i].id})'>
           <span class="icon"><span class="mif-video-camera fg-black"></span></span>
           <span class="caption">${j[i].sid}</span>
         </a>

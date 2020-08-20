@@ -23,125 +23,111 @@ var render = (v) =>
   </html>`;
 }
 
-var contentt = (v) => {
-  return `
-  <div data-role="navview" class="compacted js-compact " data-compact="md" data-expand="md" data-toggle="#pane-toggle" data-active-state="true">
-     
-  <nav class="navview-pane" style="">
- 
-       <button class="pull-button">
-           <span class="mif-menu"></span>
-       </button>
- 
-       <ul class="navview-menu">
-           <li>
-               <a href="#id-home">
-                   <span class="icon"><span class="mif-home"></span></span>
-                   <span class="caption">Home</span>
-               </a>
-           </li>
- 
-           <li class="item-separator"></li>
- 
-           <li>
-               <a href="#id-cameras" class="dropdown-toggle">
-                   <span class="icon"><span class="mif-video-camera"></span></span>
-                   <span class="caption">Cameras</span>
-               </a>
-               <ul id="id-camera-list" class="navview-menu" data-role="dropdown" data-on-node-click="OnCameraSelect">
- 
- 
-               </ul>
-           </li>
- 
-           <li class="item-separator"></li>
- 
-           <li>
-               <a href="#id-agents" class="dropdown-toggle">
-                   <span class="icon"><span class="mif-display"></span></span>
-                   <span class="caption">Agents</span>
-               </a>
-               <ul id="id-agent-list" class="navview-menu" data-role="dropdown">
- 
-               </ul>
-           </li>
- 
-           <li class="item-separator"></li>
- 
-           <li>
-               <a href="#id-alerts">
-                   <span class="icon"><span class="mif-warning"></span></span>
-                   <span class="caption">Alerts</span>
-                   <div class="badges">
-                       <span class="badge inline">10</span>
-                       <span class="badge inline">5</span>
-                   </div>
-               </a>
-           </li>
- 
-           <li class="item-separator"></li>
- 
-           <li>
-               <a href="#id-reports">
-                   <span class="icon"><span class="mif-chart-line"></span></span>
-                   <span class="caption">Reports</span>
-               </a>
-           </li>
- 
-           <li class="item-separator"></li>
- 
-           <li>
-               <a href="#" class="dropdown-toggle">
-                   <span class="icon"><span class="mif-user"></span></span>
-                   <span class="caption">User</span>
-               </a>
-               <ul class="navview-menu" data-role="dropdown">
-                <li class="bg-white">
-                  <a href="#">
-                   <span class="icon"><span class="mif-profile"></span></span>
-                   <span class="caption">Profile</span>
-                  </a>
-                </li>
-                <li class="bg-white">
-                  <a href="#">
-                   <span class="icon"><span class="mif-exit"></span></span>
-                   <span class="caption">Sign out</span>
-                  </a>
-                </li>
-               </ul>
-           </li>
-       </ul>
-  </nav>
-
-   <div class="navview-content h-100 text-center">
-     <div id="content-wrapper" class="content-inner h-100" style="overflow-y: auto">
-       ${v.page.html}
-       ${u.DEBUG()}
-     </div>
-   </div>
- </div>
-  `;
-}
 var content = (v) =>
 {
   if (u.isDefined(v.json.prv.user))
   {
-    return contentt(v);
-    // return `
-    // <div class="container-fluid text-center pt-16">
-    //   <div class="d-flex flex-row ">
-    //     <div class="grid cell-2" id="main-view-left">
-    //       ${expandRows(v.page.html.left)}
-    //     </div>
-    //     <div class="grid cell-5" id="main-view-center">
-    //       ${expandRows(v.page.html.center)}
-    //     </div>
-    //     <div class="grid cell-5" id="main-view-right">
-    //       ${expandRows(v.page.html.right)}
-    //       <div class="row">${u.DEBUG()}</div>   
-    //     </div>
-    //   </div>
-    // </div>`;
+    return `
+    <div class="compacted js-compact p-2"
+         data-role="navview" 
+         data-compact="md" 
+         data-expand="md" 
+         data-toggle="#pane-toggle" 
+         data-active-state="true">
+
+      <nav class="navview-pane" style="">
+
+         <button class="pull-button">
+             <span class="mif-menu"></span>
+         </button>
+   
+         <ul class="navview-menu">
+             <li class="active">
+                 <a href="#id-home">
+                     <span class="icon"><span class="mif-home"></span></span>
+                     <span class="caption">Home</span>
+                 </a>
+             </li>
+   
+             <li class="item-separator"></li>
+   
+             <li>
+                 <a href="#id-cameras" class="dropdown-toggle">
+                     <span class="icon"><span class="mif-video-camera"></span></span>
+                     <span class="caption">Cameras</span>
+                 </a>
+                 <ul id="id-camera-list" class="navview-menu" data-role="dropdown">
+   
+                 </ul>
+             </li>
+   
+             <li class="item-separator"></li>
+   
+             <li>
+                 <a href="#id-agents" class="dropdown-toggle">
+                     <span class="icon"><span class="mif-display"></span></span>
+                     <span class="caption">Agents</span>
+                 </a>
+                 <ul id="id-agent-list" class="navview-menu" data-role="dropdown">
+   
+                 </ul>
+             </li>
+   
+             <li class="item-separator"></li>
+   
+             <li>
+                 <a href="#id-alerts">
+                     <span class="icon"><span class="mif-warning"></span></span>
+                     <span class="caption">Alerts</span>
+                     <div class="badges">
+                         <span class="badge inline">10</span>
+                         <span class="badge inline">5</span>
+                     </div>
+                 </a>
+             </li>
+   
+             <li class="item-separator"></li>
+   
+             <li>
+                 <a href="#id-reports">
+                     <span class="icon"><span class="mif-chart-line"></span></span>
+                     <span class="caption">Reports</span>
+                 </a>
+             </li>
+   
+             <li class="item-separator"></li>
+   
+             <li>
+                 <a href="#" class="dropdown-toggle">
+                     <span class="icon"><span class="mif-user"></span></span>
+                     <span class="caption">User</span>
+                 </a>
+                 <ul class="navview-menu" data-role="dropdown">
+                  <li class="bg-white">
+                    <a href="#">
+                     <span class="icon"><span class="mif-profile"></span></span>
+                     <span class="caption">Profile</span>
+                    </a>
+                  </li>
+                  <li class="bg-white">
+                    <a href="#" onclick="_auth('LOGOUT')">
+                     <span class="icon"><span class="mif-exit"></span></span>
+                     <span class="caption">Sign out</span>
+                    </a>
+                  </li>
+                 </ul>
+             </li>
+         </ul>
+    </nav>
+  
+     <div class="navview-content h-100 text-center">
+       <div id="content-wrapper" class="content-inner h-100" style="overflow-y: auto;scroll-behavior: smooth;">
+         ${v.page.html}
+         ${u.DEBUG()}
+       </div>
+     </div>
+   </div>
+    `;
   }
   else
   {

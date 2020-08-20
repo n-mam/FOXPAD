@@ -217,7 +217,7 @@
      x.send(data);
   }
 
-  var show_error = (message, top = true) =>
+  var show_error = (message, top = false) =>
   {
     let opt = {
       showTop: top,

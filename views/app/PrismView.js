@@ -133,22 +133,6 @@ function addCameraView(agents)
      </div>`;
 }
 
-function cameraControlContainer(id)
-{
-  return `
-  <div id='${id}' class="d-flex flex-justify-center" right-size="5" >
-    cameraControlContainer
-  </div>`;
-}
-
-function agentControlContainer(id)
-{
-  return `
-  <div id='${id}' class="d-flex flex-justify-center" right-size="5">
-    agentControlContainer
-  </div>`;
-}
-
 function AlertsView()
 {
   return ``;
@@ -184,9 +168,9 @@ function ReportsView(id, cameras)
       </div>
     </div>
     <div class="row flex-justify-center">
-      <div class="cell-10">
+      <div class="cell-12">
         <div>
-          <canvas id="id-chart-canvas" width="300" height:"200"></canvas>
+          <canvas id="id-chart-canvas" width="300" height:"200" style="display:none;"></canvas>
         </div>
       </div>
     </div>
@@ -253,7 +237,7 @@ function render(v, id)
    <p>
     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
    </p>
-   <div class="d-flex flex-row h-100">
+   <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-6" id="main-view-left">
       A
      </div>
@@ -263,49 +247,28 @@ function render(v, id)
    </div>
 
   <h3 id="id-cameras">Cameras</h3>
-   <p>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-   </p>
-   <div class="d-flex flex-row h-100">
-     <div class="grid cell-6" id="main-view-left">
-      ${cameraControlContainer('id-camera-left')}
-     </div>
-     <div class="grid cell-6" id="main-view-right">
+   <div class="flex-row h-100 d-flex flex-justify-center">
+     <div class="grid cell-10" id="main-view-right">
       ${renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera')}
      </div>
    </div>
 
    <h3 id="id-agents">Agents</h3>
-   <p>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-   </p>
-   <div class="d-flex flex-row h-100">
-     <div class="grid cell-6" id="main-view-left">
-      ${agentControlContainer('id-agent-center')}
-     </div>
-     <div class="grid cell-6" id="main-view-right">
+   <div class="flex-row h-100 d-flex flex-justify-center">
+     <div class="grid cell-10" id="main-view-right">
       ${renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
      </div>
    </div>
 
    <h3 id="id-reports">Reports</h3>
-   <p>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-   </p>
-   <div class="d-flex flex-row h-100">
-     <div class="grid cell-6" id="main-view-left">
+   <div class="flex-row h-100 d-flex flex-justify-center">
+     <div class="grid cell-10" id="main-view-left">
       ${ReportsView('id-report-center', v.data.cameras)}
-     </div>
-     <div class="grid cell-6" id="main-view-right">
-      B
      </div>
    </div>
 
    <h3 id="id-alerts">Alerts</h3>
-   <p>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-   </p>
-   <div class="d-flex flex-row h-100">
+   <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-6" id="main-view-left">
       A
      </div>
