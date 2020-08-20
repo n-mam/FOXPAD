@@ -26,8 +26,8 @@ function Agent(id, sid, host, port)
     let lv = $('#id-agent-list');
     let items = lv.children();
     $.each(items, function(){
-      if ($(this).innerText() === self.socket.agent.sid) {
-        $(this).children(".icon")[0].innerHTML = `<span class=\'mif-display fg-green\'>`;
+      if ($(this).id() === ('id-agent-list-li-' + self.socket.agent.dbid)) {
+        $(this).find(".icon")[0].innerHTML = `<span class=\'mif-display fg-green\'>`;
       }
     });
   }
@@ -39,7 +39,7 @@ function Agent(id, sid, host, port)
     let items = lv.children();
     let self = this;
     $.each(items, function(){
-      if ($(this).innerText() === self.socket.agent.sid) {
+      if ($(this).id() === ('id-agent-list-li-' + self.socket.agent.dbid)) {
         $(this).children(".icon")[0].innerHTML = `<span class=\'mif-display fg-red\'>`;
       }
     });
@@ -60,7 +60,7 @@ function Agent(id, sid, host, port)
       let li = $('#id-camera-list').children();
 
       $.each(li, function(){
-        $(this).children(".icon")[0].innerHTML = `<span class=\'mif-video-camera fg-black\'>`;
+        $(this).find(".icon")[0].innerHTML = `<span class=\'mif-video-camera fg-black\'>`;
       });
 
       for (let i = 0; i < res.sessions.length; i++) 
@@ -82,8 +82,9 @@ function Agent(id, sid, host, port)
         }
 
         $.each(li, function(){
-          if ($(this).innerText() === res.sessions[i].sid) {
-            $(this).children(".icon")[0].innerHTML = `<span class=\'mif-video-camera ${color}\'>`;
+          let xx = $(this).find(".caption")[0];
+          if ($(this).find(".caption")[0].innerText === res.sessions[i].sid) {
+            $(this).find(".icon")[0].innerHTML = `<span class=\'mif-video-camera ${color}\'>`;
           }
         });
       }
