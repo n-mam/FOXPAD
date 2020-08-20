@@ -82,9 +82,8 @@ function Agent(id, sid, host, port)
         }
 
         $.each(li, function(){
-          let xx = $(this).find(".caption")[0];
-          if ($(this).find(".caption")[0].innerText === res.sessions[i].sid) {
-            $(this).find(".icon")[0].innerHTML = `<span class=\'mif-video-camera ${color}\'>`;
+          if ($(this).innerText() === res.sessions[i].sid) {
+            $(this).children(".icon")[0].innerHTML = `<span class=\'mif-video-camera ${color}\'>`;
           }
         });
       }
@@ -199,8 +198,10 @@ function OnCameraSaveButton()
      rows: [cam]
    });
 }
-function OnCameraSelect(cid)
+function OnCameraSelect(node)
 {
+  let cid = ((node[0].id).split("-")).pop();
+
   let camera = getCameraObject(parseInt(cid));
 
   let ccid = "#cam-" + cid + "-control";
@@ -850,13 +851,13 @@ function InitAgentObjects()
   {
     let ag = new Agent(j[i].id, j[i].sid, j[i].host, j[i].port);
     Agents.push(ag);
-    lv.append(
-    `<li class="bg-white" id=${'id-agent-list-li-' + j[i].id}>
-      <a href="#id-agents">
-        <span class="icon"><span class="mif-display fg-black"></span></span>
-        <span class="caption">${j[i].sid}</span>
-      </a>
-    </li>`);
+    // lv.append(
+    // `<li class="bg-white" id=${'id-agent-list-li-' + j[i].id}>
+    //   <a href="#id-agents">
+    //     <span class="icon"><span class="mif-display fg-black"></span></span>
+    //     <span class="caption">${j[i].sid}</span>
+    //   </a>
+    // </li>`);
   }
 }
 function InitCameraObjects()
@@ -869,13 +870,13 @@ function InitCameraObjects()
   {
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
-    lv.append(
-      `<li class="bg-white" id=${'id-camera-list-li-' + j[i].id}>
-        <a href="#id-cameras" onclick='return OnCameraSelect(${j[i].id})'>
-          <span class="icon"><span class="mif-video-camera fg-black"></span></span>
-          <span class="caption">${j[i].sid}</span>
-        </a>
-      </li>`);
+    // lv.append(
+    //   `<li class="bg-white" id=${'id-camera-list-li-' + j[i].id}>
+    //     <a href="#id-cameras" onclick='return OnCameraSelect(${j[i].id})'>
+    //       <span class="icon"><span class="mif-video-camera fg-black"></span></span>
+    //       <span class="caption">${j[i].sid}</span>
+    //     </a>
+    //   </li>`);
   }
 }
 function makeEditable() {

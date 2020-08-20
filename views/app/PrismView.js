@@ -1,5 +1,26 @@
 var accordion = require('../common/Accordion');
 
+function renderListView(items, id, handler, icon) 
+{
+  let h = ``;
+
+  for (let i = 0; i < items.length; i++)
+  { // id-camera-list-li-1, id-agent-list-li-2
+    h += `<li id="${id + '-li-' + items[i].id}" 
+            data-icon="<span class='${icon} fg-black'>" 
+            data-caption="<span class='caption'>${items[i].sid}</span>"
+          </li>`
+  }
+
+  return `
+   <ul id="${id}"
+       class="p-3"
+       data-role="listview"
+       data-on-node-click=${handler}>
+     ${h}
+   </ul>`;
+}
+
 function renderSelect(options, id, title, icon)
 {
   let h = ``;
@@ -248,14 +269,38 @@ function render(v, id)
 
   <h3 id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-10" id="main-view-right">
+     <div class="grid cell-5" id="main-view-right">
+      <div class="cell d-flex flex-justify-center">
+       <div data-role="panel"
+          data-title-caption="<b>Cameras</b>"
+          data-title-icon="<span class='mif-apps'></span>"
+          data-width="240"
+          data-collapsible="true"
+          data-draggable="true">
+        ${renderListView(v.data.cameras, 'id-camera-list', 'OnCameraSelect', 'mif-video-camera')}
+       </div>
+      </div>
+     </div>
+     <div class="grid cell-7" id="main-view-right">
       ${renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera')}
      </div>
    </div>
 
    <h3 id="id-agents">Agents</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-10" id="main-view-right">
+     <div class="grid cell-5" id="main-view-right">
+      <div class="cell d-flex flex-justify-center">
+       <div data-role="panel"
+          data-title-caption="<b>Agents</b>"
+          data-title-icon="<span class='mif-apps'></span>"
+          data-width="240"
+          data-collapsible="true"
+          data-draggable="true">
+        ${renderListView(v.data.agents, 'id-agent-list', 'OnAgentSelect', 'mif-display')}
+       </div>
+      </div>
+     </div>
+     <div class="grid cell-7" id="main-view-right">
       ${renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
      </div>
    </div>

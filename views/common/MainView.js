@@ -52,25 +52,19 @@ var content = (v) =>
              <li class="item-separator"></li>
    
              <li>
-                 <a href="#id-cameras" class="dropdown-toggle">
+                 <a href="#id-cameras" class="">
                      <span class="icon"><span class="mif-video-camera"></span></span>
                      <span class="caption">Cameras</span>
                  </a>
-                 <ul id="id-camera-list" class="navview-menu" data-role="dropdown">
-   
-                 </ul>
              </li>
    
              <li class="item-separator"></li>
    
              <li>
-                 <a href="#id-agents" class="dropdown-toggle">
+                 <a href="#id-agents" class="">
                      <span class="icon"><span class="mif-display"></span></span>
                      <span class="caption">Agents</span>
                  </a>
-                 <ul id="id-agent-list" class="navview-menu" data-role="dropdown">
-   
-                 </ul>
              </li>
    
              <li class="item-separator"></li>
