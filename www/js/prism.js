@@ -486,12 +486,9 @@ function Report(cid)
       range.start.setMinutes(0);
       range.start.setSeconds(0);
       range.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-    } else if (inv == 'weekly') {
-      range.start = dateFromOffset(7*4);
-      range.end = dateFromOffset(0);
-    } else if (inv == 'monthly') {
-      range.start = dateFromOffset(30*12);
-      range.end = dateFromOffset(0);
+    } else if (inv == 'Monthly') {
+      range.start = new Date(now.getFullYear(), 0, 1, 0, 0, 0);
+      range.end = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
     }
 
     this.getIntervalData(inv, range)
@@ -541,6 +538,10 @@ function Report(cid)
       else if (inv === 'Daily')
       {
         p.bucket = Math.ceil(diff / (1000 * 60 * 60 * 24)); // days bucket
+      }
+      else if (inv === 'Monthly')
+      {
+        p.bucket = Math.ceil(diff / (1000 * 60 * 60 * 24 * 30.43685)); // month bucket
       }
 
       this.paths.push(p);
@@ -793,6 +794,13 @@ function displayIntervalGraph(ref, paths, inv, range)
       reportchart.data.labels = xAxis;
     }
     reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 14 days'
+  }
+  else if (inv === "Monthly")
+  {
+    reportchart.data.labels = [
+      'Jan','Feb','Mar','Apr','May',
+      'Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    reportchart.options.scales.xAxes[0].scaleLabel.labelString = (new Date()).getFullYear();
   }
 
   for (let i = 1; i <= reportchart.data.labels.length; i++)

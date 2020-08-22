@@ -177,7 +177,6 @@ function ReportsView(id, cameras)
           <option value="1Hour">1 Hour</option>
           <option value="Today">Today</option>
           <option value="Daily">Daily</option>
-          <option value="Weekly">Weekly</option>
           <option value="Monthly">Monthly</option>
          </select>
         </div>
