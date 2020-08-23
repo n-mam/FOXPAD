@@ -335,7 +335,12 @@ function OnCameraEditConfigClick()
     onShow: () => {
       document.getElementById('new-cam-name').value = items[0][1];
       let source = items[0][2];
-      document.getElementById('new-cam-src').value = source.substring(source.indexOf(">") + 1, source.lastIndexOf("<"));
+      if (source.startsWith("<div")) {
+        document.getElementById('new-cam-src').value = 
+          source.substring(source.indexOf(">") + 1, source.lastIndexOf("<"));
+      } else {
+        document.getElementById('new-cam-src').value = source;
+      }
       document.getElementById('new-cam-target').value = items[0][3];
       document.getElementById('new-cam-tracker').value = items[0][4];
       //5 skip count
