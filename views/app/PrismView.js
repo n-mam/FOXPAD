@@ -253,7 +253,7 @@ function ReportsView(id, cameras)
 function render(v, id)
 {
   v.page.html = `
-  <h3 id="id-home">Home</h3>
+  <h3 class="pt-2" id="id-home">Home</h3>
    <p>
     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
    </p>
@@ -266,7 +266,7 @@ function render(v, id)
      </div>
    </div>
 
-  <h3 id="id-cameras">Cameras</h3>
+  <h3 class="pt-2" id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-5" id="main-view-right">
       <div class="cell d-flex flex-justify-center h-100">
@@ -285,7 +285,7 @@ function render(v, id)
      </div>
    </div>
 
-   <h3 id="id-agents">Agents</h3>
+   <h3 class="pt-2" id="id-agents">Agents</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-5" id="main-view-right">
       <div class="cell d-flex flex-justify-center h-100">
@@ -304,14 +304,14 @@ function render(v, id)
      </div>
    </div>
 
-   <h3 id="id-reports">Reports</h3>
+   <h3 class="pt-2" id="id-reports">Reports</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-10" id="main-view-left">
       ${ReportsView('id-report-center', v.data.cameras)}
      </div>
    </div>
 
-   <h3 id="id-alerts">Alerts</h3>
+   <h3 class="pt-2" id="id-alerts">Alerts</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-6" id="main-view-left">
       A
