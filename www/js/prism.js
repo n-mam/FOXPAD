@@ -184,16 +184,22 @@ function GetCameraParams()
 
   return cam;
 }
-function OnCameraSaveButton()
+function OnCameraSaveButton(id)
 {
   let cam = GetCameraParams();
+
   if (!isDefined(cam)) return;
+
+  if (isDefined(id)) 
+  {
+    cam.id = id;
+  }
 
   cam.uid = uid.toString();
 
   _crud(
    {
-     action: 'CREATE',
+     action: isDefined(id) ? 'UPDATE': 'CREATE',
      table: 'cameras',
      rows: [cam]
    });
@@ -258,9 +264,7 @@ function OnCameraControl(cid, action)
 }
 function OnCameraTableNodeClick(node)
 {
-  var table = $('#id-camera-right-table').data('table');
-  let items = table.getSelectedItems();
-  console.log(items);
+  console.log(node);
 }
 function OnCameraDeleteClick()
 {
@@ -287,8 +291,6 @@ function OnCameraDeleteClick()
 }
 function OnCameraAddClick()
 {
-  console.log('OnCameraAddClick');
-
   Metro.dialog.create({
     title: "New Camera",
     content: decodeURI(addCameraView),
@@ -311,9 +313,51 @@ function OnCameraAddClick()
     ]
   });
 }
-function OnCameraSaveConfigClick()
+function OnCameraEditConfigClick()
 {
-  console.log('OnCameraSaveClick');
+  var table = $('#id-camera-right-table').data('table');
+  let items = table.getSelectedItems();
+
+  if (!items.length) {
+    show_error("Please select a camera to Edit");
+    return;
+  }
+
+  if (items.length > 1) {
+    show_error("Please select a single camera to edit");
+    return;
+  }
+
+  Metro.dialog.create({
+    title: `Edit Camera : ${items[0][1]}`,
+    content: decodeURI(addCameraView),
+    closeButton: true,
+    onShow: () => {
+      document.getElementById('new-cam-name').value = items[0][1];
+      let source = items[0][2];
+      document.getElementById('new-cam-src').value = source.substring(source.indexOf(">") + 1, source.lastIndexOf("<"));
+      document.getElementById('new-cam-target').value = items[0][3];
+      document.getElementById('new-cam-tracker').value = items[0][4];
+      //5 skip count
+      document.getElementById('new-cam-agent').value = items[0][6];
+    },
+    actions: [
+      {
+        caption: "SAVE",
+        cls: "js-dialog-close",
+        onclick: function(){
+         OnCameraSaveButton(items[0][0])
+        }
+      },
+      {
+        caption: "CANCEL",
+        cls: "js-dialog-close",
+        onclick: function(){
+           
+        }
+      }
+    ]
+  });
 }
 function CameraControlView(id)
 {
@@ -357,17 +401,22 @@ function GetAgentParams()
 
   return agent;
 }
-function OnAgentSaveButton()
+function OnAgentSaveButton(id)
 {
   let agent = GetAgentParams();
 
   if (!isDefined(agent)) return;
 
+  if (isDefined(id)) 
+  {
+    agent.id = id;
+  }
+
   agent.uid = uid.toString();
 
   _crud(
    {
-     action: 'CREATE',
+     action: isDefined(id) ? 'UPDATE' : 'CREATE',
      table: 'agents',
      rows: [agent]
    });
@@ -378,10 +427,7 @@ function OnAgentSelect(node)
 }
 function OnAgentTableNodeClick(node)
 {
-  console.log('OnAgentTableNodeClick');
-  var table = $('#id-agent-center-table').data('table');
-  let items = table.getSelectedItems();
-  console.log(items);
+  console.log(node);
 }
 function OnAgentDeleteClick()
 {
@@ -433,9 +479,47 @@ function OnAgentAddClick()
     ]
   });
 }
-function OnAgentSaveConfigClick()
+function OnAgentEditConfigClick()
 {
-  console.log('OnAgentSaveClick');
+  var table = $('#id-agent-right-table').data('table');
+  let items = table.getSelectedItems();
+
+  if (!items.length) {
+    show_error("Please select an agent to edit");
+    return;
+  }
+
+  if (items.length > 1) {
+    show_error("Please select a single agent to edit");
+    return;
+  }
+
+  Metro.dialog.create({
+    title: `Edit Agent : ${items[0][1]}`,
+    content: addNewAgentView(),
+    closeButton: true,
+    onShow: () => {
+      document.getElementById('new-agent-name').value = items[0][1];
+      document.getElementById('new-agent-host').value = items[0][2];
+      document.getElementById('new-agent-port').value = items[0][3];
+    },
+    actions: [
+        {
+          caption: "SAVE",
+          cls: "js-dialog-close",
+          onclick: function(){
+            OnAgentSaveButton(items[0][0]);
+          }
+        },
+        {
+          caption: "CANCEL",
+          cls: "js-dialog-close",
+          onclick: function(){
+
+          }
+        }
+    ]
+  });
 }
 function addNewAgentView() {
   return `
@@ -774,14 +858,14 @@ function displayIntervalGraph(ref, paths, inv, range)
     reportchart.data.labels = [
       '5m', '10m','15m','20m','25m','30m',
       '35m','40m','45m','50m','55m','60m'];
-      reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'last 1 hour'
+      reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 1 hour'
   }
   else if (inv === 'Today')
   {
     reportchart.data.labels = [
       '9','10','11','12','13',
       '14','15','16','17','18','19','20','21','22','23'];
-    reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'active hours'
+    reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Active hours'
   }
   else if (inv === 'Daily') 
   {
@@ -859,13 +943,6 @@ function InitAgentObjects()
   {
     let ag = new Agent(j[i].id, j[i].sid, j[i].host, j[i].port);
     Agents.push(ag);
-    // lv.append(
-    // `<li class="bg-white" id=${'id-agent-list-li-' + j[i].id}>
-    //   <a href="#id-agents">
-    //     <span class="icon"><span class="mif-display fg-black"></span></span>
-    //     <span class="caption">${j[i].sid}</span>
-    //   </a>
-    // </li>`);
   }
 }
 function InitCameraObjects()
@@ -878,33 +955,9 @@ function InitCameraObjects()
   {
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
-    // lv.append(
-    //   `<li class="bg-white" id=${'id-camera-list-li-' + j[i].id}>
-    //     <a href="#id-cameras" onclick='return OnCameraSelect(${j[i].id})'>
-    //       <span class="icon"><span class="mif-video-camera fg-black"></span></span>
-    //       <span class="caption">${j[i].sid}</span>
-    //     </a>
-    //   </li>`);
   }
 }
-function makeEditable() {
-  let td = $('#id-camera-right-table td');
-  $.each(td, function(){
-    if (!$(this).hasClass('rownum-cell') && 
-        !$(this).hasClass('check-cell')) {
-      $(this).attr("contenteditable", true);
-    }
-  });
-  td = $('#id-agent-right-table td');
-  $.each(td, function(){
-    if (!$(this).hasClass('rownum-cell') && 
-        !$(this).hasClass('check-cell')) {
-      $(this).attr("contenteditable", true);
-    }
-  });
-}
 
-windowOnLoadCbk.push(makeEditable);
 windowOnLoadCbk.push(InitAgentObjects);
 windowOnLoadCbk.push(InitCameraObjects);
 

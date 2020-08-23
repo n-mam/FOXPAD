@@ -114,7 +114,7 @@ function renderTableView(id, rows, columnNames, handler)
        <div class="w-50 d-flex flex-align-center flex-justify-end">
         <button class="tool-button" onclick="${'On' + handler + 'AddClick()'}"><span class="mif-plus"></span></button>
         <button class="tool-button" onclick="${'On' + handler + 'DeleteClick()'}"><span class="mif-bin"></span></button>
-        <button class="tool-button" onclick="${'On' + handler + 'SaveConfigClick()'}"><span class="mif-floppy-disk"></span></button>
+        <button class="tool-button" onclick="${'On' + handler + 'EditConfigClick()'}"><span class="mif-pencil"></span></button>
        </div>    
     </div>
    </div>

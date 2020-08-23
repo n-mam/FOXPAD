@@ -28,7 +28,7 @@ var content = (v) =>
   if (u.isDefined(v.json.prv.user))
   {
     return `
-    <div class="compacted js-compact p-2"
+    <div class="compacted js-compact"
          data-role="navview" 
          data-compact="md" 
          data-expand="md" 
