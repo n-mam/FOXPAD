@@ -262,9 +262,9 @@ function OnCameraControl(cid, action)
 
   cam.agent.send(cmd);
 }
-function OnCameraTableNodeClick(node)
+function OnCameraTableNodeClick()
 {
-  console.log(node);
+
 }
 function OnCameraDeleteClick()
 {
@@ -430,9 +430,9 @@ function OnAgentSelect(node)
 {
   alert("OnAgentSelect");
 }
-function OnAgentTableNodeClick(node)
+function OnAgentTableNodeClick()
 {
-  console.log(node);
+
 }
 function OnAgentDeleteClick()
 {

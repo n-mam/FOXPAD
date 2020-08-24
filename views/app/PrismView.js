@@ -97,7 +97,7 @@ function renderTableView(id, rows, columnNames, handler)
       data-rows-steps="5, 10"
       data-show-activity="false"
       id=${id + '-table'}
-      class="table text-left striped table-border">
+      class="table row-hover text-left striped table-border">
 
       <thead>
        ${renderTH(columnNames)}
