@@ -694,12 +694,14 @@ function computeHorizontalMaxima(paths, draw)
     }
 
     steps.push({counts: counts, x: ref.x, y: ref.y});
+
     ref.y += 20;
   }
 
   for (let i = steps.length - 1; i >= 0; i--)
   {
     let step = steps[i];
+
     if((step.counts.up + step.counts.down) != max)
     {
       steps.splice(i, 1);
@@ -942,25 +944,27 @@ function InitAgentObjects()
 {
   let j = JSON.parse(g_agents);
 
-  let lv = $('#id-agent-list');
-
   for (let i = 0; i < j.length; i++)
   {
     let ag = new Agent(j[i].id, j[i].sid, j[i].host, j[i].port);
     Agents.push(ag);
   }
+  // $("#id-agent-right-table").on("click", "td", function() {
+  //   alert($( this ).text());
+  // });
 }
 function InitCameraObjects()
 {
   let j = JSON.parse(decodeURI(g_cameras));
-
-  let lv = $('#id-camera-list');
 
   for (let i = 0; i < j.length; i++)
   {
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
+  // $("#id-camera-right-table").on("click", "td", function() {
+  //   alert($( this ).text());
+  // });
 }
 
 windowOnLoadCbk.push(InitAgentObjects);
