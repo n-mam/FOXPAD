@@ -203,14 +203,14 @@ function ReportsView(id, cameras)
     datasets: 
     [
      {
-      label: 'IN',
+      label: '',
       backgroundColor: 'rgb(154, 208, 245)',
       borderColor: 'rgb(106, 183, 235)',
       borderWidth: 1,
       data: []
      },
      {
-      label: 'OUT',
+      label: '',
       backgroundColor: 'rgb(255, 177, 193)',
       borderColor: 'rgb(255, 134, 160)',
       borderWidth: 1,

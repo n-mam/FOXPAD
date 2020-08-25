@@ -592,10 +592,28 @@ function Report(cid)
         where: `cid = ${this.cid} and uid = ${uid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
         rows: [{x: 'y'}]
       }, "", (res, e) => {
-        if (!e && this.processIntervalData(res, inv, range)){
-          let ref = computeHorizontalMaxima(this.paths, false);
-          displayIntervalGraph(ref, this.paths, inv, range);
-          this.showPathAnalyzerCanvas(this.paths, inv, range);
+        if (!e)
+        {
+          if (this.processIntervalData(res, inv, range))
+          {
+            let maxHSteps = computeHorizontalMaxima(this.paths, false);
+            let maxVSteps = computeVerticalMaxima(this.paths, false);
+
+            let ref = {};
+
+            if (maxHSteps.length > maxVSteps.length) {
+              ref.x = 0;
+              ref.y = (maxHSteps[0].y + maxHSteps[maxHSteps.length-1].y) / 2;
+              ref.dir = 'horizontal';
+            } else {
+              ref.x = (maxVSteps[0].x + maxVSteps[maxVSteps.length-1].x) / 2;
+              ref.y = 0;
+              ref.dir = 'vertical';
+            }
+
+            displayIntervalGraph(ref, this.paths, inv, range);
+            this.showPathAnalyzerCanvas(ref, this.paths, inv, range);
+          }
         }
       });
   }
@@ -611,7 +629,8 @@ function Report(cid)
     {
       let p = {};
       
-      p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(","); 
+      p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(",");
+
       p.ts = (res.result[i]).ts;
 
       let diff = Math.abs((new Date(p.ts)).getTime() - range.start.getTime());
@@ -639,8 +658,8 @@ function Report(cid)
     return true;
   }
 
-  this.showPathAnalyzerCanvas = function(paths, inv, range){
-    let ref;
+  this.showPathAnalyzerCanvas = function(ref, paths, inv, range){
+    let newref;
     Metro.window.create({
       resizeable: true,
       draggable: true,
@@ -656,18 +675,22 @@ function Report(cid)
       {
         let canvas = document.getElementById("id-trail-analyzer");
         canvas.addEventListener("click", function(e){
-          ref = getMousePosition("id-trail-analyzer", e);
-          let counts = computeRefLineIntersectionsCount(ref, paths);
-          drawRefrenceLineAndCounts(ref, counts);
+          newref = getMousePosition("id-trail-analyzer", e);
+          let counts = computeRefLineIntersectionsCount(newref, paths);
+          drawRefrenceLineAndCounts(newref, counts);
         }, false);
         renderPaths("id-trail-analyzer", paths);
-        computeHorizontalMaxima(paths, true);
+        if (ref.dir === 'horizontal') {
+          computeHorizontalMaxima(paths, true);
+        } else {
+          computeVerticalMaxima(paths, true);
+        }
       },
       onClose: function(w)
       {
-        if (isDefined(ref))
+        if (isDefined(newref))
         {
-          displayIntervalGraph(ref, paths, inv, range);
+          displayIntervalGraph(newref, paths, inv, range);
         }
       }
     });
@@ -739,7 +762,75 @@ function computeHorizontalMaxima(paths, draw)
     context.stroke();
   }
 
-  return {x: 0, y: yMid};
+  return steps; 
+}
+function computeVerticalMaxima(paths, draw) 
+{
+  let ref = { x: 5, y: 5 };
+  let steps = [];
+  let max = 0;
+
+  while (ref.x <= 600)
+  {
+    let counts = computeRefLineIntersectionsCount(ref, paths);
+
+    if ((counts.left + counts.right) > max) 
+    {
+      max = counts.left + counts.right;
+    }
+
+    if (draw) 
+    {
+      drawRefrenceLineAndCounts(ref, counts);
+    }
+
+    steps.push({counts: counts, x: ref.x, y: ref.y});
+
+    ref.x += 20;
+  }
+
+  for (let i = steps.length - 1; i >= 0; i--)
+  {
+    let step = steps[i];
+
+    if((step.counts.left + step.counts.right) != max)
+    {
+      steps.splice(i, 1);
+    }
+  }
+
+  let xMid = (steps[0].x + steps[steps.length-1].x) / 2;
+
+  if (draw)
+  {
+    let canvas = document.getElementById("id-trail-analyzer");
+    let context = canvas.getContext('2d');
+  
+    context.beginPath();
+    context.strokeStyle = "#FF0000";
+    context.lineWidth = 1;
+    context.setLineDash([5, 3]);
+    context.moveTo(steps[0].x, 0);
+    context.lineTo(steps[0].x, canvas.height);
+    context.stroke();
+  
+    context.beginPath();
+    context.strokeStyle = "#FF0000";
+    context.lineWidth = 1;
+    context.setLineDash([5, 3]);
+    context.moveTo(steps[steps.length-1].x, 0);
+    context.lineTo(steps[steps.length-1].x, canvas.height);
+    context.stroke();
+  
+    context.beginPath();
+    context.strokeStyle = "#196F3D";
+    context.lineWidth = 1;
+    context.moveTo(xMid, 0);
+    context.lineTo(xMid, canvas.height);
+    context.stroke();
+  }
+
+  return steps;
 }
 function getMousePosition(id, e) {
   let canvas = document.getElementById(id);
@@ -915,14 +1006,26 @@ function displayIntervalGraph(ref, paths, inv, range)
       bucketCounts = computeRefLineIntersectionsCount(ref, bucketPaths);
     }
 
-    reportchart.data.datasets[0].data.push(bucketCounts.up);
-    reportchart.data.datasets[1].data.push(bucketCounts.down);
+    if (ref.dir === 'horizontal')
+    {
+      reportchart.data.datasets[0].label = 'UP';
+      reportchart.data.datasets[1].label = 'DOWN';
+      reportchart.data.datasets[0].data.push(bucketCounts.up);
+      reportchart.data.datasets[1].data.push(bucketCounts.down);
+    }
+    else if (ref.dir === 'vertical')
+    {
+      reportchart.data.datasets[0].label = 'LEFT';
+      reportchart.data.datasets[1].label = 'RIGHT';
+      reportchart.data.datasets[0].data.push(bucketCounts.left);
+      reportchart.data.datasets[1].data.push(bucketCounts.right);
+    }
+
   }
 
   reportchart.update();
 
-  document.getElementById('id-chart-canvas').style = "display:flex"
-
+  document.getElementById('id-chart-canvas').style = "display:flex";
 }
 function OnClickAnalyzeTrail()
 {
