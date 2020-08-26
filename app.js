@@ -32,46 +32,55 @@ router.setHandler('/User', UserController);
 router.setHandler('/api', APIController);
 router.setHandler('/upload', FileController);
 
-var reqListener = (req, res) => 
+var abortRequest = (req, res, m) =>
 {
+  console.log('aborting request');
+  req.removeListener('data', cbk_data);
+  req.removeListener('end', cbk_end);
+  /*
+   * with the "Connection close" header set 
+   * node will automatically close the socket
+   */
+  res.setHeader('Connection', 'close');
+
+  u.send_json(
+    413, 
+    {
+      status: 'ERROR',
+      msg: m
+    },
+    res);
+
+  console.log('request connection destroyed');
+}
+
+http.createServer((req, res) => {
+
   const { headers, method, url } = req;
 
-  var cookie = u.getCookie(req);
+  let cookie = u.getCookie(req);
 
-  var abortRequest = (req, res, m) =>
+  let body = [], handler, _url;
+
+  try
   {
-    console.log('aborting request');
-    req.removeListener('data', cbk_data);
-    req.removeListener('end', cbk_end);
-    /*
-     * with the "Connection close" header set 
-     * node will automatically close the socket
-     */
-    res.setHeader('Connection', 'close');
-  
-    u.send_json(
-      413, 
-      {
-        status: 'ERROR',
-        msg: m
-      },
-      res);
-  
-    console.log('request connection destroyed');
+    _url = new URL(url, 'https://example.org/');
+    handler = router.getHandler(_url, req, res, cookie);
+  }
+  catch (e)
+  {
+    console.log('failed to parse request url');
+    abortRequest(req, res, 'invalid url');
+    return;
   }
 
-  const cbk_error = (e) =>
-  {
+  req.on('error', (e) => {
+
     console.error(error);
-  }
 
-  var body = [], total = 0;
+  }).on('data', (chunk) => {
 
-  const cbk_data = (chunk) => 
-  {
-    total += chunk.length;
-
-    console.log('new chunk ' + chunk.length + ' total : ' + total);
+    console.log('chunk len : ' + chunk.length + ' total : ' + body.length);
     /*
      * except for upload route, limit the body size to 1K todo
      */
@@ -83,11 +92,8 @@ var reqListener = (req, res) =>
     {
       body.push(chunk);
     }
-  };
 
-  const cbk_end = () =>
-  {
-    console.log('Total chunks recieved ' + body.length.toString());
+  }).on('end', () => {
 
     if (_url.pathname !== '/upload') //todo: check req's content type
     {
@@ -97,13 +103,16 @@ var reqListener = (req, res) =>
     {
       body = Buffer.concat(body);
     }
-    /**
+
+    console.log(`req ${_url.pathname} end. body len : ${body.length}`);
+
+    /*
      * At this point, we have the headers, method, url and body, and
      * can now do whatever we need to in order to respond to this req.
      */
     if (handler)
     {
-      if (method == 'POST') 
+      if (method === 'POST') 
       {
         var jb = null;
 
@@ -118,38 +127,20 @@ var reqListener = (req, res) =>
           handler(body);
         }
       }
-      else if (method == 'GET')
+      else if (method === 'GET')
       {
         console.log(method + ", " + _url.pathname + ", " + _url.search + " ");
-        console.log('accordion : ' + JSON.stringify(u.getCookie(req, 'accordion')));
         console.log('BH : ' + JSON.stringify(u.getCookie(req, 'BH')));
-        handler(); 
+        handler();
       }
     }
     else
     {
       router.defaultHandler(req, res, _url.pathname);
     }
-  };
 
-  req.on('error', cbk_error);
-  req.on('data', cbk_data);
-  req.on('end', cbk_end);
+  });
 
-  try
-  {
-    var _url = new URL(url, 'https://example.org/');
-  }
-  catch (e)
-  {
-    console.log('failed to parse request url');
-    abortRequest(req, res, 'Invalid URL');
-    return;
-  }
-
-  var handler = router.getHandler(_url, req, res, cookie);  
-}
-
-(http.createServer(reqListener)).listen(port);
+}).listen(port);
 
 console.log(" server   : http://localhost:" + port.toString());

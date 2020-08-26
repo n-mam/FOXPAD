@@ -178,7 +178,7 @@ function GetCameraParams()
   let cam = {};
 
   cam.sid = name;
-  cam.source = source.replace("\\", "\\\\");
+  cam.source = source.replace(/\\/g, "\\\\");
   cam.target = target;
   cam.tracker = trackers;
   cam.aid = aid;
@@ -352,14 +352,13 @@ function OnCameraEditConfigClick()
         caption: "SAVE",
         cls: "js-dialog-close",
         onclick: function(){
-         OnCameraSaveButton(items[0][0])
+          OnCameraSaveButton(items[0][0])
         }
       },
       {
         caption: "CANCEL",
         cls: "js-dialog-close",
         onclick: function(){
-           
         }
       }
     ]
@@ -1067,9 +1066,9 @@ function InitCameraObjects()
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
-  $("#id-camera-right-table").on("click", "tr", function() {
-    alert($( this ).text());
-  });
+  // $("#id-camera-right-table").on("click", "tr", function() {
+  //   alert($( this ).text());
+  // });
 }
 
 windowOnLoadCbk.push(InitAgentObjects);
