@@ -1053,9 +1053,14 @@ function InitAgentObjects()
     let ag = new Agent(j[i].id, j[i].sid, j[i].host, j[i].port);
     Agents.push(ag);
   }
-  // $("#id-agent-right-table").on("click", "td", function() {
-  //   alert($( this ).text());
-  // });
+  $("#id-agent-right-table").on("click", "td:not(.check-cell)", function() {
+    let e = $(this);
+    while (!e.hasClass("check-cell"))
+    {
+      e = e.prev();
+    }
+    alert(e.next().text());
+  });
 }
 function InitCameraObjects()
 {
@@ -1066,9 +1071,14 @@ function InitCameraObjects()
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
-  // $("#id-camera-right-table").on("click", "tr", function() {
-  //   alert($( this ).text());
-  // });
+  $("#id-camera-right-table").on("click", "td:not(.check-cell)", function() {
+    let e = $(this);
+    while (!e.hasClass("check-cell"))
+    {
+      e = e.prev();
+    }
+    alert(e.next().text());
+  });
 }
 
 windowOnLoadCbk.push(InitAgentObjects);
