@@ -123,4 +123,5 @@ var Progress = (value) =>
 {
   return `<div class='Progress'><div class='PBar'></div></div>`;
 }
+
 module.exports = { Select, Color, Text, Image, Button, Check, Progress, style_progress };

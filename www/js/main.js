@@ -99,7 +99,7 @@
         }
         else
         {
-          if (isDefined(cbk))
+          if (isDefined(cbk) && isDefined(res))
           {
             cbk(res.msg);
           }

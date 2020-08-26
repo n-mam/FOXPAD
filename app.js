@@ -1,30 +1,18 @@
 var http = require("http");
 var URL = require('url').URL;
 
-/*
- *  library
- */
 var u = require('./lib/util');
 var router = require('./lib/router');
 var APIController = require('./lib/api');
 
-/*
- * controllers
- */
 var HomeController = require('./control/HomeController');
 var DashBoardController = require('./control/DashBoardController');
 var UserController = require('./control/UserController');
 var FileController = require('./control/FileController');
 
-/*
- * command line defaults
- */
 var port = 8080;
 var dbname = "foxpad";
 
-/*
- * node.exe server.js 1234 dbname
- */
 if (process.argv.length >= 3)
 {
   port = parseInt(process.argv[2]);

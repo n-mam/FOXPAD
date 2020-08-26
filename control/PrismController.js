@@ -14,7 +14,7 @@ function index(v, cbk)
     else
     {
       data.cameras = results;
-      
+
       sql = `select * from Agents where uid = ${v.json.prv.user.id}`;
 
       db.exec (sql, (e, results) => {

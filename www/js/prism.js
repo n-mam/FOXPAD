@@ -43,6 +43,7 @@ function Agent(id, sid, host, port)
         $(this).children(".icon")[0].innerHTML = `<span class=\'mif-display fg-red\'>`;
       }
     });
+
   }
 
   this.onerror = function(e){
@@ -612,6 +613,7 @@ function Report(cid)
             }
 
             displayIntervalGraph(ref, this.paths, inv, range);
+
             this.showPathAnalyzerCanvas(ref, this.paths, inv, range);
           }
         }
@@ -1065,9 +1067,9 @@ function InitCameraObjects()
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
-  // $("#id-camera-right-table").on("click", "td", function() {
-  //   alert($( this ).text());
-  // });
+  $("#id-camera-right-table").on("click", "tr", function() {
+    alert($( this ).text());
+  });
 }
 
 windowOnLoadCbk.push(InitAgentObjects);
