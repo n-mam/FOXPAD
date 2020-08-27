@@ -87,7 +87,6 @@ function renderTableView(id, rows, columnNames, handler)
        id=${id + '-table'}
        class="table row-hover text-left striped table-border"
        data-rows="5"
-       data-role="table"
        data-check="true"
        data-rows-steps="5, 10"
        data-static-view="true"
@@ -96,7 +95,7 @@ function renderTableView(id, rows, columnNames, handler)
        data-cls-rows-count="cell-md-4" 
        data-cls-table-top="row flex-nowrap"
        data-on-check-click="${'On' + handler + 'TableNodeClick()'}"
-       data-pagination-wrapper=".my-pagination-wrapper">
+       data-pagination-wrapper=".${id}-my-pagination-wrapper">
 
       <thead>
        ${renderTH(columnNames)}
@@ -109,7 +108,7 @@ function renderTableView(id, rows, columnNames, handler)
     </div>
     <div class="row">
        <style> .pagination {margin:0em} </style>
-       <div class="w-50 my-pagination-wrapper">
+       <div class="w-50 ${id}-my-pagination-wrapper">
        </div>
        <div class="w-50 d-flex flex-align-center flex-justify-end">
         <button class="tool-button" onclick="${'On' + handler + 'AddClick()'}"><span class="mif-plus"></span></button>

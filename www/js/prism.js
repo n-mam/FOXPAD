@@ -462,8 +462,6 @@ function OnAgentDeleteClick()
 }
 function OnAgentAddClick()
 {
-  console.log('OnAgentAddClick');
-
   Metro.dialog.create({
     title: "New Agent",
     content: addNewAgentView(),
@@ -1055,6 +1053,7 @@ function InitAgentObjects()
     let ag = new Agent(j[i].id, j[i].sid, j[i].host, j[i].port);
     Agents.push(ag);
   }
+  $("#id-agent-right-table").table();
   $("#id-agent-right-table").on("click", "td:not(.check-cell)", function() {
     let e = $(this);
     while (!e.hasClass("check-cell")) {
@@ -1072,6 +1071,7 @@ function InitCameraObjects()
     let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
     Cameras.push(cr);
   }
+  $("#id-camera-right-table").table();
   $("#id-camera-right-table").on("click", "td:not(.check-cell)", function() {
     let e = $(this);
     while (!e.hasClass("check-cell")) {
