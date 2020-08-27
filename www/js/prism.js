@@ -21,13 +21,14 @@ function Agent(id, sid, host, port)
 
   this.onopen = function(e){
     console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
-    let self = this;
     this.socket.agent.getSessions();
-    let lv = $('#id-agent-list');
-    let items = lv.children();
-    $.each(items, function(){
-      if ($(this).id() === ('id-agent-list-li-' + self.socket.agent.dbid)) {
-        $(this).find(".icon")[0].innerHTML = `<span class=\'mif-display fg-green\'>`;
+    let lv = $('#id-agent-right-table');
+    let items = lv.find("tr");
+    let self = this;
+    $.each(items, function() {
+      let ch = $(this).children();
+      if (parseInt($(ch[2]).text()) === self.socket.agent.dbid) {
+        $(ch[3]).addClass("success");
       }
     });
   }
@@ -35,15 +36,15 @@ function Agent(id, sid, host, port)
   this.onclose = function(e){
     console.warn('agent websocket closed : ' + this.socket.host + ':' + this.socket.port + ' reason : ' + e.reason);
     show_error("Agent '" + this.socket.agent.sid + "' connection broken");
-    let lv = $('#id-agent-list');
-    let items = lv.children();
+    let lv = $('#id-agent-right-table');
+    let items = lv.find("tr");
     let self = this;
-    $.each(items, function(){
-      if ($(this).id() === ('id-agent-list-li-' + self.socket.agent.dbid)) {
-        $(this).children(".icon")[0].innerHTML = `<span class=\'mif-display fg-red\'>`;
+    $.each(items, function() {
+      let ch = $(this).children();
+      if (parseInt($(ch[2]).text()) === self.socket.agent.dbid) {
+        $(ch[3]).addClass("alert");
       }
     });
-
   }
 
   this.onerror = function(e){
@@ -57,35 +58,39 @@ function Agent(id, sid, host, port)
     let res = JSON.parse(e.data);
 
     if (res.req == 'get-active-sessions')
-    {     
-      let li = $('#id-camera-list').children();
+    {
+      let items = $('#id-camera-right-table').find("tr");
 
-      $.each(li, function(){
-        $(this).find(".icon")[0].innerHTML = `<span class=\'mif-video-camera fg-black\'>`;
+      $.each(items, function() {
+        let ch = $(this).children();
+        $(ch[3]).clearClasses();
       });
 
       for (let i = 0; i < res.sessions.length; i++) 
       {
-        let color = 'fg-black';
+        let color = '';
 
         if (res.sessions[i].started == "true")
         {
-          color = 'fg-green';
+          color = 'success';
 
           if (res.sessions[i].paused == "true")
           {
-            color = 'fg-orange';
+            color = 'warning';
           }
         }
         else
         {
-          color = 'fg-red';
+          color = 'alert';
         }
 
-        $.each(li, function(){
-          if ($(this).innerText() === res.sessions[i].sid) {
-            $(this).children(".icon")[0].innerHTML = `<span class=\'mif-video-camera ${color}\'>`;
+        $.each(items, function() {
+          let ch = $(this).children();
+          if ($(ch[3]).text() === res.sessions[i].sid)
+          {
+            $(ch[3]).addClass(color);
           }
+          
         });
       }
     }
@@ -205,9 +210,9 @@ function OnCameraSaveButton(id)
      rows: [cam]
    });
 }
-function OnCameraSelect(node)
+function OnCameraSelect(cid)
 {
-  let cid = ((node[0].id).split("-")).pop();
+  //let cid = ((node[0].id).split("-")).pop();
 
   let camera = getCameraObject(parseInt(cid));
 
@@ -330,7 +335,7 @@ function OnCameraEditConfigClick()
   }
 
   Metro.dialog.create({
-    title: `Edit Camera : ${items[0][1]}`,
+    title: `Edit : <b>${items[0][1]}</b>`,
     content: decodeURI(addCameraView),
     closeButton: true,
     onShow: () => {
@@ -1055,8 +1060,7 @@ function InitAgentObjects()
   }
   $("#id-agent-right-table").on("click", "td:not(.check-cell)", function() {
     let e = $(this);
-    while (!e.hasClass("check-cell"))
-    {
+    while (!e.hasClass("check-cell")) {
       e = e.prev();
     }
     alert(e.next().text());
@@ -1073,11 +1077,10 @@ function InitCameraObjects()
   }
   $("#id-camera-right-table").on("click", "td:not(.check-cell)", function() {
     let e = $(this);
-    while (!e.hasClass("check-cell"))
-    {
+    while (!e.hasClass("check-cell")) {
       e = e.prev();
     }
-    alert(e.next().text());
+    OnCameraSelect(e.next().text());
   });
 }
 

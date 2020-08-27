@@ -269,38 +269,24 @@ function render(v, id)
   <h3 class="pt-2" id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-5" id="main-view-right">
-      <div class="cell d-flex flex-justify-center h-100">
-       <div data-role="panel"
-          data-title-caption="<b>Cameras</b>"
-          data-title-icon="<span class='mif-apps'></span>"
-          data-width="240"
-          data-collapsible="true"
-          data-draggable="true">
-        ${renderListView(v.data.cameras, 'id-camera-list', 'OnCameraSelect', 'mif-video-camera')}
+       <div class="cell d-flex flex-justify-center h-100">
+
        </div>
-      </div>
      </div>
      <div class="grid cell-7" id="main-view-right">
-      ${renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera')}
+       ${renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera')}
      </div>
    </div>
 
    <h3 class="pt-2" id="id-agents">Agents</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-5" id="main-view-right">
-      <div class="cell d-flex flex-justify-center h-100">
-       <div data-role="panel"
-          data-title-caption="<b>Agents</b>"
-          data-title-icon="<span class='mif-apps'></span>"
-          data-width="240"
-          data-collapsible="true"
-          data-draggable="true">
-        ${renderListView(v.data.agents, 'id-agent-list', 'OnAgentSelect', 'mif-display')}
+       <div class="cell d-flex flex-justify-center h-100">
+
        </div>
-      </div>
      </div>
      <div class="grid cell-7" id="main-view-right">
-      ${renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
+       ${renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
      </div>
    </div>
 
