@@ -80,24 +80,23 @@ function renderTD(rows, keys)
 function renderTableView(id, rows, columnNames, handler)
 {
   return `
-  <div class="cell d-flex flex-justify-center" id='${id}'>
-
    <div class="grid">
-
     <div class="row">
+    <div class="table-component w-100">
      <table
-      data-role="table" data-static-view="true"
-      data-cls-table-top="row flex-nowrap"
-      data-on-check-click="${'On' + handler + 'TableNodeClick()'}"
-      data-cls-search="cell-md-8"
-      data-cls-rows-count="cell-md-4" 
-      data-pagination-wrapper=".my-pagination-wrapper"
-      data-rows="5"
-      data-check="true"
-      data-rows-steps="5, 10"
-      data-show-activity="false"
-      id=${id + '-table'}
-      class="table row-hover text-left striped table-border">
+       id=${id + '-table'}
+       class="table row-hover text-left striped table-border"
+       data-rows="5"
+       data-role="table"
+       data-check="true"
+       data-rows-steps="5, 10"
+       data-static-view="true"
+       data-show-activity="false"
+       data-cls-search="cell-md-8"
+       data-cls-rows-count="cell-md-4" 
+       data-cls-table-top="row flex-nowrap"
+       data-on-check-click="${'On' + handler + 'TableNodeClick()'}"
+       data-pagination-wrapper=".my-pagination-wrapper">
 
       <thead>
        ${renderTH(columnNames)}
@@ -106,6 +105,7 @@ function renderTableView(id, rows, columnNames, handler)
         ${renderTD(rows, columnNames)}
       </tbody>
      </table>
+     </div>
     </div>
     <div class="row">
        <style> .pagination {margin:0em} </style>
@@ -117,8 +117,7 @@ function renderTableView(id, rows, columnNames, handler)
         <button class="tool-button" onclick="${'On' + handler + 'EditConfigClick()'}"><span class="mif-pencil"></span></button>
        </div>    
     </div>
-   </div>
-  </div>`;
+   </div>`;
 }
 
 function addCameraView(agents)
@@ -268,11 +267,6 @@ function render(v, id)
 
   <h3 class="pt-2" id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-5" id="main-view-right">
-       <div class="cell d-flex flex-justify-center h-100">
-
-       </div>
-     </div>
      <div class="grid cell-7" id="main-view-right">
        ${renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera')}
      </div>
@@ -280,11 +274,6 @@ function render(v, id)
 
    <h3 class="pt-2" id="id-agents">Agents</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-5" id="main-view-right">
-       <div class="cell d-flex flex-justify-center h-100">
-
-       </div>
-     </div>
      <div class="grid cell-7" id="main-view-right">
        ${renderTableView('id-agent-right', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
      </div>
