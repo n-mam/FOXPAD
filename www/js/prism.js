@@ -28,7 +28,7 @@ function Agent(id, sid, host, port)
     $.each(items, function() {
       let ch = $(this).children();
       if (parseInt($(ch[2]).text()) === self.socket.agent.dbid) {
-        $(ch[3]).addClass("success");
+        $(ch[3]).addClass("success border bd-gray");
       }
     });
   }
@@ -42,7 +42,7 @@ function Agent(id, sid, host, port)
     $.each(items, function() {
       let ch = $(this).children();
       if (parseInt($(ch[2]).text()) === self.socket.agent.dbid) {
-        $(ch[3]).addClass("alert");
+        $(ch[3]).addClass("alert border bd-gray");
       }
     });
   }
@@ -72,16 +72,16 @@ function Agent(id, sid, host, port)
 
         if (res.sessions[i].started == "true")
         {
-          color = 'success';
+          color = 'success border bd-gray';
 
           if (res.sessions[i].paused == "true")
           {
-            color = 'warning';
+            color = 'warning border bd-gray';
           }
         }
         else
         {
-          color = 'alert';
+          color = 'alert border bd-gray';
         }
 
         $.each(items, function() {
@@ -90,7 +90,6 @@ function Agent(id, sid, host, port)
           {
             $(ch[3]).addClass(color);
           }
-          
         });
       }
     }
