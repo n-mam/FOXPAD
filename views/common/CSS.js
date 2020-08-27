@@ -17,6 +17,9 @@ var main = ({theme, accordian}) => {
 a, u {
   text-decoration: none !important;
 }
+tr {
+  cursor: pointer;
+}
 .column {
   flex-direction: column;
 }

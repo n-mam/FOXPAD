@@ -212,8 +212,6 @@ function OnCameraSaveButton(id)
 }
 function OnCameraSelect(cid)
 {
-  //let cid = ((node[0].id).split("-")).pop();
-
   let camera = getCameraObject(parseInt(cid));
 
   let ccid = "#cam-" + cid + "-control";
