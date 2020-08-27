@@ -97,14 +97,14 @@ function renderTableView(id, rows, columnNames, handler)
        data-on-check-click="${'On' + handler + 'TableNodeClick()'}"
        data-pagination-wrapper=".${id}-my-pagination-wrapper">
 
-      <thead>
-       ${renderTH(columnNames)}
-      </thead>
-      <tbody>
-        ${renderTD(rows, columnNames)}
-      </tbody>
+       <thead>
+         ${renderTH(columnNames)}
+       </thead>
+       <tbody>
+         ${renderTD(rows, columnNames)}
+       </tbody>
      </table>
-     </div>
+    </div>
     </div>
     <div class="row">
        <style> .pagination {margin:0em} </style>

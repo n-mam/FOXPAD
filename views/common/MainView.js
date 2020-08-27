@@ -182,7 +182,7 @@ function landingPage()
     <div class="flex column pl-5">
       ${cred.credentials()}
       <a class="pt-4" href="/content/foxpad/fpd.zip">
-        <button class="button rounded"><span class="pr-2 mif-download mif-2x icon"></span><b>AGENT</b></button>
+        <button class="d-flex flex-align-center button rounded"><span class="pr-2 mif-download mif-2x icon"></span><b>AGENT</b></button>
       </a>
     </div>
   </div>
