@@ -260,7 +260,8 @@ function OnCameraControl(cid, action)
     source: cam.source,
     target: cam.target,
     tracker: cam.tracker,
-    skipcount: cam.skipcount
+    skipcount: cam.skipcount,
+    aep: location.hostname
   };
 
   cam.agent.send(cmd);
