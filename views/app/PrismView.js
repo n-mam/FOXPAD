@@ -268,7 +268,7 @@ function render(v, id)
   <h3 class="pt-2" id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-7" id="main-view-right">
-       ${renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skip', 'aid', 'uid'], 'Camera')}
+       ${renderTableView('id-camera-right', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'skipcount', 'aid', 'uid'], 'Camera')}
      </div>
    </div>
 

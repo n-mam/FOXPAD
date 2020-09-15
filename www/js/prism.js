@@ -1,8 +1,10 @@
-function Agent(id, sid, host, port)
+function Agent(o)
 {
-  this.dbid = id;
-  this.sid = sid;
- 
+  this.id = o.id;
+  this.sid = o.sid;
+  this.host = o.host;
+  this.port = o.port;
+
   this.getSessions = function() {
     let cmd = {};
     cmd.app = 'cam';
@@ -27,7 +29,7 @@ function Agent(id, sid, host, port)
     let self = this;
     $.each(items, function() {
       let ch = $(this).children();
-      if (parseInt($(ch[2]).text()) === self.socket.agent.dbid) {
+      if (parseInt($(ch[2]).text()) === self.socket.agent.id) {
         $(ch[3]).addClass("success border bd-gray");
       }
     });
@@ -41,7 +43,7 @@ function Agent(id, sid, host, port)
     let self = this;
     $.each(items, function() {
       let ch = $(this).children();
-      if (parseInt($(ch[2]).text()) === self.socket.agent.dbid) {
+      if (parseInt($(ch[2]).text()) === self.socket.agent.id) {
         $(ch[3]).addClass("alert border bd-gray");
       }
     });
@@ -53,7 +55,7 @@ function Agent(id, sid, host, port)
 
   this.onmessage = function(e){
 
-    console.log("server : " + e.data);
+    console.log("agent : " + e.data);
 
     let res = JSON.parse(e.data);
 
@@ -100,7 +102,7 @@ function Agent(id, sid, host, port)
     else if (res.req == 'play')
     {
       let cam = getCameraObjectBySid(res.sid);
-      let canvas = document.getElementById('id-cam-canvas-' + cam.dbid);
+      let canvas = document.getElementById('id-cam-canvas-' + cam.id);
 
       if (canvas)
       {
@@ -120,22 +122,26 @@ function Agent(id, sid, host, port)
     }
   }
 
-  this.socket = new Socket(host, port, [], this);
+  this.socket = new Socket(this.host, this.port, [], this);
 }
 
-function Camera(id, sid, source, target, tracker, skipcount, aid)
+function Camera(o)
 {
-  this.dbid = id;
-  this.sid = sid;
-  this.source = source;
-  this.target = target;
-  this.tracker = tracker;
-  this.skipcount = skipcount;
-  this.aid = aid;
+  this.id = o.id;
+  this.sid = o.sid;
+  this.source = o.source;
+  this.target = o.target;
+  this.tracker = o.tracker;
+  this.uid = o.uid;
+  this.aid = o.aid;
+  this.skipcount = o.skipcount;
+  this.bbarea = o.bbarea;
+  this.transport = o.transport;
+  this.exhzbb = o.exhzbb;
 
   for (let i = 0; i < Agents.length; i++)
   {
-    if (aid == Agents[i].dbid)
+    if (this.aid == Agents[i].id)
     {
       this.agent = Agents[i];
     }
@@ -146,7 +152,7 @@ function getCameraObject(id)
 {
   for (let i = 0; i < Cameras.length; i++)
   {
-    if (id === Cameras[i].dbid)
+    if (id === Cameras[i].id)
     {
       return Cameras[i];
     }
@@ -226,7 +232,7 @@ function OnCameraSelect(cid)
       id: ccid.substr(1),
       icon: "<span class='mif-video-camera'></span>",
       title: camera.sid,
-      content: CameraControlView(cid),
+      content: CameraControlView(camera),
       place: "center",
       onShow: function(w) {
 
@@ -254,7 +260,7 @@ function OnCameraControl(cid, action)
     req: 'camera-control',   
     action: action,
     sid: cam.sid.toString(),
-    cid: cam.dbid.toString(),
+    cid: cam.id.toString(),
     aid: cam.aid.toString(),
     uid: uid.toString(),
     source: cam.source,
@@ -268,12 +274,12 @@ function OnCameraControl(cid, action)
 }
 function OnCameraTableNodeClick()
 {
-
 }
 function OnCameraDeleteClick()
 {
   var table = $('#id-camera-right-table').data('table');
   let items = table.getSelectedItems();
+
   if (!items.length) {
     show_error("Please select a camera to delete");
     return;
@@ -301,18 +307,18 @@ function OnCameraAddClick()
     closeButton: true,
     actions: [
         {
-            caption: "SAVE",
-            cls: "js-dialog-close",
-            onclick: function(){
-              OnCameraSaveButton()
-            }
+          caption: "SAVE",
+          cls: "js-dialog-close",
+          onclick: function(){
+            OnCameraSaveButton()
+          }
         },
         {
-            caption: "CANCEL",
-            cls: "js-dialog-close",
-            onclick: function(){
+          caption: "CANCEL",
+          cls: "js-dialog-close",
+          onclick: function(){
               
-            }
+          }
         }
     ]
   });
@@ -367,86 +373,87 @@ function OnCameraEditConfigClick()
     ]
   });
 }
-function CameraControlView(id)
+function CameraControlView(cam)
 {
+  let cid = cam.id;
+
   return `
    <script>
    var areaButton = [
     {
       html: "<span class='mif-floppy-disk'></span>",
-      onclick: "OnCameraPropertySave(${id}, 'area')"
+      onclick: "OnCameraPropertySave(${cid}, 'bbarea')"
     }
    ]
    var skipCountButton = [
     {
       html: "<span class='mif-floppy-disk'></span>",
-      onclick: "OnCameraPropertySave(${id}, 'skipcount')"
+      onclick: "OnCameraPropertySave(${cid}, 'skipcount')"
     }
    ]
    </script>
    <div class="grid d-flex flex-justify-center">
     <div class="row d-flex flex-justify-center flex-align-center p-2">
-      <button class="button m-1 mt-2 small outline rounded primary" onclick="OnCameraControl('${id}', 'create');">CREATE</button>
-      <button class="button m-1 mt-2 small outline rounded success" onclick="OnCameraControl('${id}', 'start');">START</button>
-      <button class="button m-1 mt-2 small outline rounded warning" onclick="OnCameraControl('${id}', 'stop');">STOP</button>
-      <button class="button m-1 mt-2 small outline rounded alert" onclick="OnCameraControl('${id}', 'delete');">DELETE</button>      
-    </div>
-    <div class="row d-flex flex-justify-center flex-align-center p-2">
-      <canvas id="id-cam-canvas-${id}" width="600" height="300" style="border:1px dotted #e1e1e1;"> </canvas>
+      <button class="button m-1 mt-2 small outline rounded primary" onclick="OnCameraControl('${cid}', 'create');">CREATE</button>
+      <button class="button m-1 mt-2 small outline rounded success" onclick="OnCameraControl('${cid}', 'start');">START</button>
+      <button class="button m-1 mt-2 small outline rounded warning" onclick="OnCameraControl('${cid}', 'stop');">STOP</button>
+      <button class="button m-1 mt-2 small outline rounded alert" onclick="OnCameraControl('${cid}', 'delete');">DELETE</button>      
     </div>
     <div class="row d-flex flex-justify-center flex-align-center pl-2 pr-2 text-center">
       <div class="cell-3">
         <button class="button rounded outline primary"
-          data-role="popover" data-popover-hide="2000" data-popover-text="Base reference frame for motion capture diff" 
-          onclick="OnCameraPropertySave('${id}', 'ref-frame')">Ref Frame</button>
+          data-role="button" onclick="OnCameraPropertySave('${cid}', 'MarkBaseFrame')">Mark Base Frame</button>
       </div>
       <div class="cell-3 border rounded bd-lightGray">
-        <input name="r1" data-style="2" data-caption="TCP" onclick="OnCameraPropertySave('${id}', 'rtsp-transport', 'tcp')" type="radio" data-role="radio" >
-        <input name="r1" data-style="2" data-caption="UDP" onclick="OnCameraPropertySave('${id}','rtsp-transport', 'udp')"type="radio" data-role="radio" checked>
+        <input name="r1" data-style="2" data-caption="TCP" onclick="OnCameraPropertySave('${cid}', 'transport', 'tcp')" type="radio" data-role="radio" ${cam.transport === 'tcp' ? 'checked' : ''}>
+        <input name="r1" data-style="2" data-caption="UDP" onclick="OnCameraPropertySave('${cid}','transport', 'udp')" type="radio" data-role="radio" ${cam.transport === 'udp' ? 'checked' : ''}>
       </div>
       <div class="cell-3">
-        <input type="checkbox" data-role="checkbox" data-style="2" onclick="OnCameraPropertySave('${id}', 'exclude-hz-bb')" data-caption="Exclude HZ-BB" data-caption-position="left">
+        <input id='id-cam-prop-exhzbb-${cid}' type="checkbox" data-role="checkbox" data-style="2" ${cam.exhzbb ? 'checked' : ''} onclick="OnCameraPropertySave('${cid}', 'exhzbb')" data-caption="Exclude HZ-BB" data-caption-position="left">
       </div>
     </div>
     <div class="row d-flex flex-justify-center flex-align-center pl-2 pr-2 text-center">
-      <div class="cell-5">
-        <input id='id-cam-prop-area-${id}' type="text" data-custom-buttons="areaButton" 
-          data-role="input" data-popover-text="Exclude all bounding boxes less than this area"
-          data-popover-trigger="focus" placeholder="Bounding box area">
+      <div class="cell-4">
+        <input id='id-cam-prop-area-${cid}' value='${cam.bbarea}' type="text" data-custom-buttons="areaButton" 
+          data-role="input" data-prepend="Area" data-clear-button="false">
       </div>
-      <div class="cell-5">
-        <input id='id-cam-prop-skipcount-${id}' type="text" data-custom-buttons="skipCountButton" 
-          data-role="input" data-popover-text="Exclude all bounding boxes less than this area"
-          data-popover-trigger="focus" placeholder="Frame skip count">
+      <div class="cell-3">
+        <input id='id-cam-prop-skipcount-${cid}' value='${cam.skipcount}' type="text" data-custom-buttons="skipCountButton" 
+          data-role="input" data-prepend="Skip" data-clear-button="false">
       </div>
     </div>
     <div class="row d-flex flex-justify-center flex-align-center p-2">
-      <button class="button m-1" onclick="OnCameraControl('${id}', 'backward');"><span class="mif-backward"></span></button>
-      <button class="button m-1" onclick="OnCameraControl('${id}', 'play');"><span class="mif-play"></span></button>
-      <button class="button m-1" onclick="OnCameraControl('${id}', 'pause');"><span class="mif-pause"></span></button>
-      <button class="button m-1" onclick="OnCameraControl('${id}', 'forward');"><span class="mif-forward"></span></button>
+      <canvas id="id-cam-canvas-${cid}" width="600" height="300" style="border:1px dotted #e1e1e1;"> </canvas>
     </div>
-   </div>`;
+    <div class="row d-flex flex-justify-center flex-align-center p-2">
+      <button class="button m-1" onclick="OnCameraControl('${cid}', 'backward');"><span class="mif-backward"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('${cid}', 'play');"><span class="mif-play"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('${cid}', 'pause');"><span class="mif-pause"></span></button>
+      <button class="button m-1" onclick="OnCameraControl('${cid}', 'forward');"><span class="mif-forward"></span></button>
+    </div>
+   </div>
+   `;
 }
-
 function OnCameraPropertySave(cid, prop, val) {
 
   let value = '';
 
-  if (prop == 'area') {
+  if (prop == 'bbarea') {
     value = $('#id-cam-prop-area-' + cid).val();
   } else if (prop == 'skipcount') {
     value = $('#id-cam-prop-skipcount-' + cid).val();
-  } else if (prop == 'ref-frame') {
-    console.log('ref-frame');
-  } else if (prop == 'rtsp-transport') {
+  } else if (prop == 'MarkBaseFrame') {
+    console.log('MarkBaseFrame');
+  } else if (prop == 'transport') {
     show_error("Please restart camera configuration to use " + val + " transport");
     value = val;
-  } else if (prop == 'exclude-hz-bb') {
-    console.log('exclude-hz-bb');
+  } else if (prop == 'exhzbb') {
+    value = document.getElementById('id-cam-prop-exhzbb-' + cid).checked ? '1' : '0';  
   }
 
   let cam = getCameraObject(parseInt(cid));
+
+  /** send to agent */
 
   let cmd = {
     app: 'cam',
@@ -454,20 +461,25 @@ function OnCameraPropertySave(cid, prop, val) {
     action: 'set-property',
     prop: prop,
     value: value,
-    sid: cam.sid.toString(),
-    cid: cam.dbid.toString(),
-    aid: cam.aid.toString(),
-    uid: uid.toString(),
-    source: cam.source,
-    target: cam.target,
-    tracker: cam.tracker,
-    skipcount: cam.skipcount,
-    aep: location.hostname
+    sid: cam.sid.toString()
   };
 
   cam.agent.send(cmd);
-}
 
+  /** save to db */
+
+  let row = {};
+
+  row['id'] = cam.id;
+  row[prop] = value;
+
+  _crud(
+   {
+     action: 'UPDATE',
+     table: 'cameras',
+     rows: [row]
+   }, false);
+}
 
 function GetAgentParams()
 {
@@ -515,7 +527,6 @@ function OnAgentSelect(node)
 }
 function OnAgentTableNodeClick()
 {
-
 }
 function OnAgentDeleteClick()
 {
@@ -1131,8 +1142,7 @@ function InitAgentObjects()
 
   for (let i = 0; i < j.length; i++)
   {
-    let ag = new Agent(j[i].id, j[i].sid, j[i].host, j[i].port);
-    Agents.push(ag);
+    Agents.push(new Agent(j[i]));
   }
   $("#id-agent-right-table").table();
   $("#id-agent-right-table").on("click", "td:not(.check-cell)", function() {
@@ -1149,8 +1159,7 @@ function InitCameraObjects()
 
   for (let i = 0; i < j.length; i++)
   {
-    let cr = new Camera(j[i].id, j[i].sid, j[i].source, j[i].target, j[i].tracker, j[i].skipcount, j[i].aid);
-    Cameras.push(cr);
+    Cameras.push(new Camera(j[i]));
   }
   $("#id-camera-right-table").table();
   $("#id-camera-right-table").on("click", "td:not(.check-cell)", function() {

@@ -53,9 +53,12 @@ create table Cameras (
    source        varchar(128) NOT NULL,
    target        varchar(128) NOT NULL,
    tracker       varchar(128) NOT NULL,
-   skip          int unsigned DEFAULT 1,
    uid           int unsigned,
    aid           int unsigned,
+   skipcount     int unsigned DEFAULT 0,
+   bbarea        int unsigned DEFAULT 0,
+   transport     varchar(64) DEFAULt 'tcp',
+   exhzbb        BOOLEAN DEFAULT 0,
    primary key (id),
    foreign key (uid) REFERENCES User(id) ON DELETE SET NULL,
    foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
