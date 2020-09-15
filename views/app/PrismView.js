@@ -131,10 +131,10 @@ function addCameraView(agents)
      <div class="row">
        <div class="cell-12">
         <select id="new-cam-target" data-prepend="Target" data-role="select">
-         <option value="person" data-template="<span class='mif-users icon'></span> $1" selected="selected">People</option>
-         <option value="face" data-template="<span class='mif-eye icon'></span> $1">Face</option>
-         <option value="car" data-template="<span class='mif-cab icon'></span> $1">Car</option>
-         <option value="mocap" data-template="<span class='mif-move-down icon'></span> $1">Motion</option>        
+          <option value="person" data-template="<span class='mif-users icon'></span> $1" selected="selected">People</option>
+          <option value="face" data-template="<span class='mif-eye icon'></span> $1">Face</option>
+          <option value="car" data-template="<span class='mif-cab icon'></span> $1">Car</option>
+          <option value="mocap" data-template="<span class='mif-move-down icon'></span> $1">Motion</option>        
         </select>
        </div>
      </div>
@@ -149,7 +149,8 @@ function addCameraView(agents)
        <div class="cell-12">
         ${renderSelect(agents, 'new-cam-agent', 'Agent')}
        </div>
-     </div>`;
+     </div>
+     `;
 }
 
 function AlertsView()

@@ -370,17 +370,57 @@ function OnCameraEditConfigClick()
 function CameraControlView(id)
 {
   return `
+   <script>
+   var areaButton = [
+    {
+      html: "<span class='mif-floppy-disk'></span>",
+      onclick: "OnCameraPropertySave(${id}, 'area')"
+    }
+   ]
+   var skipCountButton = [
+    {
+      html: "<span class='mif-floppy-disk'></span>",
+      onclick: "OnCameraPropertySave(${id}, 'skipcount')"
+    }
+   ]
+   </script>
    <div class="grid d-flex flex-justify-center">
-    <div class="row d-flex flex-justify-center p-2">
+    <div class="row d-flex flex-justify-center flex-align-center p-2">
       <button class="button m-1 mt-2 small outline rounded primary" onclick="OnCameraControl('${id}', 'create');">CREATE</button>
       <button class="button m-1 mt-2 small outline rounded success" onclick="OnCameraControl('${id}', 'start');">START</button>
       <button class="button m-1 mt-2 small outline rounded warning" onclick="OnCameraControl('${id}', 'stop');">STOP</button>
       <button class="button m-1 mt-2 small outline rounded alert" onclick="OnCameraControl('${id}', 'delete');">DELETE</button>      
     </div>
-    <div class="row p-2">
-      <canvas id="id-cam-canvas-${id}" width="400" height="200" style="border:1px dotted #e1e1e1;"> </canvas>
+    <div class="row d-flex flex-justify-center flex-align-center p-2">
+      <canvas id="id-cam-canvas-${id}" width="600" height="300" style="border:1px dotted #e1e1e1;"> </canvas>
     </div>
-    <div class="row d-flex flex-justify-center p-2">
+    <div class="row d-flex flex-justify-center flex-align-center pl-2 pr-2 text-center">
+      <div class="cell-3">
+        <button class="button rounded outline primary"
+          data-role="popover" data-popover-hide="2000" data-popover-text="Base reference frame for motion capture diff" 
+          onclick="OnCameraPropertySave('${id}', 'ref-frame')">Ref Frame</button>
+      </div>
+      <div class="cell-3 border rounded bd-lightGray">
+        <input name="r1" data-style="2" data-caption="TCP" onclick="OnCameraPropertySave('${id}', 'rtsp-transport', 'tcp')" type="radio" data-role="radio" >
+        <input name="r1" data-style="2" data-caption="UDP" onclick="OnCameraPropertySave('${id}','rtsp-transport', 'udp')"type="radio" data-role="radio" checked>
+      </div>
+      <div class="cell-3">
+        <input type="checkbox" data-role="checkbox" data-style="2" onclick="OnCameraPropertySave('${id}', 'exclude-hz-bb')" data-caption="Exclude HZ-BB" data-caption-position="left">
+      </div>
+    </div>
+    <div class="row d-flex flex-justify-center flex-align-center pl-2 pr-2 text-center">
+      <div class="cell-5">
+        <input id='id-cam-prop-area-${id}' type="text" data-custom-buttons="areaButton" 
+          data-role="input" data-popover-text="Exclude all bounding boxes less than this area"
+          data-popover-trigger="focus" placeholder="Bounding box area">
+      </div>
+      <div class="cell-5">
+        <input id='id-cam-prop-skipcount-${id}' type="text" data-custom-buttons="skipCountButton" 
+          data-role="input" data-popover-text="Exclude all bounding boxes less than this area"
+          data-popover-trigger="focus" placeholder="Frame skip count">
+      </div>
+    </div>
+    <div class="row d-flex flex-justify-center flex-align-center p-2">
       <button class="button m-1" onclick="OnCameraControl('${id}', 'backward');"><span class="mif-backward"></span></button>
       <button class="button m-1" onclick="OnCameraControl('${id}', 'play');"><span class="mif-play"></span></button>
       <button class="button m-1" onclick="OnCameraControl('${id}', 'pause');"><span class="mif-pause"></span></button>
@@ -388,6 +428,46 @@ function CameraControlView(id)
     </div>
    </div>`;
 }
+
+function OnCameraPropertySave(cid, prop, val) {
+
+  let value = '';
+
+  if (prop == 'area') {
+    value = $('#id-cam-prop-area-' + cid).val();
+  } else if (prop == 'skipcount') {
+    value = $('#id-cam-prop-skipcount-' + cid).val();
+  } else if (prop == 'ref-frame') {
+    console.log('ref-frame');
+  } else if (prop == 'rtsp-transport') {
+    show_error("Please restart camera configuration to use " + val + " transport");
+    value = val;
+  } else if (prop == 'exclude-hz-bb') {
+    console.log('exclude-hz-bb');
+  }
+
+  let cam = getCameraObject(parseInt(cid));
+
+  let cmd = {
+    app: 'cam',
+    req: 'camera-control',
+    action: 'set-property',
+    prop: prop,
+    value: value,
+    sid: cam.sid.toString(),
+    cid: cam.dbid.toString(),
+    aid: cam.aid.toString(),
+    uid: uid.toString(),
+    source: cam.source,
+    target: cam.target,
+    tracker: cam.tracker,
+    skipcount: cam.skipcount,
+    aep: location.hostname
+  };
+
+  cam.agent.send(cmd);
+}
+
 
 function GetAgentParams()
 {
