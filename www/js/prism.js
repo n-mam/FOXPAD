@@ -55,7 +55,7 @@ function Agent(o)
 
   this.onmessage = function(e){
 
-    if (e.data.indexOf("frame") === -1)
+    if (e.data.indexOf("\"frame\"") === -1)
     {
       console.log("agent : " + e.data);
     }
@@ -277,6 +277,14 @@ function OnCameraControl(cid, action)
   };
 
   cam.agent.send(cmd);
+
+  if (action == "stop" || action === "delete") {
+    setTimeout(function () {
+      let canvas = document.getElementById('id-cam-canvas-' + cam.id);
+      let context = canvas.getContext("2d");
+      context.clearRect(0, 0, canvas.width, canvas.height);
+    }, 500);
+  }
 }
 function OnCameraTableNodeClick()
 {
