@@ -436,40 +436,43 @@ function CameraControlView(cam)
 }
 function OnCameraPropertySave(cid, prop, val) {
 
+  let cam = getCameraObject(parseInt(cid));
+
   let value = '';
 
   if (prop == 'bbarea') {
     value = $('#id-cam-prop-area-' + cid).val();
+    cam[prop] = value;
   } else if (prop == 'skipcount') {
     value = $('#id-cam-prop-skipcount-' + cid).val();
+    cam[prop] = value;
   } else if (prop == 'MarkBaseFrame') {
     console.log('MarkBaseFrame');
   } else if (prop == 'transport') {
     show_error("Please restart camera configuration to use " + val + " transport");
     value = val;
+    cam[prop] = value;
   } else if (prop == 'exhzbb') {
-    value = document.getElementById('id-cam-prop-exhzbb-' + cid).checked ? '1' : '0';  
+    value = $('#id-cam-prop-exhzbb-' + cid).is(":checked") ? '1' : '0';
+    cam[prop] = value;
   }
 
-  let cam = getCameraObject(parseInt(cid));
+  if (cam.agent.isConnected())
+  {
+    let cmd = 
+     {
+       app: 'cam',
+       req: 'camera-control',
+       action: 'set-property',
+       prop: prop,
+       value: value,
+       sid: cam.sid.toString()
+     };
 
-  /** send to agent */
-
-  let cmd = {
-    app: 'cam',
-    req: 'camera-control',
-    action: 'set-property',
-    prop: prop,
-    value: value,
-    sid: cam.sid.toString()
-  };
-
-  cam.agent.send(cmd);
-
-  /** save to db */
+    cam.agent.send(cmd);
+  }
 
   let row = {};
-
   row['id'] = cam.id;
   row[prop] = value;
 
@@ -1136,6 +1139,23 @@ function OnClickAnalyzeTrail()
   report.analyze(inv);
 }
 
+function GetTableData(table, cbk) {
+  _crud(
+    {
+      action: 'READ',
+      columns: '*',
+      table: table,
+      rows: [{x: 'y'}], //dummy
+      where: 'id > 0' //dummy
+    },
+    false,
+    (res, e) => {
+      if (!e)
+      {
+        cbk(res.result);
+      }
+    });
+}
 function InitAgentObjects()
 {
   let j = JSON.parse(g_agents);
@@ -1144,7 +1164,9 @@ function InitAgentObjects()
   {
     Agents.push(new Agent(j[i]));
   }
+  
   $("#id-agent-right-table").table();
+
   $("#id-agent-right-table").on("click", "td:not(.check-cell)", function() {
     let e = $(this);
     while (!e.hasClass("check-cell")) {
@@ -1161,7 +1183,9 @@ function InitCameraObjects()
   {
     Cameras.push(new Camera(j[i]));
   }
+  
   $("#id-camera-right-table").table();
+  
   $("#id-camera-right-table").on("click", "td:not(.check-cell)", function() {
     let e = $(this);
     while (!e.hasClass("check-cell")) {
