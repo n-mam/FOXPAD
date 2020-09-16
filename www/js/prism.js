@@ -9,7 +9,7 @@ function Agent(o)
     let cmd = {};
     cmd.app = 'cam';
     cmd.req = 'get-active-sessions';
-    this.socket.send(JSON.stringify(cmd));
+    this.send(cmd);
   };
 
   this.isConnected = function(){
@@ -17,7 +17,7 @@ function Agent(o)
   }
 
   this.send = function(m){
-    console.log("agent : " + JSON.stringify(m))
+    console.log("client : " + JSON.stringify(m))
     this.socket.send(JSON.stringify(m));
   }
 
@@ -55,7 +55,10 @@ function Agent(o)
 
   this.onmessage = function(e){
 
-    console.log("agent : " + e.data);
+    if (e.data.indexOf("frame") === -1)
+    {
+      console.log("agent : " + e.data);
+    }
 
     let res = JSON.parse(e.data);
 
@@ -266,7 +269,10 @@ function OnCameraControl(cid, action)
     source: cam.source,
     target: cam.target,
     tracker: cam.tracker,
-    skipcount: cam.skipcount,
+    skipcount: cam.skipcount.toString(),
+    bbarea: cam.bbarea.toString(),
+    transport: cam.transport,
+    exhzbb: cam.exhzbb.toString(),
     aep: location.hostname
   };
 
@@ -472,16 +478,19 @@ function OnCameraPropertySave(cid, prop, val) {
     cam.agent.send(cmd);
   }
 
-  let row = {};
-  row['id'] = cam.id;
-  row[prop] = value;
-
-  _crud(
-   {
-     action: 'UPDATE',
-     table: 'cameras',
-     rows: [row]
-   }, false);
+  if (prop != 'MarkBaseFrame')
+  {
+    let row = {};
+    row['id'] = cam.id;
+    row[prop] = value;
+  
+    _crud(
+     {
+       action: 'UPDATE',
+       table: 'cameras',
+       rows: [row]
+     }, false);
+  }
 }
 
 function GetAgentParams()
