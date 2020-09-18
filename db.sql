@@ -47,6 +47,8 @@ create table Agents (
    foreign key (uid) REFERENCES User(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
+insert into Agents (sid, host, port, uid) values ('localhost','127.0.0.1',8081, 100);
+
 create table Cameras (
    id            int unsigned NOT NULL AUTO_INCREMENT,
    sid           varchar(128) NOT NULL,
@@ -59,6 +61,7 @@ create table Cameras (
    bbarea        int unsigned DEFAULT 0,
    transport     varchar(64) DEFAULt 'tcp',
    exhzbb        BOOLEAN DEFAULT 0,
+   algo          varchar(64) DEFAULt 'gmg',
    primary key (id),
    foreign key (uid) REFERENCES User(id) ON DELETE SET NULL,
    foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL

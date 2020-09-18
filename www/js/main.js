@@ -56,8 +56,6 @@
 
    var _crud = (data, backTo, cbk) =>
    {
-     console.log(data);
-
      var j = JSON.stringify(
        {
          'token': null,
@@ -191,7 +189,7 @@
 
          if (x.status == 200)
          {
-           console.log(x.responseText);
+           console.log("server: " + x.responseText);
 
            try
            {
@@ -202,18 +200,19 @@
              console.log('json parse error : ' + error.message)
              json = null;
            }
-          }
-          else
-          {
-            console.log('status : ' + x.status.toString());
-          }
+         }
+         else
+         {
+           console.log('status : ' + x.status.toString());
+         }
 
-          if (cbk) 
-          {
-            cbk(json);
-          }
+         if (cbk) 
+         {
+           cbk(json);
+         }
        }
      };
+     console.log("client: " + data);
      x.send(data);
   }
 

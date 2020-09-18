@@ -141,6 +141,7 @@ function Camera(o)
   this.bbarea = o.bbarea;
   this.transport = o.transport;
   this.exhzbb = o.exhzbb;
+  this.algo = o.algo;
 
   for (let i = 0; i < Agents.length; i++)
   {
@@ -273,6 +274,7 @@ function OnCameraControl(cid, action)
     bbarea: cam.bbarea.toString(),
     transport: cam.transport,
     exhzbb: cam.exhzbb.toString(),
+    algo: cam.algo,
     aep: location.hostname
   };
 
@@ -414,13 +416,20 @@ function CameraControlView(cam)
       <button class="button m-1 mt-2 small outline rounded alert" onclick="OnCameraControl('${cid}', 'delete');">DELETE</button>      
     </div>
     <div class="row d-flex flex-justify-center flex-align-center pl-2 pr-2 text-center">
-      <div class="cell-3">
-        <button class="button rounded outline primary"
-          data-role="button" onclick="OnCameraPropertySave('${cid}', 'MarkBaseFrame')">Mark Base Frame</button>
+      <div class="cell-4">
+        <select data-prepend="MOCAP" data-role="select" data-on-item-select="OnCameraPropertyMocapAlgoSelect">
+          <option id='id-algo-mog' value="mog" data-cid="${cid}" ${cam.algo == "mog" ? 'selected' : ''}>MOG</option>
+          <option id='id-algo-cnt' value="cnt" data-cid="${cid}" ${cam.algo == "cnt" ? 'selected' : ''}>CNT</option>
+          <option id='id-algo-gmg' value="gmg" data-cid="${cid}" ${cam.algo == "gmg" ? 'selected' : ''}>GMG</option>
+          <option id='id-algo-gsoc' value="gsoc" data-cid="${cid}" ${cam.algo == "gsoc" ? 'selected' : ''}>GSOC</option>
+          <option id='id-algo-lsbp' value="lsbp" data-cid="${cid}" ${cam.algo == "lsbp" ? 'selected' : ''}>LSBP</option>
+        </select>
       </div>
-      <div class="cell-3 border rounded bd-lightGray">
-        <input name="r1" data-style="2" data-caption="TCP" onclick="OnCameraPropertySave('${cid}', 'transport', 'tcp')" type="radio" data-role="radio" ${cam.transport === 'tcp' ? 'checked' : ''}>
-        <input name="r1" data-style="2" data-caption="UDP" onclick="OnCameraPropertySave('${cid}','transport', 'udp')" type="radio" data-role="radio" ${cam.transport === 'udp' ? 'checked' : ''}>
+      <div class="cell-4">
+        <select data-prepend="Transport" data-role="select" data-on-item-select="OnCameraPropertyTransportSelect">
+          <option id='id-transport-tcp' value="tcp" data-cid="${cid}" ${cam.transport === "tcp" ? 'selected' : ''}>TCP</option>
+          <option id='id-transport-udp' value="udp" data-cid="${cid}" ${cam.transport === "udp" ? 'selected' : ''}>UDP</option>
+        </select>
       </div>
       <div class="cell-3">
         <input id='id-cam-prop-exhzbb-${cid}' type="checkbox" data-role="checkbox" data-style="2" ${cam.exhzbb ? 'checked' : ''} onclick="OnCameraPropertySave('${cid}', 'exhzbb')" data-caption="Exclude HZ-BB" data-caption-position="left">
@@ -448,6 +457,14 @@ function CameraControlView(cam)
    </div>
    `;
 }
+function OnCameraPropertyMocapAlgoSelect(val, option, item) {
+  let cid = $('#id-algo-' + val).data("cid");
+  OnCameraPropertySave(cid, 'algo', val);
+}
+function OnCameraPropertyTransportSelect(val, option, item) {
+  let cid = $('#id-transport-' + val).data("cid");
+  OnCameraPropertySave(cid, 'transport', val);
+}
 function OnCameraPropertySave(cid, prop, val) {
 
   let cam = getCameraObject(parseInt(cid));
@@ -468,6 +485,9 @@ function OnCameraPropertySave(cid, prop, val) {
     cam[prop] = value;
   } else if (prop == 'exhzbb') {
     value = $('#id-cam-prop-exhzbb-' + cid).is(":checked") ? '1' : '0';
+    cam[prop] = value;
+  } else if (prop == 'algo') {
+    value = val;
     cam[prop] = value;
   }
 
