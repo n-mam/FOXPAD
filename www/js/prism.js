@@ -319,7 +319,7 @@ function OnCameraAddClick()
 {
   Metro.dialog.create({
     title: "New Camera",
-    content: decodeURI(addCameraView),
+    content: AddNewCameraView(),
     closeButton: true,
     actions: [
         {
@@ -356,7 +356,7 @@ function OnCameraEditConfigClick()
 
   Metro.dialog.create({
     title: `Edit : <b>${items[0][1]}</b>`,
-    content: decodeURI(addCameraView),
+    content: AddNewCameraView(),
     closeButton: true,
     onShow: () => {
       document.getElementById('new-cam-name').value = items[0][1];
@@ -369,8 +369,7 @@ function OnCameraEditConfigClick()
       }
       document.getElementById('new-cam-target').value = items[0][3];
       document.getElementById('new-cam-tracker').value = items[0][4];
-      //5 skip count
-      document.getElementById('new-cam-agent').value = items[0][6];
+      document.getElementById('new-cam-agent').value = items[0][5];
     },
     actions: [
       {
@@ -519,6 +518,44 @@ function OnCameraPropertySave(cid, prop, val) {
        rows: [row]
      }, false);
   }
+}
+function AddNewCameraView() {
+  let o = ``;
+  for (let i = 0; i < Agents.length; i++) {
+    o += `<option value="${Agents[i].id}" data-template="<span class='mif-display icon'></span> $1">${Agents[i].sid}</option>`
+  }
+  return `
+    <div class="row">
+       <div class="cell-12"><input id="new-cam-name" type="text" data-role="input" data-prepend="Name"></div>
+    </div>
+    <div class="row">
+       <div class="cell-12"><input id="new-cam-src" type="text" data-role="input" data-prepend="Source"></div>
+    </div>
+    <div class="row">
+       <div class="cell-12">
+        <select id="new-cam-target" data-prepend="Target" data-role="select">
+          <option value="person" data-template="<span class='mif-users icon'></span> $1" selected="selected">People</option>
+          <option value="face" data-template="<span class='mif-eye icon'></span> $1">Face</option>
+          <option value="car" data-template="<span class='mif-cab icon'></span> $1">Car</option>
+          <option value="mocap" data-template="<span class='mif-move-down icon'></span> $1">Motion</option>        
+        </select>
+       </div>
+    </div>
+    <div class="row">
+       <div class="cell-12">
+        <select id="new-cam-tracker" data-prepend="Tracker" data-role="select">
+          <option value="CSRT" data-template="<span class='mif-target icon'></span> $1">CSRT</option>
+        </select>
+       </div>
+    </div>
+    <div class="row">
+       <div class="cell-12">
+         <select id="new-cam-agent" data-prepend="Agent" data-role="select">
+          ${o}
+         </select>
+       </div>
+    </div>
+  `;
 }
 
 function GetAgentParams()
