@@ -20,9 +20,6 @@ create table User (
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1;
 
 desc User;
-insert into User (name, email, password, isSuper) values ('admin','admin','admin', 1);
-insert into User (name, email, password) values ('e3','e3','e3');
-select * from User;
 
 create table Session (
    id       int unsigned NOT NULL AUTO_INCREMENT,
@@ -79,6 +76,18 @@ create table Trails (
    foreign key (cid) REFERENCES Cameras(id) ON DELETE SET NULL,
    foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
+create trigger on_new_user 
+after insert on User
+for each row
+ insert ignore into Agents (sid, host, port, uid)
+ values ('localhost', '127.0.0.1', 8081, NEW.id);
+
+insert into User (name, email, password) values ('e1','e1','e1');
+insert into User (name, email, password) values ('e2','e2','e2');
+insert into User (name, email, password) values ('e3','e3','e3');
+select * from User;
+select * from Agents;
 
 /*
  * insert into trails (cid, aid, ts, path) values (1, 1, NOW(), ST_GeomFromText('MULTIPOINT(0 0,10 10,10 20,20 20)'));
