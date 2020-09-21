@@ -55,7 +55,7 @@ create table Cameras (
    uid           int unsigned,
    aid           int unsigned,
    skipcount     int unsigned DEFAULT 0,
-   bbarea        int unsigned DEFAULT 0,
+   bbarea        int unsigned DEFAULT 10,
    transport     varchar(64) DEFAULt 'tcp',
    exhzbb        BOOLEAN DEFAULT 0,
    algo          varchar(64) DEFAULt 'gmg',

@@ -62,7 +62,11 @@ function Agent(o)
 
     let res = JSON.parse(e.data);
 
-    if (res.req == 'get-active-sessions')
+    if (isDefined(res.error))
+    {
+      show_error(res.error);
+    }
+    else if (res.req == 'get-active-sessions')
     {
       let items = $('#id-camera-right-table').find("tr");
 
@@ -118,10 +122,6 @@ function Agent(o)
         };
         image.src = "data:image/png;base64," + res.frame;
       }
-    }
-    else if (isDefined(res.error))
-    {
-      show_error(res.error);
     }
   }
 
