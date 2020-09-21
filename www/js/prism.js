@@ -1018,7 +1018,7 @@ function computeRefLineIntersectionsCount(ref, paths)
   {
     let points = paths[i].trail;
 
-    if (points.length > 7)
+    if (points.length > 2)
     {
       let sp = points[0].split(" ");
       let ep = points[points.length - 1].split(" ");
@@ -1081,7 +1081,7 @@ function renderPaths(id, paths)
   {
     let points = paths[i].trail;
 
-    if (points.length > 7)
+    if (points.length > 2)
     {
       // draw path
       context.beginPath();
