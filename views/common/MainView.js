@@ -44,7 +44,7 @@ var content = (v) =>
          <ul class="navview-menu">
              <li class="active">
                  <a href="#id-home">
-                     <span class="icon"><span class="mif-home"></span></span>
+                     <span class="icon"><span class="mif-codepen"></span></span>
                      <span class="caption">Home</span>
                  </a>
              </li>

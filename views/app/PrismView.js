@@ -133,12 +133,12 @@ function ReportsView(id, cameras)
     <div class="row d-flex flex-justify-center">
       <div class="cell-3">
         <div>
-          ${renderSelect(cameras, 'id-report-cam', 'Camera:')}
+          ${renderSelect(cameras, 'id-report-cam', 'Camera')}
         </div>
       </div>
       <div class="cell-3">
         <div>
-         <select id="id-report-int" data-prepend="Interval:" data-role="select">
+         <select id="id-report-int" data-prepend="Interval" data-role="select">
           <option value="1Hour">1 Hour</option>
           <option value="Today">Today</option>
           <option value="Daily">Daily</option>
