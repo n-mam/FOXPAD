@@ -2,9 +2,9 @@ Install node.js on windows
 
 Install mysql on windows with default root password welcome
 
-create the db using the db.sql script
-
 clone this repo
+
+create the db using the db.sql script in the repo
 
 "npm install" from the repo root folder
 
