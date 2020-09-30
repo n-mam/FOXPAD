@@ -1,12 +1,22 @@
 Install node.js on windows
+
 Install mysql on windows with default root password welcome
+
 create the db using the db.sql script
+
 clone this repo
+
 "npm install" from the repo root folder
+
 "npm start" from the repo root folder
+
 use e1/e1, e2/e2 or e3/e3 to login to the app
 
-at this point you'd also need the agent running on the system. This can be downloaded from http://52.66.251.154:8080/ home page "Download Agent" button. The agent also requires the below setup on the machine
+at this point you'd also need the agent running on the system. 
+
+This can be downloaded from http://52.66.251.154:8080/ home page "Download Agent" button. 
+
+The agent also requires the below setup on the machine
 
 download and install cuda toolkit 
 
