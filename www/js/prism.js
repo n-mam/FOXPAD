@@ -839,7 +839,7 @@ function Report(cid)
       id: 'id-analyzer-win',
       icon: "<span class='mif-chart-dots'></span>",
       title: "Trail Analyzer",
-      content: '<canvas id="id-trail-analyzer" width="1000" height="700" style="border:1px dotted grey" ></canvas>',
+      content: '<canvas id="id-trail-analyzer" width="600" height="400" style="border:1px dotted grey" ></canvas>',
       place: "right",
       onShow: function(w)
       {
@@ -872,7 +872,7 @@ function computeHorizontalMaxima(paths, draw)
   let steps = [];
   let max = 0;
 
-  while (ref.y <= 700)
+  while (ref.y <= 400)
   {
     let counts = computeRefLineIntersectionsCount(ref, paths);
 
@@ -940,7 +940,7 @@ function computeVerticalMaxima(paths, draw)
   let steps = [];
   let max = 0;
 
-  while (ref.x <= 1000)
+  while (ref.x <= 600)
   {
     let counts = computeRefLineIntersectionsCount(ref, paths);
 
