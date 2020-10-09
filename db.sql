@@ -68,6 +68,7 @@ create table Trails (
    id            int unsigned NOT NULL AUTO_INCREMENT,
    ts            DATETIME,
    path          MULTIPOINT,
+   demography    varchar(32768),
    uid           int unsigned,
    cid           int unsigned,
    aid           int unsigned,
