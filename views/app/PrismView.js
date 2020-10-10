@@ -126,6 +126,10 @@ function AlertsView()
 
 function ReportsView(id, cameras)
 {
+  let trailLengthOptions = ``;
+  for (let i = 2; i < 40; i++) {
+    trailLengthOptions += `<option value="${i}">${i}</option>`;
+  }
   return `
   <div class="cell d-flex flex-justify-center" id='${id}'>
   <script src='js/Chart.min.js'></script>
@@ -143,6 +147,13 @@ function ReportsView(id, cameras)
           <option value="Today">Today</option>
           <option value="Daily">Daily</option>
           <option value="Monthly">Monthly</option>
+         </select>
+        </div>
+      </div>
+      <div class="cell-2">
+        <div>
+         <select id="id-report-trail-length" data-prepend="Trail" data-role="select">
+           ${trailLengthOptions}
          </select>
         </div>
       </div>

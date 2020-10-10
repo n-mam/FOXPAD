@@ -719,10 +719,11 @@ function dateToMySql(d) {
   d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
 }
 
-function Report(cid)
+function Report(cid, tlen)
 {
   this.cid = cid;
   this.paths = [];
+  this.tlen = tlen;
 
   this.analyze = function(inv) {
 
@@ -765,8 +766,8 @@ function Report(cid)
         {
           if (this.processIntervalData(res, inv, range))
           {
-            let maxHSteps = computeHorizontalMaxima(this.paths, false);
-            let maxVSteps = computeVerticalMaxima(this.paths, false);
+            let maxHSteps = computeHorizontalMaxima(this.paths, false, this.tlen);
+            let maxVSteps = computeVerticalMaxima(this.paths, false, this.tlen);
 
             let ref = {};
 
@@ -833,6 +834,7 @@ function Report(cid)
 
   this.showPathAnalyzerCanvas = function(ref, paths, inv, range){
     let newref;
+    let tlen = this.tlen;
     Metro.window.create({
       resizeable: true,
       draggable: true,
@@ -849,14 +851,14 @@ function Report(cid)
         let canvas = document.getElementById("id-trail-analyzer");
         canvas.addEventListener("click", function(e){
           newref = getMousePosition("id-trail-analyzer", e);
-          let counts = computeRefLineIntersectionsCount(newref, paths);
+          let counts = computeRefLineIntersectionsCount(newref, paths, tlen);
           drawRefrenceLineAndCounts(newref, counts);
         }, false);
-        renderPaths("id-trail-analyzer", paths);
+        renderPaths("id-trail-analyzer", paths, tlen);
         if (ref.dir === 'horizontal') {
-          computeHorizontalMaxima(paths, true);
+          computeHorizontalMaxima(paths, true, tlen);
         } else {
-          computeVerticalMaxima(paths, true);
+          computeVerticalMaxima(paths, true, tlen);
         }
       },
       onClose: function(w)
@@ -869,7 +871,7 @@ function Report(cid)
     });
   }
 }
-function computeHorizontalMaxima(paths, draw) 
+function computeHorizontalMaxima(paths, draw, tlen) 
 {
   let ref = { x: 5, y: 5 };
   let steps = [];
@@ -877,7 +879,7 @@ function computeHorizontalMaxima(paths, draw)
 
   while (ref.y <= 400)
   {
-    let counts = computeRefLineIntersectionsCount(ref, paths);
+    let counts = computeRefLineIntersectionsCount(ref, paths, tlen);
 
     if ((counts.up + counts.down) > max) 
     {
@@ -937,7 +939,7 @@ function computeHorizontalMaxima(paths, draw)
 
   return steps; 
 }
-function computeVerticalMaxima(paths, draw) 
+function computeVerticalMaxima(paths, draw, tlen) 
 {
   let ref = { x: 5, y: 5 };
   let steps = [];
@@ -945,7 +947,7 @@ function computeVerticalMaxima(paths, draw)
 
   while (ref.x <= 600)
   {
-    let counts = computeRefLineIntersectionsCount(ref, paths);
+    let counts = computeRefLineIntersectionsCount(ref, paths, tlen);
 
     if ((counts.left + counts.right) > max) 
     {
@@ -1013,7 +1015,7 @@ function getMousePosition(id, e) {
     y: e.clientY - rect.top
   };
 }
-function computeRefLineIntersectionsCount(ref, paths)
+function computeRefLineIntersectionsCount(ref, paths, tlen)
 {
   let counts = {up: 0, down: 0, left: 0,  right: 0};
 
@@ -1021,7 +1023,7 @@ function computeRefLineIntersectionsCount(ref, paths)
   {
     let points = paths[i].trail;
 
-    if (points.length > 25)
+    if (points.length > tlen)
     {
       let sp = points[0].split(" ");
       let ep = points[points.length - 1].split(" ");
@@ -1075,7 +1077,7 @@ function drawRefrenceLineAndCounts(pos, counts)
   context.lineTo(canvas.width, pos.y);
   context.stroke();
 }
-function renderPaths(id, paths)
+function renderPaths(id, paths, tlen)
 {
   canvas = document.getElementById(id);
   let context = canvas.getContext("2d");
@@ -1084,7 +1086,7 @@ function renderPaths(id, paths)
   {
     let points = paths[i].trail;
 
-    if (points.length > 25)
+    if (points.length > tlen)
     {
       // draw path
       context.beginPath();
@@ -1204,6 +1206,7 @@ function OnClickAnalyzeTrail()
 {
   let cid = $('#id-report-cam').data('select').val();
   let inv = $('#id-report-int').data('select').val();
+  let tlen = $('#id-report-trail-length').data('select').val();
 
   if (!isDefined(cid) || 
       !isDefined(inv)) {
@@ -1211,7 +1214,7 @@ function OnClickAnalyzeTrail()
     return;
   }
 
-  let report = new Report(cid);
+  let report = new Report(cid, tlen);
 
   report.analyze(inv);
 }
