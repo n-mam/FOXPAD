@@ -724,7 +724,7 @@ function Report(cid)
   this.cid = cid;
   this.paths = [];
 
-  this.analyze = function(inv){
+  this.analyze = function(inv) {
 
     let range = {};
     let now = new Date();
@@ -770,7 +770,10 @@ function Report(cid)
 
             let ref = {};
 
-            if (maxHSteps.length > maxVSteps.length) {
+            let hRefCount = maxHSteps[0].counts.up + maxHSteps[0].counts.down;
+            let vRefCount = maxVSteps[0].counts.left + maxVSteps[0].counts.right;
+
+            if (hRefCount > vRefCount) {
               ref.x = 0;
               ref.y = (maxHSteps[0].y + maxHSteps[maxHSteps.length-1].y) / 2;
               ref.dir = 'horizontal';
@@ -1018,7 +1021,7 @@ function computeRefLineIntersectionsCount(ref, paths)
   {
     let points = paths[i].trail;
 
-    if (points.length > 2)
+    if (points.length > 25)
     {
       let sp = points[0].split(" ");
       let ep = points[points.length - 1].split(" ");
@@ -1081,7 +1084,7 @@ function renderPaths(id, paths)
   {
     let points = paths[i].trail;
 
-    if (points.length > 2)
+    if (points.length > 25)
     {
       // draw path
       context.beginPath();
