@@ -784,7 +784,7 @@ function Report(cid, tlen)
               ref.dir = 'vertical';
             }
 
-            displayIntervalGraph(ref, this.paths, inv, range);
+            displayIntervalGraph(ref, this.paths, inv, range, this.tlen);
 
             this.showPathAnalyzerCanvas(ref, this.paths, inv, range);
           }
@@ -865,12 +865,13 @@ function Report(cid, tlen)
       {
         if (isDefined(newref))
         {
-          displayIntervalGraph(newref, paths, inv, range);
+          displayIntervalGraph(newref, paths, inv, range, tlen);
         }
       }
     });
   }
 }
+
 function computeHorizontalMaxima(paths, draw, tlen) 
 {
   let ref = { x: 5, y: 5 };
@@ -1114,7 +1115,7 @@ function renderPaths(id, paths, tlen)
     }
   }
 }
-function displayIntervalGraph(ref, paths, inv, range)
+function displayIntervalGraph(ref, paths, inv, range, tlen)
 {
   let xAxis = [];
 
@@ -1178,7 +1179,7 @@ function displayIntervalGraph(ref, paths, inv, range)
 
     if (bucketPaths.length)
     {
-      bucketCounts = computeRefLineIntersectionsCount(ref, bucketPaths);
+      bucketCounts = computeRefLineIntersectionsCount(ref, bucketPaths, tlen);
     }
 
     if (ref.dir === 'horizontal')
