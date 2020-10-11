@@ -757,7 +757,7 @@ function Report(cid, tlen)
     _crud(
       {
         action: 'READ',
-        columns: 'cid, aid, ts, ST_AsText(path)',
+        columns: 'cid, aid, ts, ST_AsText(path), demography, thumbnail',
         table: 'Trails',
         where: `cid = ${this.cid} and uid = ${uid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
         rows: [{x: 'y'}]
@@ -802,7 +802,15 @@ function Report(cid, tlen)
     for (let i = 0; i < res.result.length; i++) 
     {
       let p = {};
-      
+
+      if (res.result[i]['thumbnail'].length)
+      {
+        let src = "data:image/png;base64," + res.result[i]['thumbnail'];
+        var img = $('<img style="padding:0.3em">');
+        img.attr('src', src);
+        img.appendTo('#imagediv');
+      }
+
       p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(",");
 
       p.ts = (res.result[i]).ts;

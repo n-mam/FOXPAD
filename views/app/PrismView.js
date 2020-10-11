@@ -163,6 +163,9 @@ function ReportsView(id, cameras)
         </div>
       </div>
     </div>
+    <div id="imagediv" class="row flex-justify-center">
+
+    </div>
     <div class="row flex-justify-center">
       <div class="cell-12">
         <div>

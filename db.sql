@@ -69,6 +69,7 @@ create table Trails (
    ts            DATETIME,
    path          MULTIPOINT,
    demography    varchar(32768),
+   thumbnail     varchar(16384),
    uid           int unsigned,
    cid           int unsigned,
    aid           int unsigned,
