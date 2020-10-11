@@ -127,8 +127,8 @@ function AlertsView()
 function ReportsView(id, cameras)
 {
   let trailLengthOptions = ``;
-  for (let i = 2; i < 40; i++) {
-    trailLengthOptions += `<option value="${i}">${i}</option>`;
+  for (let i = 1; i < 50; i++) {
+    trailLengthOptions += `<option value="${i}" ${i == 15 ? "selected" : ""}>${i}</option>`;
   }
   return `
   <div class="cell d-flex flex-justify-center" id='${id}'>
