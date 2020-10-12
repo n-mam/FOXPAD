@@ -803,17 +803,23 @@ function Report(cid, tlen)
     {
       let p = {};
 
-      if (res.result[i]['thumbnail'].length)
-      {
-        let src = "data:image/png;base64," + res.result[i]['thumbnail'];
-        var img = $('<img style="padding:0.3em">');
-        img.attr('src', src);
-        img.appendTo('#imagediv');
-      }
-
       p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(",");
 
+      p.demography = res.result[i]['demography'].split(",");
+
       p.ts = (res.result[i]).ts;
+
+      if (p.trail.length < this.tlen) continue;
+
+      if (res.result[i]['thumbnail'].length)
+      {
+        let e = `<div class='cell row' style='align-items: center;'> 
+                   <img src='${'data:image/png;base64,' + res.result[i]['thumbnail']}'>
+                   <div>  <b>${p.demography[p.demography.length - 1]} , </b>  ${p.trail.length}</div>
+                 </div>`;
+
+        $(e).appendTo('#id-thumbnails');
+      }
 
       let diff = Math.abs((new Date(p.ts)).getTime() - range.start.getTime());
 

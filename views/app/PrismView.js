@@ -163,14 +163,14 @@ function ReportsView(id, cameras)
         </div>
       </div>
     </div>
-    <div id="imagediv" class="row flex-justify-center">
-
-    </div>
     <div class="row flex-justify-center">
-      <div class="cell-12">
+      <div class="cell-9">
         <div>
           <canvas id="id-chart-canvas" width="300" height:"200" style="display:none;"></canvas>
         </div>
+      </div>
+      <div class="cell-3" id="id-thumbnails" style='overflow-y:scroll;height:40em;'>
+
       </div>
     </div>
    </div>
