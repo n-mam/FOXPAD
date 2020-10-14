@@ -815,7 +815,9 @@ function Report(cid, tlen)
       {
         let e = `<div class='cell row flex-justify-center' style='align-items: center;'> 
                    <img src='${'data:image/png;base64,' + res.result[i]['thumbnail']}'>
-                   <div>  <b>${p.demography[p.demography.length - 1]}</b>  ${p.trail.length}</div>
+                   <div class='p-1 fg-pink'>${p.demography[p.demography.length - 1]}</div>
+                   <div class='p-1 fg-grayBlue'>${p.ts}</div>
+                   <div class='p-1 fg-cyan'>(${p.trail.length})</div>
                  </div>`;
 
         $(e).appendTo('#id-thumbnails');
