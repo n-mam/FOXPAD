@@ -135,12 +135,12 @@ function ReportsView(id, cameras)
   <script src='js/Chart.min.js'></script>
   <div class="grid w-100">
     <div class="row d-flex flex-justify-center">
-      <div class="cell-3">
+      <div class="cell-2">
         <div>
           ${renderSelect(cameras, 'id-report-cam', 'Camera')}
         </div>
       </div>
-      <div class="cell-3">
+      <div class="cell-2">
         <div>
          <select id="id-report-int" data-prepend="Interval" data-role="select">
           <option value="1Hour">1 Hour</option>
@@ -169,7 +169,7 @@ function ReportsView(id, cameras)
           <canvas id="id-chart-canvas" width="300" height:"200" style="display:none;"></canvas>
         </div>
       </div>
-      <div class="cell-3" id="id-thumbnails" style='overflow-y:scroll;height:40em;'>
+      <div class="cell-3 flex-self-center" id="id-thumbnails" style='overflow-y:scroll;height:40em;'>
 
       </div>
     </div>
