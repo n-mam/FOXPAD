@@ -727,6 +727,15 @@ function Report(cid, tlen)
   this.paths = [];
   this.tlen = tlen;
 
+  this.close = function() 
+  {
+    let e = Metro.getPlugin(this.canvas, "window");
+    if (e != undefined)
+      e.close();
+    document.getElementById('id-chart-canvas').style = "display:none";
+    $("#id-thumbnails").empty();
+  }
+
   this.getIntervalRange = function(inv) {
 
     let range = {};
@@ -852,13 +861,14 @@ function Report(cid, tlen)
   this.showPathAnalyzerCanvas = function(ref, paths, inv, range){
     let newref;
     let tlen = this.tlen;
-    Metro.window.create({
+    this.canvas = Metro.window.create({
       resizeable: true,
       draggable: true,
       width: 'auto',
       btnMin: false,
       btnMax: false,
       id: 'id-analyzer-win',
+      role: "window",
       icon: "<span class='mif-chart-dots'></span>",
       title: "Trail Analyzer",
       content: '<canvas id="id-trail-analyzer" width="600" height="400" style="border:1px dotted grey" ></canvas>',
@@ -1232,7 +1242,7 @@ function OnClickDeleteTrail()
     return;
   }
 
-  let ok = confirm("This would delete trails of the selected range. Proceed ?");
+  let ok = confirm("This would delete trails from the selected range. Proceed ?");
 
   if (!ok) {
     show_error("Trail delete operation cancelled");
@@ -1250,6 +1260,9 @@ function OnClickDeleteTrail()
       rows: [{x: 'y'}]
     });
 }
+
+var report;
+
 function OnClickAnalyzeTrail()
 {
   let cid = $('#id-report-cam').data('select').val();
@@ -1262,7 +1275,12 @@ function OnClickAnalyzeTrail()
     return;
   }
 
-  let report = new Report(cid, tlen);
+  if (report) 
+  {
+    report.close();
+  }
+
+  report = new Report(cid, tlen);
   let range = report.getIntervalRange(inv);
 
   report.getIntervalData(inv, range);
