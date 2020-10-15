@@ -732,8 +732,9 @@ function Report(cid, tlen)
     let e = Metro.getPlugin(this.canvas, "window");
     if (e != undefined)
       e.close();
-    document.getElementById('id-chart-canvas').style = "display:none";
     $("#id-thumbnails").empty();
+    let table = Metro.getPlugin('#id-table-thumbnails', 'table');
+    table.clear();
   }
 
   this.getIntervalRange = function(inv) {
@@ -767,7 +768,7 @@ function Report(cid, tlen)
     _crud(
       {
         action: 'READ',
-        columns: 'cid, aid, ts, ST_AsText(path), demography, thumbnail',
+        columns: 'cid, aid, ts, ST_AsText(path), demography, thumbnail, age, gender',
         table: 'Trails',
         where: `cid = ${this.cid} and uid = ${uid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
         rows: [{x: 'y'}]
@@ -819,18 +820,22 @@ function Report(cid, tlen)
 
       p.ts = (res.result[i]).ts;
 
+      p.age = (res.result[i]).age;
+      p.gender = (res.result[i]).gender;
+
       if (p.trail.length < this.tlen) continue;
 
       if (res.result[i]['thumbnail'].length)
       {
-        let e = `<div class='cell row flex-justify-center' style='align-items: center;'> 
-                   <img src='${'data:image/png;base64,' + res.result[i]['thumbnail']}'>
-                   <div class='p-1 fg-pink'>${p.demography[p.demography.length - 1]}</div>
-                   <div class='p-1 fg-grayBlue'>${p.ts}</div>
-                   <div class='p-1 fg-cyan'>(${p.trail.length})</div>
-                 </div>`;
-
-        $(e).appendTo('#id-thumbnails');
+        let row = [
+          `<img src='${'data:image/png;base64,' + res.result[i]['thumbnail']}'/>`, 
+          p.ts,
+          p.age, 
+          p.gender, 
+          p.trail.length
+        ];
+        let table = Metro.getPlugin('#id-table-thumbnails', 'table');
+        table.addItem(row, true);
       }
 
       let diff = Math.abs((new Date(p.ts)).getTime() - range.start.getTime());
@@ -1223,12 +1228,8 @@ function displayIntervalGraph(ref, paths, inv, range, tlen)
       reportchart.data.datasets[0].data.push(bucketCounts.left);
       reportchart.data.datasets[1].data.push(bucketCounts.right);
     }
-
   }
-
   reportchart.update();
-
-  document.getElementById('id-chart-canvas').style = "display:flex";
 }
 function OnClickDeleteTrail()
 {

@@ -170,14 +170,41 @@ function ReportsView(id, cameras)
       </div>
     </div>
     <div class="row flex-justify-center">
-      <div class="cell-9">
-        <div>
-          <canvas id="id-chart-canvas" width="300" height:"200" style="display:none;"></canvas>
+      <div class="row pt-10 cell-12 d-flex flex-justify-center">
+        <div class="cell-6 pr-3">
+          <canvas id="id-chart-canvas" ></canvas>
         </div>
-      </div>
-      <div class="cell-3 flex-self-center" id="id-thumbnails" style='overflow-y:scroll;height:40em;'>
+        <div class="cell-5 pl-2">
+        <table
+          class="table row-hover text-left striped table-border"
+          data-rows="3"
+          data-rows-steps="3, 6"
+          data-static-view="true"
+          data-show-activity="false"
+          data-cls-search="cell-md-8"
+          data-cls-rows-count="cell-md-4" 
+          data-cls-table-top="row flex-nowrap"
+          id="id-table-thumbnails"
+          data-role="table">
+         <thead>
+          <tr>
+           <th data-sortable="false">Thumbnail</th>
+           <th data-sortable="true">Timestamp</th>
+           <th data-sortable="true" >Age</th>
+           <th data-sortable="true" data-format="string">Gender</th>
+           <th data-sortable="true" data-format="number">Trail length</th>
+          </tr>
+         </thead>
 
+       </table>
+       </div>
       </div>
+
+
+
+
+      <!--div class="cell-3 flex-self-center" id="id-thumbnails" style='overflow-y:scroll;height:40em;'>
+      </div-->
     </div>
    </div>
   </div>
@@ -209,11 +236,7 @@ function ReportsView(id, cameras)
       {
        responsive: true,
        legend: {
-        position: 'top',
-       },
-       title: {
-        display: true,
-        text: 'Visitor Count'
+        position: 'bottom',
        },
        scales: {
         yAxes: [{
@@ -267,7 +290,7 @@ function render(v, id)
 
    <h3 class="pt-2" id="id-reports">Reports</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-10" id="main-view-left">
+     <div class="grid cell-12" id="main-view-left">
       ${ReportsView('id-report-center', v.data.cameras)}
      </div>
    </div>
