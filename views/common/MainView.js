@@ -42,17 +42,16 @@ var content = (v) =>
          </button>
    
          <ul class="navview-menu">
-             <li class="active">
+             <!--li class="active">
                  <a href="#id-home">
                      <span class="icon"><span class="mif-codepen"></span></span>
                      <span class="caption">Home</span>
                  </a>
              </li>
+             <li class="item-separator"></li-->
    
-             <li class="item-separator"></li>
-   
-             <li>
-                 <a href="#id-cameras" class="">
+             <li class="active">
+                 <a href="#id-cameras">
                      <span class="icon"><span class="mif-video-camera"></span></span>
                      <span class="caption">Cameras</span>
                  </a>
@@ -70,6 +69,15 @@ var content = (v) =>
              <li class="item-separator"></li>
    
              <li>
+                 <a href="#id-reports">
+                     <span class="icon"><span class="mif-chart-line"></span></span>
+                     <span class="caption">Reports</span>
+                 </a>
+             </li>
+
+             <li class="item-separator"></li>
+   
+             <li>
                  <a href="#id-alerts">
                      <span class="icon"><span class="mif-warning"></span></span>
                      <span class="caption">Alerts</span>
@@ -79,16 +87,7 @@ var content = (v) =>
                      </div>
                  </a>
              </li>
-   
-             <li class="item-separator"></li>
-   
-             <li>
-                 <a href="#id-reports">
-                     <span class="icon"><span class="mif-chart-line"></span></span>
-                     <span class="caption">Reports</span>
-                 </a>
-             </li>
-   
+
              <li class="item-separator"></li>
    
              <li>

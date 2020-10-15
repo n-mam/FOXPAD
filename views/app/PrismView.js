@@ -158,8 +158,14 @@ function ReportsView(id, cameras)
         </div>
       </div>
       <div class="cell-2">
-        <div class="d-flex flex-align-left">
-          <button class="button" onclick="OnClickAnalyzeTrail();">ANALYZE</button>
+        <div class=" flex-align-left">
+          <div class="split-button">
+            <button class="button" onclick="OnClickAnalyzeTrail();">ANALYZE</button>
+            <button class="split dropdown-toggle"></button>
+            <ul class="d-menu" data-role="dropdown">
+              <li onclick='OnClickDeleteTrail();'><a href="#">Delete</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -232,7 +238,7 @@ function ReportsView(id, cameras)
 function render(v, id)
 {
   v.page.html = `
-  <h3 class="pt-2" id="id-home">Home</h3>
+  <!--h3 class="pt-2" id="id-home">Home</h3>
    <p>
     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
    </p>
@@ -243,7 +249,7 @@ function render(v, id)
      <div class="grid cell-6" id="main-view-right">
       B      
      </div>
-   </div>
+   </div-->
 
   <h3 class="pt-2" id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">

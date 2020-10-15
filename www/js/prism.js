@@ -30,7 +30,7 @@ function Agent(o)
     $.each(items, function() {
       let ch = $(this).children();
       if (parseInt($(ch[2]).text()) === self.socket.agent.id) {
-        $(ch[3]).addClass("success border bd-gray");
+        $(ch[3]).addClass("success text-bold border bd-gray");
       }
     });
   }
@@ -301,18 +301,19 @@ function OnCameraDeleteClick()
     return;
   }
 
-  let o = [];
+  let id = [];
 
   for (let i = 0; i < items.length; i++)
   {
-    o.push({id: items[i][0]});  
+    id.push(items[i][0]);
   }
 
   _crud(
     {
       action: 'DELETE',
       table: 'cameras',
-      rows: o
+      where: 'id IN (' + id.toString() + ')',
+      rows: [{x: 'y'}]
     });
 }
 function OnCameraAddClick()
@@ -615,18 +616,19 @@ function OnAgentDeleteClick()
     return;
   }
 
-  let o = [];
+  let id = [];
 
   for (let i = 0; i < items.length; i++)
   {
-    o.push({id: items[i][0]});  
+    id.push(items[i][0]);
   }
 
   _crud(
     {
       action: 'DELETE',
       table: 'agents',
-      rows: o
+      where: 'id IN (' + id.toString() + ')',
+      rows: [{x: 'y'}]
     });
 }
 function OnAgentAddClick()
@@ -725,7 +727,7 @@ function Report(cid, tlen)
   this.paths = [];
   this.tlen = tlen;
 
-  this.analyze = function(inv) {
+  this.getIntervalRange = function(inv) {
 
     let range = {};
     let now = new Date();
@@ -749,11 +751,10 @@ function Report(cid, tlen)
       range.start = new Date(now.getFullYear(), 0, 1, 0, 0, 0);
       range.end = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
     }
-
-    this.getIntervalData(inv, range)
+    return range;
   }
 
-  this.getIntervalData = function(inv, range){
+  this.getIntervalData = function(inv, range) {
     _crud(
       {
         action: 'READ',
@@ -1219,6 +1220,36 @@ function displayIntervalGraph(ref, paths, inv, range, tlen)
 
   document.getElementById('id-chart-canvas').style = "display:flex";
 }
+function OnClickDeleteTrail()
+{
+  let cid = $('#id-report-cam').data('select').val();
+  let inv = $('#id-report-int').data('select').val();
+  let tlen = $('#id-report-trail-length').data('select').val();
+
+  if (!isDefined(cid) || 
+      !isDefined(inv)) {
+    show_error("Please select the camera and an interval");
+    return;
+  }
+
+  let ok = confirm("This would delete trails of the selected range. Proceed ?");
+
+  if (!ok) {
+    show_error("Trail delete operation cancelled");
+    return;
+  }
+
+  let report = new Report(cid, tlen);
+  let range = report.getIntervalRange(inv);
+
+  _crud(
+    {
+      action: 'DELETE',
+      table: 'Trails',
+      where: `cid = ${cid} and uid = ${uid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
+      rows: [{x: 'y'}]
+    });
+}
 function OnClickAnalyzeTrail()
 {
   let cid = $('#id-report-cam').data('select').val();
@@ -1232,8 +1263,9 @@ function OnClickAnalyzeTrail()
   }
 
   let report = new Report(cid, tlen);
+  let range = report.getIntervalRange(inv);
 
-  report.analyze(inv);
+  report.getIntervalData(inv, range);
 }
 
 function GetTableData(table, cbk) {
