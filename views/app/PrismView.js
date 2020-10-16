@@ -199,61 +199,141 @@ function ReportsView(id, cameras)
        </table>
        </div>
       </div>
-
-
-
-
-      <!--div class="cell-3 flex-self-center" id="id-thumbnails" style='overflow-y:scroll;height:40em;'>
-      </div-->
     </div>
    </div>
   </div>
   <script>
    let context = document.getElementById('id-chart-canvas').getContext('2d');
    var barChartData = {
-    labels: [],
-    datasets: 
-    [
-     {
-      label: '',
-      backgroundColor: 'rgb(154, 208, 245)',
-      borderColor: 'rgb(106, 183, 235)',
-      borderWidth: 1,
-      data: []
-     },
-     {
-      label: '',
-      backgroundColor: 'rgb(255, 177, 193)',
-      borderColor: 'rgb(255, 134, 160)',
-      borderWidth: 1,
-      data: []
-    }]
-  };   
-   reportchart = new Chart(context, {
-     type: 'bar',
-     data: barChartData,
-     options:
+     labels: [],
+     datasets: 
+     [{
+        label: '',
+        backgroundColor: 'rgb(154, 208, 245)',
+        borderColor: 'rgb(106, 183, 235)',
+        borderWidth: 1,
+        data: []
+      },
       {
-       responsive: true,
-       legend: {
+        label: '',
+        backgroundColor: 'rgb(255, 177, 193)',
+        borderColor: 'rgb(255, 134, 160)',
+        borderWidth: 1,
+        data: []
+      }]
+  };
+  // var reportchart = new Chart(context, {
+  //    type: 'bar',
+  //    data: barChartData,
+  //    options:
+  //     {
+  //      responsive: true,
+  //      legend: {
+  //       position: 'bottom',
+  //      },
+  //      scales: {
+  //       yAxes: [{
+  //         scaleLabel: {
+  //           display: true,
+  //           labelString: 'count'
+  //         }
+  //       }],
+  //       xAxes: [{
+  //         scaleLabel: {
+  //           display: true,
+  //           labelString: ''
+  //         }
+  //       }]
+  //      }
+  //    }
+  // });
+
+  /* age-gender chart */
+
+  var AgeGenderChartData = {
+    labels: [],
+    datasets: [{
+      label: 'Male : 0 - 18',
+      backgroundColor: 'rgb(255, 0, 0)',
+      stack: 'Stack M',
+      data: [
+        Math.floor(Math.random() * 100)
+      ]
+    }, {
+      label: 'Male : 18 - 30',
+      backgroundColor: 'rgb(0, 255, 0)',
+      stack: 'Stack M',
+      data: [
+        Math.floor(Math.random() * 100)
+      ]
+    }, {
+      label: 'Male : 30 - 40',
+      backgroundColor: 'rgb(0, 0, 255)',
+      stack: 'Stack M',
+      data: [
+        Math.floor(Math.random() * 100)
+      ]
+    }, {
+      label: 'Male : 40 - 50',
+      backgroundColor: 'rgb(154, 208, 245)',
+      stack: 'Stack M',
+      data: [
+        Math.floor(Math.random() * 100)
+      ]
+    }, {
+      label: 'Female : 0 - 18',
+      backgroundColor: 'rgb(255, 0, 0)',
+      stack: 'Stack F',
+      data: [
+        Math.floor(Math.random() * 100)
+      ]
+    }, {
+      label: 'Female : 18 - 30',
+      backgroundColor: 'rgb(0, 255, 0)',
+      stack: 'Stack F',
+      data: [
+        Math.floor(Math.random() * 100)
+      ]
+    }, {
+      label: 'Female : 30 - 40',
+      backgroundColor: 'rgb(0, 0, 255)',
+      stack: 'Stack F',
+      data: [
+        Math.floor(Math.random() * 100)
+      ]
+    }, {
+      label: 'Female : 40 - 50',
+      backgroundColor: 'rgb(154, 208, 245)',
+      stack: 'Stack F',
+      data: [
+        Math.floor(Math.random() * 100)
+      ]
+    }]
+  };
+
+  var ageGenderChart = new Chart(context, {
+    type: 'bar',
+    data: AgeGenderChartData,
+    options: {
+      tooltips: {
+        mode: 'index',
+        intersect: false
+      },
+      responsive: true,
+      legend: {
         position: 'bottom',
-       },
-       scales: {
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'count'
-          }
-        }],
+      },
+      scales: {
         xAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: ''
-          }
+          stacked: true,
+        }],
+        yAxes: [{
+          stacked: true
         }]
-       }
-     }
-   });
+      }
+    }
+  });
+
   </script>
   `;
 }
@@ -311,6 +391,7 @@ function render(v, id)
      var g_cameras = '${encodeURI(JSON.stringify(v.data.cameras))}';
    </script>
    <script src='/js/prism.js'></script>
+   <script src='/js/report.js'></script>
    `;
 }
 
