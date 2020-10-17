@@ -175,9 +175,11 @@ function ReportsView(id, cameras)
           <canvas id="id-chart-canvas" ></canvas>
         </div>
         <div class="cell-5 pl-2">
-        <table
+
+         <table
           class="table row-hover text-left striped table-border"
           data-rows="3"
+          data-check="true"
           data-rows-steps="3, 6"
           data-static-view="true"
           data-show-activity="false"
@@ -185,18 +187,30 @@ function ReportsView(id, cameras)
           data-cls-rows-count="cell-md-4" 
           data-cls-table-top="row flex-nowrap"
           id="id-table-thumbnails"
-          data-role="table">
+          data-role="table"
+          data-pagination-wrapper=".trail-table-pagination-wrapper">
          <thead>
           <tr>
-           <th data-sortable="false">Thumbnail</th>
-           <th data-sortable="true">Timestamp</th>
-           <th data-sortable="true" >Age</th>
-           <th data-sortable="true" data-format="string">Gender</th>
-           <th data-sortable="true" data-format="number">Trail length</th>
+            <th data-sortable="true">ID</th>
+            <th data-sortable="false">Thumbnail</th>
+            <th data-sortable="true">Timestamp</th>
+            <th data-sortable="true">Age</th>
+            <th data-sortable="true" data-format="string">Gender</th>
+            <th data-sortable="true" data-format="number">Trail length</th>
           </tr>
          </thead>
 
-       </table>
+        </table>
+        <div class="row">
+         <style> .pagination {margin:0em} </style>
+         <div class="w-50 trail-table-pagination-wrapper">
+         </div>
+         <div class="w-50 d-flex flex-align-center flex-justify-end">
+          <button class="tool-button" onclick="OnClickTrailDelete()"><span class="mif-bin"></span></button>
+          <button class="tool-button" onclick="OnClickTrailEdit()"><span class="mif-pencil"></span></button>
+         </div>    
+        </div>
+
        </div>
       </div>
     </div>

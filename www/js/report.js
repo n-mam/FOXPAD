@@ -14,7 +14,7 @@
       _crud(
         {
           action: 'READ',
-          columns: 'cid, aid, ts, ST_AsText(path), demography, thumbnail, age, gender',
+          columns: 'id, cid, aid, ts, ST_AsText(path), demography, thumbnail, age, gender',
           table: 'Trails',
           where: `cid = ${this.cid} and uid = ${uid} and ts between '${dateToMySql(this.range.start)}' and '${dateToMySql(this.range.end)}'`,
           rows: [{x: 'y'}]
@@ -89,6 +89,10 @@
   
         p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(",");
   
+        if (p.trail.length < this.tlen) continue;
+
+        p.id = res.result[i]['id'];
+
         p.demography = res.result[i]['demography'].split(",");
   
         p.ts = (res.result[i]).ts;
@@ -96,13 +100,12 @@
         p.age = (res.result[i]).age;
 
         p.gender = (res.result[i]).gender;
-  
-        if (p.trail.length < this.tlen) continue;
-  
+
         if (res.result[i]['thumbnail'].length)
         {
           let row = [
-            `<img src='${'data:image/png;base64,' + res.result[i]['thumbnail']}'/>`, 
+            p.id,
+            `<img src=${'data:image/png;base64,' + res.result[i]['thumbnail']}>`,
             p.ts,
             p.age, 
             p.gender, 
@@ -136,10 +139,10 @@
         {
           p.bucket = Math.ceil(diff / (1000 * 60 * 60 * 24 * 30.43685)); // month bucket
         }
-  
+
         this.paths.push(p);
       }
-  
+
       return true;
     }
 
@@ -169,7 +172,7 @@
         onShow: function(w)
         {
           let canvas = document.getElementById("id-trail-analyzer");
-          
+
           canvas.addEventListener("click", function(e){
             newref = getMousePosition("id-trail-analyzer", e);
             let counts = computeRefLineIntersectionsCount(newref);
@@ -713,4 +716,45 @@
 
     report.generate();
   }
+
+  function OnClickTrailEdit()
+  {
+    alert("trail edit : what ?");
+  }
+
+  function OnClickTrailDelete()
+  {
+    var table = $('#id-table-thumbnails').data('table');
+    let items = table.getSelectedItems();
   
+    if (!items.length)
+    {
+      show_error("Please select a trails to delete");
+      return;
+    }
+
+    let id = [];
+
+    for (let i = 0; i < items.length; i++)
+    {
+      id.push(items[i][0]);
+    }
+
+    let ok = confirm("Are you sure you want to delete this trails ?");
+
+    if (!ok)
+    {
+      show_error("Trail delete operation cancelled");
+      return;
+    }
+
+    _crud(
+      {
+        action: 'DELETE',
+        table: 'Trails',
+        where: 'id IN (' + id.toString() + ')',
+        rows: [{x: 'y'}]
+      });
+
+  }
+

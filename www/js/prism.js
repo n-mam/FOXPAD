@@ -296,7 +296,8 @@ function OnCameraDeleteClick()
   var table = $('#id-camera-right-table').data('table');
   let items = table.getSelectedItems();
 
-  if (!items.length) {
+  if (!items.length) 
+  {
     show_error("Please select a camera to delete");
     return;
   }
