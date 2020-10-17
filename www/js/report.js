@@ -112,7 +112,12 @@
           let table = Metro.getPlugin('#id-table-thumbnails', 'table');
           table.addItem(row, true);
         }
-  
+
+        if (p.age)
+          this.type = "Demography";
+        else
+          this.type = "PeopleCount";
+
         let diff = Math.abs((new Date(p.ts)).getTime() - this.range.start.getTime());
   
         if (this.inv === "1Hour")
@@ -192,28 +197,84 @@
     this.displayIntervalGraph = function(ref)
     {
       let xAxis = [];
-    
-      while (reportchart.data.labels.length)
+
+      if (this.chart) this.chart.destroy();
+
+      let context = document.getElementById('id-chart-canvas').getContext('2d');
+
+      if (this.type == "PeopleCount") {
+
+        this.chart = new Chart(context, {
+          type: 'bar',
+          data: barChartData,
+          options:
+           {
+            responsive: true,
+            legend: {
+             position: 'bottom',
+            },
+            scales: {
+             yAxes: [{
+               scaleLabel: {
+                 display: true,
+                 labelString: 'count'
+               }
+             }],
+             xAxes: [{
+               scaleLabel: {
+                 display: true,
+                 labelString: ''
+               }
+             }]
+            }
+          }
+        });
+
+      } else if (this.type == "Demography") {
+
+        this.chart = new Chart(context, {
+          type: 'bar',
+          data: AgeGenderChartData,
+          options: {
+            tooltips: {
+              mode: 'index',
+              intersect: false
+            },
+            responsive: true,
+            legend: {
+              position: 'bottom',
+            },
+            scales: {
+              xAxes: [{
+                stacked: true,
+              }],
+              yAxes: [{
+                stacked: true
+              }]
+            }
+          }
+        });
+
+      } 
+      else 
       {
-        reportchart.data.labels.pop();
+        show_error("Unable to determine the chart type");
+        return;
       }
-    
-      reportchart.data.datasets[0].data = [];
-      reportchart.data.datasets[1].data = [];
-    
+
       if (this.inv === '1Hour')
       {
-        reportchart.data.labels = [
+        this.chart.data.labels = [
           '5m', '10m','15m','20m','25m','30m',
           '35m','40m','45m','50m','55m','60m'];
-          reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 1 hour'
+          this.chart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 1 hour'
       }
       else if (this.inv === 'Today')
       {
-        reportchart.data.labels = [
+        this.chart.data.labels = [
           '9','10','11','12','13',
           '14','15','16','17','18','19','20','21','22','23'];
-        reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Active hours'
+        this.chart.options.scales.xAxes[0].scaleLabel.labelString = 'Active hours'
       }
       else if (this.inv === 'Daily') 
       {
@@ -223,19 +284,19 @@
           
           xAxis[i] = d.getDate() + '/' + parseInt(d.getMonth() + 1);
     
-          reportchart.data.labels = xAxis;
+          this.chart.data.labels = xAxis;
         }
-        reportchart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 14 days'
+        this.chart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 14 days'
       }
       else if (this.inv === "Monthly")
       {
-        reportchart.data.labels = [
+        this.chart.data.labels = [
           'Jan','Feb','Mar','Apr','May',
           'Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        reportchart.options.scales.xAxes[0].scaleLabel.labelString = (new Date()).getFullYear();
+        this.chart.options.scales.xAxes[0].scaleLabel.labelString = (new Date()).getFullYear();
       }
 
-      for (let i = 1; i <= reportchart.data.labels.length; i++)
+      for (let i = 1; i <= this.chart.data.labels.length; i++)
       {
         let bucketPaths = [];
 
@@ -249,30 +310,84 @@
           }
         }
 
-        let bucketCounts = {up: 0, down: 0, left: 0,  right: 0};
+        if (this.type == "PeopleCount")
+        {
+          let bucketCounts = {up: 0, down: 0, left: 0,  right: 0};
 
-        if (bucketPaths.length)
-        {
-          bucketCounts = this.computeRefLineIntersectionsCount(ref, bucketPaths);
+          if (bucketPaths.length)
+          {
+            bucketCounts = this.computeRefLineIntersectionsCount(ref, bucketPaths);
+          }
+  
+          if (ref.dir === 'horizontal')
+          {
+            this.chart.data.datasets[0].label = 'UP';
+            this.chart.data.datasets[1].label = 'DOWN';
+            this.chart.data.datasets[0].data.push(bucketCounts.up);
+            this.chart.data.datasets[1].data.push(bucketCounts.down);
+          }
+          else if (ref.dir === 'vertical')
+          {
+            this.chart.data.datasets[0].label = 'LEFT';
+            this.chart.data.datasets[1].label = 'RIGHT';
+            this.chart.data.datasets[0].data.push(bucketCounts.left);
+            this.chart.data.datasets[1].data.push(bucketCounts.right);
+          }
         }
+        else if (this.type == "Demography")
+        {
+          if (bucketPaths.length)
+          {
+            for (let i = 0; i < bucketPaths.length; i++)
+            {
+              let path = bucketPaths[i];
+              let index, label;
 
-        if (ref.dir === 'horizontal')
-        {
-          reportchart.data.datasets[0].label = 'UP';
-          reportchart.data.datasets[1].label = 'DOWN';
-          reportchart.data.datasets[0].data.push(bucketCounts.up);
-          reportchart.data.datasets[1].data.push(bucketCounts.down);
+              if (path.age <= 18) {
+                index = 0 + ((path.gender === "Female") ?  4 : 0);
+                label = `${path.gender}: ` + '0 - 18';
+              } else if (path.age > 18 && path.age <= 35) {
+                index = 1 + ((path.gender === "Female") ?  4 : 0);
+                label = `${path.gender}: ` + '19 - 35';
+              } else if (path.age > 35 && path.age <= 50) {
+                index = 2 + ((path.gender === "Female") ?  4 : 0);
+                label = `${path.gender}: ` + '36 - 50';
+              } else if (path.age > 50 && path.age <= 70) {
+                index = 3 + ((path.gender === "Female") ?  4 : 0);
+                label = `${path.gender}: ` + '51 - 70';
+              }
+
+              this.chart.data.datasets[index].label = label;
+              let count = this.chart.data.datasets[index].data.pop();
+              this.chart.data.datasets[index].data.push(++count);
+            }
+          }
+          // this.chart.data.datasets[0].label = 'Male : 0 - 18';
+          // this.chart.data.datasets[0].data.push(Math.floor(Math.random() * 100));
+          // this.chart.data.datasets[1].label = 'Male : 18 - 35';
+          // this.chart.data.datasets[1].data.push(Math.floor(Math.random() * 100));
+          // this.chart.data.datasets[2].label = 'Male : 35 - 50';
+          // this.chart.data.datasets[2].data.push(Math.floor(Math.random() * 100));
+          // this.chart.data.datasets[3].label = 'Male : 50 - 70';
+          // this.chart.data.datasets[3].data.push(Math.floor(Math.random() * 100));
+
+          // this.chart.data.datasets[4].label = 'Female : 0 - 18';
+          // this.chart.data.datasets[4].data.push(Math.floor(Math.random() * 100));
+          // this.chart.data.datasets[5].label = 'Female : 18 - 35';
+          // this.chart.data.datasets[5].data.push(Math.floor(Math.random() * 100));
+          // this.chart.data.datasets[6].label = 'Female : 35 - 50';
+          // this.chart.data.datasets[6].data.push(Math.floor(Math.random() * 100));
+          // this.chart.data.datasets[7].label = 'Female : 50 - 75';
+          // this.chart.data.datasets[7].data.push(Math.floor(Math.random() * 100));
         }
-        else if (ref.dir === 'vertical')
+        else
         {
-          reportchart.data.datasets[0].label = 'LEFT';
-          reportchart.data.datasets[1].label = 'RIGHT';
-          reportchart.data.datasets[0].data.push(bucketCounts.left);
-          reportchart.data.datasets[1].data.push(bucketCounts.right);
+          show_error("Unable to determine the chart type");
+          return;
         }
       }
 
-      reportchart.update();
+      this.chart.update();
     }
 
     this.computeHorizontalMaxima = function(draw) {

@@ -222,31 +222,6 @@ function ReportsView(id, cameras)
         data: []
       }]
   };
-  // var reportchart = new Chart(context, {
-  //    type: 'bar',
-  //    data: barChartData,
-  //    options:
-  //     {
-  //      responsive: true,
-  //      legend: {
-  //       position: 'bottom',
-  //      },
-  //      scales: {
-  //       yAxes: [{
-  //         scaleLabel: {
-  //           display: true,
-  //           labelString: 'count'
-  //         }
-  //       }],
-  //       xAxes: [{
-  //         scaleLabel: {
-  //           display: true,
-  //           labelString: ''
-  //         }
-  //       }]
-  //      }
-  //    }
-  // });
 
   /* age-gender chart */
 
@@ -257,82 +232,55 @@ function ReportsView(id, cameras)
       backgroundColor: 'rgb(255, 0, 0)',
       stack: 'Stack M',
       data: [
-        Math.floor(Math.random() * 100)
+       0
       ]
     }, {
       label: 'Male : 18 - 30',
       backgroundColor: 'rgb(0, 255, 0)',
       stack: 'Stack M',
-      data: [
-        Math.floor(Math.random() * 100)
+      data: [ 
+        0
       ]
     }, {
       label: 'Male : 30 - 40',
       backgroundColor: 'rgb(0, 0, 255)',
       stack: 'Stack M',
       data: [
-        Math.floor(Math.random() * 100)
+        0
       ]
     }, {
       label: 'Male : 40 - 50',
       backgroundColor: 'rgb(154, 208, 245)',
       stack: 'Stack M',
       data: [
-        Math.floor(Math.random() * 100)
+        0
       ]
     }, {
       label: 'Female : 0 - 18',
       backgroundColor: 'rgb(255, 0, 0)',
       stack: 'Stack F',
       data: [
-        Math.floor(Math.random() * 100)
+        0
       ]
     }, {
       label: 'Female : 18 - 30',
       backgroundColor: 'rgb(0, 255, 0)',
       stack: 'Stack F',
-      data: [
-        Math.floor(Math.random() * 100)
-      ]
+      data: [0]
     }, {
       label: 'Female : 30 - 40',
       backgroundColor: 'rgb(0, 0, 255)',
       stack: 'Stack F',
       data: [
-        Math.floor(Math.random() * 100)
+        0
       ]
     }, {
       label: 'Female : 40 - 50',
       backgroundColor: 'rgb(154, 208, 245)',
       stack: 'Stack F',
-      data: [
-        Math.floor(Math.random() * 100)
-      ]
+      data: [0]
     }]
   };
-
-  var ageGenderChart = new Chart(context, {
-    type: 'bar',
-    data: AgeGenderChartData,
-    options: {
-      tooltips: {
-        mode: 'index',
-        intersect: false
-      },
-      responsive: true,
-      legend: {
-        position: 'bottom',
-      },
-      scales: {
-        xAxes: [{
-          stacked: true,
-        }],
-        yAxes: [{
-          stacked: true
-        }]
-      }
-    }
-  });
 
   </script>
   `;
