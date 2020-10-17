@@ -235,21 +235,21 @@ function ReportsView(id, cameras)
        0
       ]
     }, {
-      label: 'Male : 18 - 30',
+      label: 'Male : 19 - 35',
       backgroundColor: 'rgb(0, 255, 0)',
       stack: 'Stack M',
       data: [ 
         0
       ]
     }, {
-      label: 'Male : 30 - 40',
+      label: 'Male : 36 - 50',
       backgroundColor: 'rgb(0, 0, 255)',
       stack: 'Stack M',
       data: [
         0
       ]
     }, {
-      label: 'Male : 40 - 50',
+      label: 'Male : 51 - 75',
       backgroundColor: 'rgb(154, 208, 245)',
       stack: 'Stack M',
       data: [
@@ -263,19 +263,19 @@ function ReportsView(id, cameras)
         0
       ]
     }, {
-      label: 'Female : 18 - 30',
+      label: 'Female : 19 - 35',
       backgroundColor: 'rgb(0, 255, 0)',
       stack: 'Stack F',
       data: [0]
     }, {
-      label: 'Female : 30 - 40',
+      label: 'Female : 36 - 50',
       backgroundColor: 'rgb(0, 0, 255)',
       stack: 'Stack F',
       data: [
         0
       ]
     }, {
-      label: 'Female : 40 - 50',
+      label: 'Female : 51 - 75',
       backgroundColor: 'rgb(154, 208, 245)',
       stack: 'Stack F',
       data: [0]
