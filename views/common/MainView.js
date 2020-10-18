@@ -78,19 +78,6 @@ var content = (v) =>
              <li class="item-separator"></li>
    
              <li>
-                 <a href="#id-alerts">
-                     <span class="icon"><span class="mif-warning"></span></span>
-                     <span class="caption">Alerts</span>
-                     <div class="badges">
-                         <span class="badge inline">10</span>
-                         <span class="badge inline">5</span>
-                     </div>
-                 </a>
-             </li>
-
-             <li class="item-separator"></li>
-   
-             <li>
                  <a href="#" class="dropdown-toggle">
                      <span class="icon"><span class="mif-user"></span></span>
                      <span class="caption">${v.json.prv.user.name}</span>

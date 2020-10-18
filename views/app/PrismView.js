@@ -327,16 +327,6 @@ function render(v, id)
      </div>
    </div>
 
-   <h3 class="pt-2" id="id-alerts">Alerts</h3>
-   <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-6" id="main-view-left">
-      A
-     </div>
-     <div class="grid cell-6" id="main-view-right">
-      B      
-     </div>
-   </div>
-
    <script>
      var uid = ${v.json.prv.user.id};
      var g_agents = '${JSON.stringify(v.data.agents)}';

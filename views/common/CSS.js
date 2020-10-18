@@ -3,7 +3,7 @@ var main = ({theme, accordian}) => {
  <style>
  body {
   font-family: 'Quicksand', sans-serif;
-  font-size: 0.8em;
+  font-size: 0.9em;
  }
  input, select, textarea, button {
    font-family: inherit !important;
