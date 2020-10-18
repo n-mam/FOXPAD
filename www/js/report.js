@@ -201,7 +201,10 @@
     {
       let xAxis = [];
 
-      if (this.chart) this.chart.destroy();
+      if (this.chart !== undefined)
+      {
+        this.chart.destroy();
+      }
 
       let context = document.getElementById('id-chart-canvas').getContext('2d');
 
@@ -609,10 +612,16 @@
     this.close = function() {
       let e = Metro.getPlugin(this.canvas, "window");
       if (e != undefined)
+      {
         e.close();
+      }
       $("#id-thumbnails").empty();
       let table = Metro.getPlugin('#id-table-thumbnails', 'table');
       table.clear();
+      if (this.chart !== undefined)
+      {
+        this.chart.destroy();
+      }
     }
 
   }
@@ -642,11 +651,11 @@
   {
     let canvas = document.getElementById("id-trail-analyzer");
     let context = canvas.getContext('2d');
-  
+
     context.font = '10pt Calibri';
     context.fillStyle = 'black';
     context.fillText(" u: " + counts.up + " d: " + counts.down + " l: " + counts.left + " r: " + counts.right, pos.x + 5, pos.y -5);
-  
+
     //draw v ref line 
     context.beginPath();         
     context.strokeStyle = "#BFC9CA";

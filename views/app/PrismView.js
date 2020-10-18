@@ -172,7 +172,7 @@ function ReportsView(id, cameras)
     <div class="row flex-justify-center">
       <div class="row pt-10 cell-12 d-flex flex-justify-center">
         <div class="cell-6 pr-3">
-          <canvas id="id-chart-canvas" ></canvas>
+          <canvas id="id-chart-canvas"></canvas>
         </div>
         <div class="cell-5 pl-2">
 
