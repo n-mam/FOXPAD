@@ -202,13 +202,15 @@ function ReportsView(id, cameras)
 
         </table>
         <div class="row">
-         <style> .pagination {margin:0em} </style>
-         <div class="w-75 trail-table-pagination-wrapper">
-         </div>
-         <div class="w-25 d-flex flex-align-center flex-justify-end">
-          <button class="tool-button" onclick="OnClickTrailDelete()"><span class="mif-bin"></span></button>
-          <button class="tool-button" onclick="OnClickTrailEdit()"><span class="mif-pencil"></span></button>
+          <style> .pagination {margin:0em} </style>
+          <div class="w-75 trail-table-pagination-wrapper">
+          </div>
+          <div class="w-25 d-flex flex-align-center flex-justify-end">
+           <button class="tool-button" onclick="OnClickTrailDelete()"><span class="mif-bin"></span></button>
+           <button class="tool-button" onclick="OnClickTrailEdit()"><span class="mif-pencil"></span></button>
+          </div>    
          </div>    
+          </div>    
         </div>
 
        </div>
@@ -303,18 +305,6 @@ function ReportsView(id, cameras)
 function render(v, id)
 {
   v.page.html = `
-  <!--h3 class="pt-2" id="id-home">Home</h3>
-   <p>
-    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-   </p>
-   <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-6" id="main-view-left">
-      A
-     </div>
-     <div class="grid cell-6" id="main-view-right">
-      B      
-     </div>
-   </div-->
 
   <h3 class="pt-2" id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
