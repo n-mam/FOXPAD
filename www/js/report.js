@@ -342,11 +342,21 @@
         }
         else if (this.type == "Demography")
         {
+          this.chart.data.datasets[0].data.push(0); //Math.floor(Math.random() * 100));
+          this.chart.data.datasets[1].data.push(0); //Math.floor(Math.random() * 100));
+          this.chart.data.datasets[2].data.push(0); //Math.floor(Math.random() * 100));
+          this.chart.data.datasets[3].data.push(0); //Math.floor(Math.random() * 100));
+
+          this.chart.data.datasets[4].data.push(0); //Math.floor(Math.random() * 100));
+          this.chart.data.datasets[5].data.push(0); //Math.floor(Math.random() * 100));
+          this.chart.data.datasets[6].data.push(0); //Math.floor(Math.random() * 100));
+          this.chart.data.datasets[7].data.push(0); //Math.floor(Math.random() * 100));
+
           if (bucketPaths.length)
           {
-            for (let i = 0; i < bucketPaths.length; i++)
+            for (let k = 0; k < bucketPaths.length; k++)
             {
-              let path = bucketPaths[i];
+              let path = bucketPaths[k];
               let index;
 
               if (path.age <= 18) {
@@ -359,29 +369,9 @@
                 index = 3 + ((path.gender === "Female") ?  4 : 0);
               }
 
-              let count = this.chart.data.datasets[index].data.pop();
-              this.chart.data.datasets[index].data.push(++count);
+              let count = this.chart.data.datasets[index].data[i-1];
+              this.chart.data.datasets[index].data[i-1] = ++count;
             }
-          }
-          else
-          {
-          // this.chart.data.datasets[0].label = 'Male : 0 - 18';
-             this.chart.data.datasets[0].data.push(0); //Math.floor(Math.random() * 100));
-          // this.chart.data.datasets[1].label = 'Male : 18 - 35';
-             this.chart.data.datasets[1].data.push(0); //Math.floor(Math.random() * 100));
-          // this.chart.data.datasets[2].label = 'Male : 35 - 50';
-             this.chart.data.datasets[2].data.push(0); //Math.floor(Math.random() * 100));
-          // this.chart.data.datasets[3].label = 'Male : 50 - 70';
-             this.chart.data.datasets[3].data.push(0); //Math.floor(Math.random() * 100));
-
-          // this.chart.data.datasets[4].label = 'Female : 0 - 18';
-             this.chart.data.datasets[4].data.push(0); //Math.floor(Math.random() * 100));
-          // this.chart.data.datasets[5].label = 'Female : 18 - 35';
-             this.chart.data.datasets[5].data.push(0); //Math.floor(Math.random() * 100));
-          // this.chart.data.datasets[6].label = 'Female : 35 - 50';
-             this.chart.data.datasets[6].data.push(0); //Math.floor(Math.random() * 100));
-          // this.chart.data.datasets[7].label = 'Female : 50 - 75';
-             this.chart.data.datasets[7].data.push(0); //Math.floor(Math.random() * 100));
           }
         }
         else
