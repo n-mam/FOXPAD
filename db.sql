@@ -98,3 +98,12 @@ select * from Agents;
  * SELECT cid,aid,ts,ST_AsText(path) FROM trails;
  */
 
+/*
+ * endpoint tables
+ */
+create table Backups (
+   id            int unsigned NOT NULL AUTO_INCREMENT,
+   uid           int unsigned,
+   primary key (id),
+   foreign key (uid) REFERENCES User(id) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;

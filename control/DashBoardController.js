@@ -1,10 +1,15 @@
-var prismView = require('../views/app/PrismView'); 
-var prismController = require('./PrismController');
+
+// let view = require('../views/app/PrismView');
+// let controller = require('./PrismController');
+
+let view = require('../views/app/EndPointView');
+let controller = require('./EndPointController');
+
 var dashboardView = require('../views/app/DashBoardView')
 
 function index(v)
 {
-  prismController.index(v, (e, data) => {
+  controller.index(v, (e, data) => {
     if (e)
     {
       v.setError(e);
@@ -15,12 +20,12 @@ function index(v)
 
       dashboardView.render(v, (e) => {
         if (e)
-        {
+        { 
           v.setError(e);
         }
         else
         {
-          prismView.render(v, 'id-cv');
+          view.render(v, 'id-cv');
           v.setStatus('ok', '');
         }
       });

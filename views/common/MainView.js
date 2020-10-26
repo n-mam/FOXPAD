@@ -42,71 +42,38 @@ var content = (v) =>
          </button>
    
          <ul class="navview-menu">
-             <!--li class="active">
-                 <a href="#id-home">
-                     <span class="icon"><span class="mif-codepen"></span></span>
-                     <span class="caption">Home</span>
-                 </a>
-             </li>
-             <li class="item-separator"></li-->
-   
-             <li class="active">
-                 <a href="#id-cameras">
-                     <span class="icon"><span class="mif-video-camera"></span></span>
-                     <span class="caption">Cameras</span>
-                 </a>
-             </li>
-   
+             ${v.page.nav}
              <li class="item-separator"></li>
-   
              <li>
-                 <a href="#id-agents" class="">
-                     <span class="icon"><span class="mif-display"></span></span>
-                     <span class="caption">Agents</span>
-                 </a>
-             </li>
-   
-             <li class="item-separator"></li>
-   
-             <li>
-                 <a href="#id-reports">
-                     <span class="icon"><span class="mif-chart-line"></span></span>
-                     <span class="caption">Reports</span>
-                 </a>
-             </li>
-
-             <li class="item-separator"></li>
-   
-             <li>
-                 <a href="#" class="dropdown-toggle">
-                     <span class="icon"><span class="mif-user"></span></span>
-                     <span class="caption">${v.json.prv.user.name}</span>
-                 </a>
-                 <ul class="navview-menu" data-role="dropdown">
-                  <li class="bg-white">
-                    <a href="#">
+               <a href="#" class="dropdown-toggle">
+                <span class="icon"><span class="mif-user"></span></span>
+                <span class="caption">${v.json.prv.user.name}</span>
+               </a>
+               <ul class="navview-menu" data-role="dropdown">
+                 <li class="bg-white">
+                   <a href="#">
                      <span class="icon"><span class="mif-profile"></span></span>
                      <span class="caption">Profile</span>
-                    </a>
-                  </li>
-                  <li class="bg-white">
-                    <a href="#" onclick="_auth('LOGOUT')">
+                   </a>
+                 </li>
+                 <li class="bg-white">
+                   <a href="#" onclick="_auth('LOGOUT')">
                      <span class="icon"><span class="mif-exit"></span></span>
                      <span class="caption">Sign out</span>
-                    </a>
-                  </li>
-                 </ul>
+                   </a>
+                 </li>
+               </ul>
              </li>
          </ul>
-    </nav>
+      </nav>
   
-     <div class="navview-content h-100 text-center">
+      <div class="navview-content h-100 text-center">
        <div id="content-wrapper" class="content-inner h-100" style="overflow-y: auto;scroll-behavior: smooth;">
          ${v.page.html}
          ${u.DEBUG()}
        </div>
-     </div>
-   </div>
+      </div>
+    </div>
     `;
   }
   else
