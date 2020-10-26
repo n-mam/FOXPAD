@@ -1,9 +1,8 @@
+let view = require('../views/app/PrismView');
+let controller = require('./PrismController');
 
-// let view = require('../views/app/PrismView');
-// let controller = require('./PrismController');
-
-let view = require('../views/app/EndPointView');
-let controller = require('./EndPointController');
+// let view = require('../views/app/EndPointView');
+// let controller = require('./EndPointController');
 
 var dashboardView = require('../views/app/DashBoardView')
 
