@@ -96,7 +96,9 @@ function renderTableView(id, rows, columnNames, handler)
        data-pagination-wrapper=".${id}-my-pagination-wrapper">
 
        <thead>
+        <tr>
          ${renderTH(columnNames)}
+        </tr>
        </thead>
        <tbody>
          ${renderTD(rows, columnNames)}

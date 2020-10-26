@@ -19,7 +19,7 @@ function ProcessBackupViewResponse(m)
 
     m.Volumes.forEach(
      function(item, index) 
-     {     
+     {
        let name = `<div class='flex column' id='id-name-${item['GUID']}'>`;
 
        if (item['GUID'].includes('ShadowCopy'))

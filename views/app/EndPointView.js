@@ -28,14 +28,14 @@ function render(v, id)
    <h3 class="pt-2" id="id-backup">Backup</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-7">
-       ${cc.renderTableView('id-volumes', v.data.backups, ['id', 'sid', 'source', 'target', 'tracker', 'aid', 'uid'], 'Camera')}
+       ${cc.renderTableView('id-volumes', [], ['Name', 'Usage', 'Encrypt'], 'Volume')}
      </div>
    </div>
 
    <h3 class="pt-2" id="id-recover">Recover</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-7">
-       ${cc.renderTableView('id-save-sets', v.data.backups, ['id', 'sid', 'source', 'target', 'tracker', 'aid', 'uid'], 'Camera')}
+       ${cc.renderTableView('id-savesets', v.data.backups, ['id', 'uid'], 'Saveset')}
      </div>
    </div>
 
