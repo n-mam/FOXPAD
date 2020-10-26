@@ -3,9 +3,11 @@ let cc = require('../common/CommonControls');
 function ReportsView(id, cameras)
 {
   let trailLengthOptions = ``;
+  
   for (let i = 1; i < 50; i++) {
     trailLengthOptions += `<option value="${i}" ${i == 15 ? "selected" : ""}>${i}</option>`;
   }
+
   return `
   <div class="cell d-flex flex-justify-center" id='${id}'>
   <script src='js/Chart.min.js'></script>
@@ -13,7 +15,7 @@ function ReportsView(id, cameras)
     <div class="row d-flex flex-justify-center">
       <div class="cell-2">
         <div>
-          ${renderSelect(cameras, 'id-report-cam', 'Camera')}
+          ${cc.renderSelect(cameras, 'id-report-cam', 'Camera')}
         </div>
       </div>
       <div class="cell-2">
