@@ -104,6 +104,7 @@ select * from Agents;
 create table Backups (
    id            int unsigned NOT NULL AUTO_INCREMENT,
    uid           int unsigned,
+   ts            DATETIME,
    primary key (id),
    foreign key (uid) REFERENCES User(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;

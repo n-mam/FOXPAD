@@ -122,7 +122,8 @@ var postJS = () =>
 {
  return `
   <script src='/js/main.js'></script>
-  <script src='/js/ws.js'></script>`;
+  <script src='/js/ws.js'></script>
+  <script src='/js/agent.js'></script>`;
 }
 
 function landingPage()
