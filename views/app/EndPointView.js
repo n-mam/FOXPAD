@@ -32,13 +32,6 @@ function render(v, id)
      </div>
    </div>
 
-   <h3 class="pt-2" id="id-agents">Agents</h3>
-   <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-7">
-       ${cc.renderTableView('id-agents', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
-     </div>
-   </div>
-
    <script>
      var uid = ${v.json.prv.user.id};
      var g_agents = '${JSON.stringify(v.data.agents)}';

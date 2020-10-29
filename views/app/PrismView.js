@@ -198,17 +198,10 @@ function render(v, id)
   </li>`;
 
   v.page.html = `
-  <h3 class="pt-2" id="id-cameras">Cameras</h3>
+   <h3 class="pt-2" id="id-cameras">Cameras</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-7">
        ${cc.renderTableView('id-camera', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'aid', 'uid'], 'Camera')}
-     </div>
-   </div>
-
-   <h3 class="pt-2" id="id-agents">Agents</h3>
-   <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-7">
-       ${cc.renderTableView('id-agent', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
      </div>
    </div>
 

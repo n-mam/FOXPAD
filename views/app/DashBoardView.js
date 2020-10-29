@@ -1,10 +1,4 @@
-var u = require('../../lib/util');
-var ftpView = require('./FTPView');
-var sshView = require('./SSHView');
-var agentView = require('./AgentView');
-var kissView = require('./KissView');
-var backupView = require('./BackupView');
-var recoveryView = require('./RecoveryView');
+let cc = require('../common/CommonControls');
 
 function render(v, cbk)
 {
@@ -22,6 +16,25 @@ function render(v, cbk)
   }
 
   cbk(null);
+
+  v.page.nav += `
+  <li class="item-separator"></li>
+  <li>
+    <a href="#id-agents" class="">
+      <span class="icon"><span class="mif-display"></span></span>
+      <span class="caption">Agents</span>
+    </a>
+  </li>`;
+
+  v.page.html += `
+  <h3 class="pt-2" id="id-agents">Agents</h3>
+  <div class="flex-row h-100 d-flex flex-justify-center">
+    <div class="grid cell-7">
+      ${cc.renderTableView('id-agents', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
+    </div>
+  </div>`;
+
+  v.setStatus('ok', '');
 }
 
 function ShowUserDashBoard(v)
