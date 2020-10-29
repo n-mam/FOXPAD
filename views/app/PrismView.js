@@ -81,16 +81,12 @@ function ReportsView(id, cameras)
         </table>
         <div class="row">
           <style> .pagination {margin:0em} </style>
-          <div class="w-75 trail-table-pagination-wrapper">
-          </div>
+          <div class="w-75 trail-table-pagination-wrapper">  </div>
           <div class="w-25 d-flex flex-align-center flex-justify-end">
            <button class="tool-button" onclick="OnClickTrailDelete()"><span class="mif-bin"></span></button>
            <button class="tool-button" onclick="OnClickTrailEdit()"><span class="mif-pencil"></span></button>
           </div>    
-         </div>    
-          </div>    
         </div>
-
        </div>
       </div>
     </div>
