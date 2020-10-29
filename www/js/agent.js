@@ -4,8 +4,9 @@ function Agent(o)
   this.sid = o.sid;
   this.host = o.host;
   this.port = o.port;
+  this.cbk = {};
 
-  this.getSessions = function() {
+  this.getSessions = function(){
     let cmd = {};
     cmd.app = 'cam';
     cmd.req = 'get-active-sessions';
@@ -62,67 +63,7 @@ function Agent(o)
 
     let res = JSON.parse(e.data);
 
-    if (isDefined(res.error))
-    {
-      show_error(res.error);
-    }
-    else if (res.req == 'get-active-sessions')
-    {
-      let items = $('#id-camera-table').find("tr");
-
-      $.each(items, function() {
-        let ch = $(this).children();
-        $(ch[3]).clearClasses();
-      });
-
-      for (let i = 0; i < res.sessions.length; i++) 
-      {
-        let color = '';
-
-        if (res.sessions[i].started == "true")
-        {
-          color = 'success border bd-gray';
-
-          if (res.sessions[i].paused == "true")
-          {
-            color = 'warning border bd-gray';
-          }
-        }
-        else
-        {
-          color = 'alert border bd-gray';
-        }
-
-        $.each(items, function() {
-          let ch = $(this).children();
-          if ($(ch[3]).text() === res.sessions[i].sid)
-          {
-            $(ch[3]).addClass(color);
-          }
-        });
-      }
-    }
-    else if (res.req == 'camera-control')
-    {
-      this.socket.agent.getSessions();
-    }
-    else if (res.req == 'play')
-    {
-      let cam = getCameraObjectBySid(res.sid);
-      let canvas = document.getElementById('id-cam-canvas-' + cam.id);
-
-      if (canvas)
-      {
-        let ctx = canvas.getContext("2d");
-        let image = new Image();
-        image.onload = function() {
-          canvas.width = image.naturalWidth;
-          canvas.height = image.naturalHeight;
-          ctx.drawImage(image, 0, 0);
-        };
-        image.src = "data:image/png;base64," + res.frame;
-      }
-    }
+    this.cbk[res.app](res);
   }
 
   this.socket = new Socket(this.host, this.port, [], this);
