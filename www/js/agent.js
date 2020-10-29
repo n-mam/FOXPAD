@@ -24,7 +24,7 @@ function Agent(o)
   this.onopen = function(e){
     console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
     this.socket.agent.getSessions();
-    let lv = $('#id-agent-right-table');
+    let lv = $('#id-agent-table');
     let items = lv.find("tr");
     let self = this;
     $.each(items, function() {
@@ -38,7 +38,7 @@ function Agent(o)
   this.onclose = function(e){
     console.warn('agent websocket closed : ' + this.socket.host + ':' + this.socket.port + ' reason : ' + e.reason);
     show_error("Agent '" + this.socket.agent.sid + "' connection broken");
-    let lv = $('#id-agent-right-table');
+    let lv = $('#id-agent-table');
     let items = lv.find("tr");
     let self = this;
     $.each(items, function() {
@@ -68,7 +68,7 @@ function Agent(o)
     }
     else if (res.req == 'get-active-sessions')
     {
-      let items = $('#id-camera-right-table').find("tr");
+      let items = $('#id-camera-table').find("tr");
 
       $.each(items, function() {
         let ch = $(this).children();
@@ -177,7 +177,7 @@ function OnAgentTableNodeClick()
 }
 function OnAgentDeleteClick()
 {
-  var table = $('#id-agent-right-table').data('table');
+  var table = $('#id-agent-table').data('table');
   let items = table.getSelectedItems();
 
   if (!items.length) {
@@ -226,7 +226,7 @@ function OnAgentAddClick()
 }
 function OnAgentEditConfigClick()
 {
-  var table = $('#id-agent-right-table').data('table');
+  var table = $('#id-agent-table').data('table');
   let items = table.getSelectedItems();
 
   if (!items.length) {
@@ -288,9 +288,9 @@ function InitAgentObjects()
     Agents.push(new Agent(j[i]));
   }
   
-  $("#id-agent-right-table").table();
+  $("#id-agent-table").table();
 
-  $("#id-agent-right-table").on("click", "td:not(.check-cell)", function() {
+  $("#id-agent-table").on("click", "td:not(.check-cell)", function() {
     let e = $(this);
     while (!e.hasClass("check-cell")) {
       e = e.prev();
@@ -299,6 +299,6 @@ function InitAgentObjects()
   });
 }
 
-windowOnLoadCbk.push(InitAgentObjects);
+windowOnLoadCbk.unshift(InitAgentObjects);
 
 var Agents = [];

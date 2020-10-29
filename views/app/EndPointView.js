@@ -15,13 +15,6 @@ function render(v, id)
         <span class="icon"><span class="mif-download"></span></span>
         <span class="caption">Recover</span>
       </a>
-    </li>
-    <li class="item-separator"></li>
-    <li>
-      <a href="#id-agents">
-        <span class="icon"><span class="mif-display"></span></span>
-        <span class="caption">Agents</span>
-      </a>
     </li>`;
 
   v.page.html = `

@@ -163,7 +163,7 @@ function OnCameraTableNodeClick()
 }
 function OnCameraDeleteClick()
 {
-  var table = $('#id-camera-right-table').data('table');
+  var table = $('#id-camera-table').data('table');
   let items = table.getSelectedItems();
 
   if (!items.length) 
@@ -213,7 +213,7 @@ function OnCameraAddClick()
 }
 function OnCameraEditConfigClick()
 {
-  var table = $('#id-camera-right-table').data('table');
+  var table = $('#id-camera-table').data('table');
   let items = table.getSelectedItems();
 
   if (!items.length) {
@@ -457,9 +457,9 @@ function InitCameraObjects()
     Cameras.push(new Camera(j[i]));
   }
   
-  $("#id-camera-right-table").table();
+  $("#id-camera-table").table();
   
-  $("#id-camera-right-table").on("click", "td:not(.check-cell)", function() {
+  $("#id-camera-table").on("click", "td:not(.check-cell)", function() {
     let e = $(this);
     while (!e.hasClass("check-cell")) {
       e = e.prev();
