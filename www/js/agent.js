@@ -4,14 +4,8 @@ function Agent(o)
   this.sid = o.sid;
   this.host = o.host;
   this.port = o.port;
-  this.cbk = {};
-
-  this.getSessions = function(){
-    let cmd = {};
-    cmd.app = 'cam';
-    cmd.req = 'get-active-sessions';
-    this.send(cmd);
-  };
+  this.onconnect = null;
+  this.onmessage = null;
 
   this.isConnected = function(){
     return this.socket.isConnected();
@@ -24,7 +18,7 @@ function Agent(o)
 
   this.onopen = function(e){
     console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
-    this.socket.agent.getSessions();
+    this.onconnect();
     let lv = $('#id-agent-table');
     let items = lv.find("tr");
     let self = this;
@@ -63,7 +57,7 @@ function Agent(o)
 
     let res = JSON.parse(e.data);
 
-    this.cbk[res.app](res);
+    this.onmessage[res.app](res);
   }
 
   this.socket = new Socket(this.host, this.port, [], this);
