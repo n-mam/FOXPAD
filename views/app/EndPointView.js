@@ -20,8 +20,12 @@ function render(v, id)
   v.page.html = `
    <h3 class="pt-2" id="id-backup">Backup</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-7">
-       ${cc.renderTableView('id-volumes', [], ['Name', 'Usage', 'Encrypt'], 'Volume')}
+     <div class="grid cell-5">
+       ${cc.renderTableView('id-volumes', [], ['Volume', 'Usage', 'Encrypt'], 'Volume')}
+     </div>
+     <div class="grid cell-1">  </div>
+     <div class="grid cell-4">
+       ${cc.renderTableView('id-browser', [], ['Name', 'Attribute'], 'fsbrowser')}
      </div>
    </div>
 

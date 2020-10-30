@@ -57,7 +57,14 @@ function Agent(o)
 
     let res = JSON.parse(e.data);
 
-    this.onmessage[res.app](res);
+    if (isDefined(res.error))
+    {
+      show_error(res.error);
+    }
+    else
+    {
+      this.onmessage[res.app](res);
+    }
   }
 
   this.socket = new Socket(this.host, this.port, [], this);

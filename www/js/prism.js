@@ -26,11 +26,7 @@ function Camera(o)
 
   this.OnAgentMessage = function(res) {
 
-    if (isDefined(res.error))
-    {
-      show_error(res.error);
-    }
-    else if (res.req == 'get-active-sessions')
+    if (res.req == 'get-active-sessions')
     {
       let items = $('#id-camera-table').find("tr");
   
@@ -87,7 +83,11 @@ function Camera(o)
         image.src = "data:image/png;base64," + res.frame;
       }
     }
-  }
+    else
+    {
+      console.log("prism : unknown agent message");
+    }
+  } // OnAgentMessage
 
   for (let i = 0; i < Agents.length; i++)
   {

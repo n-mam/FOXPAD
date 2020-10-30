@@ -161,7 +161,7 @@ function render(id, filter)
             event.preventDefault();
             OnListElementClick('${id}', this);
           }
-        });     
+        });
   </script>`;
 
   return html;

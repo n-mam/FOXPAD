@@ -59,7 +59,7 @@
           range.start = dateFromHourOffset(1);
           range.end = dateFromOffset(0);
         } else if (this.inv == 'Today') {
-          /**  9 from today morning to 11 midnight, today */
+          /** 9 from today morning to 11 midnight, today */
           range.start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9);
           range.end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 59,59);
         } else if (this.inv == 'Daily') {
