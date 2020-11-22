@@ -683,7 +683,7 @@
       return;
     }
   
-    let report = new Report(cid, tlen);
+    let report = new Report(cid, inv, tlen);
     let range = report.getIntervalRange(inv);
   
     _crud(

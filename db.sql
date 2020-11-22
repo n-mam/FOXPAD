@@ -81,6 +81,13 @@ create table Trails (
    foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
+create table Faces (
+  id             int unsigned NOT NULL AUTO_INCREMENT,
+  ts             DATETIME,
+  fid            int unsigned,
+
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
+
 create trigger on_new_user 
 after insert on User
 for each row
