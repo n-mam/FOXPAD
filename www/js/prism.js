@@ -487,7 +487,8 @@ function AddNewCameraView() {
        <div class="cell-12">
         <select id="new-cam-target" data-prepend="Target" data-role="select">
           <option value="people" data-template="<span class='mif-users icon'></span> $1" selected="selected">People</option>
-          <option value="face" data-template="<span class='mif-eye icon'></span> $1">Face</option>
+          <option value="face" data-template="<span class='mif-eye icon'></span> $1">Face Detection</option>
+          <option value="face_rec" data-template="<span class='mif-codepen icon'></span> $1">Face Recognition</option>
           <option value="car" data-template="<span class='mif-cab icon'></span> $1">Car</option>
           <option value="mocap" data-template="<span class='mif-move-down icon'></span> $1">Motion</option>        
         </select>
