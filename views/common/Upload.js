@@ -7,7 +7,7 @@ var script = (folder, name) =>
 
    var ${name}Value;
 
-   function onFiles(input, ${folder})
+   function onFiles(input)
    {
      if (input.files && input.files[0])
      {
@@ -33,7 +33,7 @@ var script = (folder, name) =>
         }
      }
 
-     let url = '/upload?folder=' + ${folder} + '&file=' + input.files[0].name;
+     let url = '/upload?folder=' + '${folder}' + '&file=' + input.files[0].name;
 
      _xhr.bind(o)(url, 'POST', input.files[0], (res) => {
         if (res)
@@ -64,8 +64,6 @@ var style = () => { return `
     padding: 6px 12px;
     cursor: pointer;
     color: #545454;
-    width: 8em;
-    height: 11.313708499;
   }
  </style>
 `;}
@@ -74,15 +72,15 @@ var style = () => { return `
  * upload renderer
  */
 
-var render = (folder, wrapper, name) => 
+var render = (folder, name) => 
 { 
   return `
    ${style()}
    ${script(folder, name)}
    <label for="file-upload" class="custom-file-upload">
-    <input id="file-upload" type='file' onchange="onFiles(this, '${folder}');">
-    ${u.isDefined(wrapper) ? wrapper('file-upload-' + name) : 'UPLOAD'}
-   </label>`;
+     <input id="file-upload" type='file' onchange="onFiles(this, '${folder}');" style="height: auto;padding: unset;">
+   </label>
+  `;
 }
 
 module.exports = { render };

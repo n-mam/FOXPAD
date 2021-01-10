@@ -14,7 +14,7 @@
       _crud(
         {
           action: 'READ',
-          columns: 'id, cid, aid, ts, ST_AsText(path), demography, thumbnail, age, gender',
+          columns: 'id, cid, aid, ts, ST_AsText(path), demography, thumbnail, age, gender, tag, count',
           table: 'Trails',
           where: `cid = ${this.cid} and uid = ${uid} and ts between '${dateToMySql(this.range.start)}' and '${dateToMySql(this.range.end)}'`,
           rows: [{x: 'y'}]
@@ -86,34 +86,62 @@
       for (let i = 0; i < res.result.length; i++) 
       {
         let p = {};
-  
-        p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(",");
-  
-        if (p.trail.length < this.tlen) continue;
+
+        if (res.result[i]['ST_AsText(path)'])
+        {
+          p.trail = (res.result[i]['ST_AsText(path)']).replace(/MULTIPOINT/gi, "").replace(/\(/gi, "").replace(/\)/gi, "").split(",");
+
+          if (p.trail.length < this.tlen) continue;
+
+          p.demography = res.result[i]['demography'].split(",");
+
+          p.age = (res.result[i]).age;
+
+          p.gender = (res.result[i]).gender;
+        }
+
+        p.tag = res.result[i]['tag'];
+
+        if (isDefined(p.trail))
+        {
+          p.count = p.trail.length;
+        }
+        else
+        {
+          p.count = res.result[i]['count'];
+        }
 
         p.id = res.result[i]['id'];
 
-        p.demography = res.result[i]['demography'].split(",");
-  
         p.ts = (res.result[i]).ts;
   
-        p.age = (res.result[i]).age;
+        let source = '';
 
-        p.gender = (res.result[i]).gender;
-
-        if (res.result[i]['thumbnail'].length)
+        if (res.result[i]['thumbnail'])
         {
-          let row = [
-            p.id,
-            `<img src=${'data:image/png;base64,' + res.result[i]['thumbnail']}>`,
-            p.ts,
-            p.age, 
-            p.gender, 
-            p.trail.length
-          ];
+          source = 'data:image/png;base64,' + res.result[i]['thumbnail'];
+        }
+        else
+        {
+          source = "/image/" + p.tag + '.png';
+        }
 
-          let table = Metro.getPlugin('#id-table-thumbnails', 'table');
-          table.addItem(row, true);
+        let row = [
+          p.id,
+          `<img src='${source}'>`,
+          p.ts,
+          p.tag,
+          p.age,
+          p.gender,
+          p.count
+        ];
+
+        let table = Metro.getPlugin('#id-table-thumbnails', 'table');
+        table.addItem(row, true);
+
+        if (p.tag && res.result[i]['ST_AsText(path)'] == null)
+        {
+          continue;
         }
 
         if (p.age)

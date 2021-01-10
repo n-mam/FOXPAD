@@ -51,3 +51,5 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY 'welcome';
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'welcome';
 
 flush privileges;
+
+#### mysql.exe -u root -p  foxpad

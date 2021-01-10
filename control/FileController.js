@@ -8,7 +8,7 @@ function index(buf)
 
   console.log('FileController: uploading ' + file + ' to ' + folder);
 
-  fs.writeFile(ROOT + folder + '/' + file, buf, (e) => {
+  fs.writeFile(process.cwd() + folder + '/' + file, buf, (e) => {
     if (e)
     {
       console.log(e);

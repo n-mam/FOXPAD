@@ -1,4 +1,5 @@
 let cc = require('../common/CommonControls');
+let upload = require('../common/Upload');
 
 function ReportsView(id, cameras)
 {
@@ -72,6 +73,7 @@ function ReportsView(id, cameras)
             <th data-sortable="true">ID</th>
             <th data-sortable="false">Thumbnail</th>
             <th data-sortable="true">Timestamp</th>
+            <th data-sortable="true">Tag</th>
             <th data-sortable="true">Age</th>
             <th data-sortable="true" data-format="string">Gender</th>
             <th data-sortable="true" data-format="number">Trail length</th>
@@ -191,7 +193,14 @@ function render(v, id)
       <span class="icon"><span class="mif-chart-line"></span></span>
       <span class="caption">Reports</span>
     </a>
-  </li>`;
+  </li>
+  <li>
+    <a href="#id-gallery">
+      <span class="icon"><span class="mif-file-upload"></span></span>
+      <span class="caption">Gallery</span>
+    </a>
+  </li>
+  `;
 
   v.page.html = `
    <h3 class="pt-2" id="id-cameras">Cameras</h3>
@@ -205,6 +214,13 @@ function render(v, id)
    <div class="flex-row h-100 d-flex flex-justify-center">
      <div class="grid cell-12">
       ${ReportsView('id-report-center', v.data.cameras)}
+     </div>
+   </div>
+
+   <h3 class="pt-2" id="id-gallery">Face Gallery</h3>
+   <div class="flex-row h-100 d-flex flex-justify-center">
+     <div class="grid cell-12">
+      ${upload.render("/www/image", "gallery")}
      </div>
    </div>
 
