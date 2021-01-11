@@ -84,9 +84,9 @@ function renderTableView(id, rows, columnNames, handler)
      <table
        id=${id + '-table'}
        class="table row-hover text-left striped table-border"
-       data-rows="8"
+       data-rows="12"
        data-check="true"
-       data-rows-steps="8, 16"
+       data-rows-steps="12, 24"
        data-static-view="true"
        data-show-activity="false"
        data-cls-search="cell-md-8"

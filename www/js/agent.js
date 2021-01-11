@@ -119,7 +119,7 @@ function OnAgentTableNodeClick()
 }
 function OnAgentDeleteClick()
 {
-  var table = $('#id-agent-table').data('table');
+  let table = $('#id-agent-table').data('table');
   let items = table.getSelectedItems();
 
   if (!items.length) {
@@ -140,6 +140,17 @@ function OnAgentDeleteClick()
       table: 'agents',
       where: 'id IN (' + id.toString() + ')',
       rows: [{x: 'y'}]
+    },
+    false,
+    (res, e) => {
+      if (!e)
+      {
+        for (let i = 0; i < items.length; i++)
+        {
+          table.deleteItem(0, items[i][0]);
+        }
+        table.draw();
+      }
     });
 }
 function OnAgentAddClick()

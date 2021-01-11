@@ -241,7 +241,7 @@ function OnCameraTableNodeClick()
 }
 function OnCameraDeleteClick()
 {
-  var table = $('#id-camera-table').data('table');
+  let table = $('#id-camera-table').data('table');
   let items = table.getSelectedItems();
 
   if (!items.length) 
@@ -263,6 +263,17 @@ function OnCameraDeleteClick()
       table: 'cameras',
       where: 'id IN (' + id.toString() + ')',
       rows: [{x: 'y'}]
+    },
+    false,
+    (res, e) => {
+      if (!e)
+      {
+        for (let i = 0; i < items.length; i++)
+        {
+          table.deleteItem(0, items[i][0]);
+        }
+        table.draw();
+      }
     });
 }
 function OnCameraAddClick()
@@ -291,7 +302,7 @@ function OnCameraAddClick()
 }
 function OnCameraEditConfigClick()
 {
-  var table = $('#id-camera-table').data('table');
+  let table = $('#id-camera-table').data('table');
   let items = table.getSelectedItems();
 
   if (!items.length) {
@@ -511,7 +522,7 @@ function AddNewCameraView() {
 
 function OnGalleryDeleteClick()
 {
-  var table = $('#id-face-gallery-table').data('table');
+  let table = $('#id-face-gallery-table').data('table');
   let items = table.getSelectedItems();
 
   if (!items.length) 
@@ -533,6 +544,17 @@ function OnGalleryDeleteClick()
       table: 'FaceGallery',
       where: 'id IN (' + id.toString() + ')',
       rows: [{x: 'y'}]
+    },
+    false,
+    (res, e) => {
+      if (!e)
+      {
+        for (let i = 0; i < items.length; i++)
+        {
+          table.deleteItem(0, items[i][0]);
+        }
+        table.draw();
+      }
     });
 }
 function OnGallerySaveButton(id)
