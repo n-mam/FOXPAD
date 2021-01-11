@@ -23,27 +23,30 @@
           {
             if (this.processRangeData(res))
             {
-              let maxHSteps = this.computeHorizontalMaxima(false);
-              let maxVSteps = this.computeVerticalMaxima(false);
-
-              let ref = {};
-
-              let hRefCount = maxHSteps[0].counts.up + maxHSteps[0].counts.down;
-              let vRefCount = maxVSteps[0].counts.left + maxVSteps[0].counts.right;
-
-              if (hRefCount > vRefCount) {
-                ref.x = 0;
-                ref.y = (maxHSteps[0].y + maxHSteps[maxHSteps.length-1].y) / 2;
-                ref.dir = 'horizontal';
-              } else {
-                ref.x = (maxVSteps[0].x + maxVSteps[maxVSteps.length-1].x) / 2;
-                ref.y = 0;
-                ref.dir = 'vertical';
+              if (this.type != "FaceRecognition")
+              {
+                let maxHSteps = this.computeHorizontalMaxima(false);
+                let maxVSteps = this.computeVerticalMaxima(false);
+  
+                let ref = {};
+  
+                let hRefCount = maxHSteps[0].counts.up + maxHSteps[0].counts.down;
+                let vRefCount = maxVSteps[0].counts.left + maxVSteps[0].counts.right;
+  
+                if (hRefCount > vRefCount) {
+                  ref.x = 0;
+                  ref.y = (maxHSteps[0].y + maxHSteps[maxHSteps.length-1].y) / 2;
+                  ref.dir = 'horizontal';
+                } else {
+                  ref.x = (maxVSteps[0].x + maxVSteps[maxVSteps.length-1].x) / 2;
+                  ref.y = 0;
+                  ref.dir = 'vertical';
+                }
+  
+                this.displayIntervalGraph(ref);
+  
+                this.showPathAnalyzerCanvas(ref);
               }
-
-              this.displayIntervalGraph(ref);
-
-              this.showPathAnalyzerCanvas(ref);
             }
           }
         });
@@ -78,8 +81,9 @@
 
     this.processRangeData = function(res) {
   
-      if (!res.result.length) {
-        Metro.toast.create("No data found for the selected camera and interval", null, null, "alert");
+      if (!res.result.length)
+      {
+        show_message("No data found for the selected camera and interval");
         return false;
       }
 
@@ -139,15 +143,23 @@
         let table = Metro.getPlugin('#id-table-thumbnails', 'table');
         table.addItem(row, true);
 
+        if (p.tag)
+        {
+          this.type = "FaceRecognition";
+        }
+        else if (p.age)
+        {
+          this.type = "Demography";
+        }
+        else
+        {
+          this.type = "PeopleCount";
+        }
+
         if (p.tag && res.result[i]['ST_AsText(path)'] == null)
         {
           continue;
         }
-
-        if (p.age)
-          this.type = "Demography";
-        else
-          this.type = "PeopleCount";
 
         let diff = Math.abs((new Date(p.ts)).getTime() - this.range.start.getTime());
   
