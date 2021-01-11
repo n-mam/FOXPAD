@@ -92,7 +92,7 @@ function StartMount()
   }
   else
   {
-    show_error('Please select the image file to mount');
+    show_message('Please select the image file to mount');
   }
 }
 

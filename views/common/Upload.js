@@ -40,16 +40,16 @@ var script = (folder, name) =>
         {
           if (res.status == 'OK')
           {
-           //location.reload();
+            show_message("upload successful", false, "primary");
           }
           else
           {
-           show_error(res.msg);
+           show_message(res.msg);
           }
         }
         else
         {
-          show_error('upload' + ' : ' + 'Request Failed');
+          show_message('upload' + ' : ' + 'request failed');
         }
      });
    }

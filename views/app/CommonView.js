@@ -36,7 +36,7 @@ var script = (label, {name, pk, fk, fk1, fk2, c1, c2, c3, c4, c5}) =>
  
          if (!valid)
          {
-           show_error('Please provide a value for : ' + missing);
+           show_message('Please provide a value for : ' + missing);
            return;
          }` : ``
         }

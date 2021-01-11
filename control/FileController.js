@@ -6,7 +6,7 @@ function index(buf)
   let folder = this.params.get(`folder`);
   let file = this.params.get(`file`);
 
-  console.log('FileController: uploading ' + file + ' to ' + folder);
+  console.log('FileController : uploading ' + file + ' to ' + folder);
 
   fs.writeFile(process.cwd() + folder + '/' + file, buf, (e) => {
     if (e)

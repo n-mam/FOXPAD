@@ -32,7 +32,7 @@ function Agent(o)
 
   this.onclose = function(e){
     console.warn('agent websocket closed : ' + this.socket.host + ':' + this.socket.port + ' reason : ' + e.reason);
-    show_error("Agent '" + this.socket.agent.sid + "' connection broken");
+    show_message("Agent '" + this.socket.agent.sid + "' connection broken");
     let lv = $('#id-agent-table');
     let items = lv.find("tr");
     let self = this;
@@ -59,7 +59,7 @@ function Agent(o)
 
     if (isDefined(res.error))
     {
-      show_error(res.error);
+      show_message(res.error);
     }
     else
     {
@@ -79,7 +79,7 @@ function GetAgentParams()
   if (!isDefined(name) || !name.length ||
       !isDefined(host) || !host.length ||
       !isDefined(port) || !port.length) {
-    show_error("Please specify all agent parameters");
+    show_message("Please specify all agent parameters");
     return;
   }
 
@@ -123,7 +123,7 @@ function OnAgentDeleteClick()
   let items = table.getSelectedItems();
 
   if (!items.length) {
-    show_error("Please select agents to delete");
+    show_message("Please select agents to delete");
     return;
   }
 
@@ -172,12 +172,12 @@ function OnAgentEditConfigClick()
   let items = table.getSelectedItems();
 
   if (!items.length) {
-    show_error("Please select an agent to edit");
+    show_message("Please select an agent to edit");
     return;
   }
 
   if (items.length > 1) {
-    show_error("Please select a single agent to edit");
+    show_message("Please select a single agent to edit");
     return;
   }
 

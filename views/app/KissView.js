@@ -44,22 +44,22 @@ function ProcessKISS(ok)
         }
         else
         {
-          show_error("Please enter a PKDF2 iteration count > 20000", true, 'id-kiss-message');
+          show_message("Please enter a PKDF2 iteration count > 20000", true, 'id-kiss-message');
         }
       }
       else
       {
-        show_error('Passwords do not match', true, 'id-kiss-message');
+        show_message('Passwords do not match', true, 'id-kiss-message');
       }
     }
     else
     {
-      show_error('Please enter the password.', true, 'id-kiss-message')
+      show_message('Please enter the password.', true, 'id-kiss-message')
     }
   }
   else
   {
-    show_error('KISS cancelled.', true, 'id-kiss-message');
+    show_message('KISS cancelled.', true, 'id-kiss-message');
     bDismiss = true;
   }
 

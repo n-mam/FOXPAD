@@ -135,7 +135,7 @@ function GetCameraParams()
       !isDefined(source) || !source.length ||
       !isDefined(target) || !target.length ||
       !isDefined(trackers) || !trackers.length) {
-    show_error("Please specify all camera parameters");
+    show_message("Please specify all camera parameters");
     return;
   }
 
@@ -248,7 +248,7 @@ function OnCameraDeleteClick()
 
   if (!items.length) 
   {
-    show_error("Please select a camera to delete");
+    show_message("Please select a camera to delete");
     return;
   }
 
@@ -297,12 +297,12 @@ function OnCameraEditConfigClick()
   let items = table.getSelectedItems();
 
   if (!items.length) {
-    show_error("Please select a camera to Edit");
+    show_message("Please select a camera to Edit");
     return;
   }
 
   if (items.length > 1) {
-    show_error("Please select a single camera to edit");
+    show_message("Please select a single camera to edit");
     return;
   }
 
@@ -431,7 +431,7 @@ function OnCameraPropertySave(cid, prop, val) {
   } else if (prop == 'MarkBaseFrame') {
     console.log('MarkBaseFrame');
   } else if (prop == 'transport') {
-    show_error("Please restart camera configuration to use " + val + " transport");
+    show_message("Please restart camera configuration to use " + val + " transport");
     value = val;
     cam[prop] = value;
   } else if (prop == 'exhzbb') {

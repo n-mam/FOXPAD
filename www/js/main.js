@@ -87,7 +87,7 @@
           }
           else
           {
-            show_error(res.msg);
+            show_message(res.msg);
 
             if (isDefined(cbk))
             {
@@ -101,7 +101,7 @@
           {
             cbk(res.msg);
           }
-          show_error('CRUD' + ' : ' + 'Request Failed');
+          show_message('CRUD' + ' : ' + 'Request Failed');
         }
      });
    }
@@ -127,7 +127,7 @@
 
        if (!email.length || !password.length) 
        {
-         show_error('Invalid E-MAIL or PASSWORD');   
+         show_message('Invalid E-MAIL or PASSWORD');   
          return;
        }
      }
@@ -157,12 +157,12 @@
           }
           else
           {
-            show_error(res.msg);
+            show_message(res.msg);
           }
         } 
         else
         {
-          show_error(api + ' : ' + 'Request Failed');
+          show_message(api + ' : ' + 'Request Failed');
         }
      });
    }
@@ -216,13 +216,13 @@
      x.send(data);
   }
 
-  var show_error = (message, top = false) =>
+  var show_message = (message, top = false, type = "alert") =>
   {
     let opt = {
       showTop: top,
       timeout: 3000
     }
-    Metro.toast.create(message, null, null, "alert", opt);
+    Metro.toast.create(message, null, null, type, opt);
     console.log(message);
   }
 

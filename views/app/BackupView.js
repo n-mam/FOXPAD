@@ -133,7 +133,7 @@ function StartBackup()
   }
   else
   {
-    show_error('Please select the volumes to backup'); 
+    show_message('Please select the volumes to backup'); 
   }
 }
 

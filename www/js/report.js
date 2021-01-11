@@ -292,7 +292,7 @@
       } 
       else 
       {
-        show_error("Unable to determine the chart type");
+        show_message("Unable to determine the chart type");
         return;
       }
 
@@ -404,7 +404,7 @@
         }
         else
         {
-          show_error("Unable to determine the chart type");
+          show_message("Unable to determine the chart type");
           return;
         }
       }
@@ -700,14 +700,14 @@
   
     if (!isDefined(cid) || 
         !isDefined(inv)) {
-      show_error("Please select the camera and an interval");
+      show_message("Please select the camera and an interval");
       return;
     }
   
     let ok = confirm("This would delete trails from the selected range. Proceed ?");
   
     if (!ok) {
-      show_error("Trail delete operation cancelled");
+      show_message("Trail delete operation cancelled");
       return;
     }
   
@@ -730,7 +730,7 @@
 
     if (!isDefined(cid) || 
         !isDefined(inv)) {
-      show_error("Please select the camera and an interval");
+      show_message("Please select the camera and an interval");
       return;
     }
 
@@ -756,7 +756,7 @@
   
     if (!items.length)
     {
-      show_error("Please select a trails to delete");
+      show_message("Please select a trails to delete");
       return;
     }
 
@@ -771,7 +771,7 @@
 
     if (!ok)
     {
-      show_error("Trail delete operation cancelled");
+      show_message("Trail delete operation cancelled");
       return;
     }
 
