@@ -64,6 +64,7 @@ var style = () => { return `
     padding: 6px 12px;
     cursor: pointer;
     color: #545454;
+    width: 8.7em;
   }
  </style>
 `;}

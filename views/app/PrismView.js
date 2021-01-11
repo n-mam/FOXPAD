@@ -73,7 +73,7 @@ function ReportsView(id, cameras)
             <th data-sortable="true">ID</th>
             <th data-sortable="false">Thumbnail</th>
             <th data-sortable="true">Timestamp</th>
-            <th data-sortable="true">Tag</th>
+            <th data-sortable="true">Name</th>
             <th data-sortable="true">Age</th>
             <th data-sortable="true" data-format="string">Gender</th>
             <th data-sortable="true" data-format="number">Trail length</th>
@@ -196,7 +196,7 @@ function render(v, id)
   </li>
   <li>
     <a href="#id-gallery">
-      <span class="icon"><span class="mif-file-upload"></span></span>
+      <span class="icon"><span class="mif-upload"></span></span>
       <span class="caption">Gallery</span>
     </a>
   </li>
@@ -219,8 +219,8 @@ function render(v, id)
 
    <h3 class="pt-2" id="id-gallery">Face Gallery</h3>
    <div class="flex-row h-100 d-flex flex-justify-center">
-     <div class="grid cell-12">
-      ${upload.render("/www/image", "gallery")}
+     <div class="grid cell-7">
+      ${cc.renderTableView('id-face-gallery', v.data.gallery, ['id', 'name', 'images', 'tags', 'uid'], 'Gallery')}
      </div>
    </div>
 

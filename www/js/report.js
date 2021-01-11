@@ -14,7 +14,7 @@
       _crud(
         {
           action: 'READ',
-          columns: 'id, cid, aid, ts, ST_AsText(path), demography, thumbnail, age, gender, tag, count',
+          columns: 'id, cid, aid, ts, ST_AsText(path), demography, thumbnail, age, gender, label, count',
           table: 'Trails',
           where: `cid = ${this.cid} and uid = ${uid} and ts between '${dateToMySql(this.range.start)}' and '${dateToMySql(this.range.end)}'`,
           rows: [{x: 'y'}]
@@ -104,7 +104,13 @@
           p.gender = (res.result[i]).gender;
         }
 
-        p.tag = res.result[i]['tag'];
+        p.name = res.result[i]['label'];
+
+        if (p.name)
+        {
+          p.name = (res.result[i]['label'].split("_"))[1];
+          p.name = p.name.substring(0, p.name.length - 1);
+        }
 
         if (isDefined(p.trail))
         {
@@ -127,14 +133,14 @@
         }
         else
         {
-          source = "/image/" + p.tag + '.png';
+          source = "/image/" + res.result[i]['label'] + '.png';
         }
 
         let row = [
           p.id,
           `<img src='${source}'>`,
           p.ts,
-          p.tag,
+          p.name,
           p.age,
           p.gender,
           p.count
@@ -143,7 +149,7 @@
         let table = Metro.getPlugin('#id-table-thumbnails', 'table');
         table.addItem(row, true);
 
-        if (p.tag)
+        if (p.name)
         {
           this.type = "FaceRecognition";
         }
@@ -156,7 +162,7 @@
           this.type = "PeopleCount";
         }
 
-        if (p.tag && res.result[i]['ST_AsText(path)'] == null)
+        if (p.name && res.result[i]['ST_AsText(path)'] == null)
         {
           continue;
         }

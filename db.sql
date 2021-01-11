@@ -72,7 +72,7 @@ create table Trails (
    thumbnail     varchar(16384),
    gender        varchar(8),
    age           int unsigned,
-   tag           varchar(512),
+   label         varchar(512),
    count         int unsigned,
    uid           int unsigned,
    cid           int unsigned,
@@ -83,6 +83,15 @@ create table Trails (
    foreign key (aid) REFERENCES Agents(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
+create table FaceGallery (
+   id            int unsigned NOT NULL AUTO_INCREMENT,
+   name          varchar(512),
+   images        varchar(4096),
+   tags          varchar(1024),
+   uid           int unsigned,
+   primary key (id),
+   foreign key (uid) REFERENCES User(id) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;
 
 create trigger on_new_user 
 after insert on User

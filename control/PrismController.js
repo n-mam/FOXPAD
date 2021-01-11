@@ -25,7 +25,21 @@ function index(v, cbk)
         else
         {
           data.agents = results;
-          cbk(null, data);
+
+          sql = `select * from FaceGallery where uid = ${v.json.prv.user.id}`;
+
+          db.exec (sql, (e, results) => {
+            if (e)
+            {
+              cbk(e);
+            }
+            else
+            {
+              data.gallery = results;
+    
+              cbk(null, data);
+            }
+          });
         }
       });
     }
