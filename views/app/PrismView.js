@@ -37,7 +37,7 @@ function ReportsView(id, cameras)
         </div>
       </div>
       <div class="cell-2">
-        <div class=" flex-align-left">
+        <div style="text-align: left;">
           <div class="split-button">
             <button class="button" onclick="OnClickAnalyzeTrail();">ANALYZE</button>
             <button class="split dropdown-toggle"></button>
