@@ -70,13 +70,13 @@ function ReportsView(id, cameras)
           data-pagination-wrapper=".trail-table-pagination-wrapper">
          <thead>
           <tr>
-            <th data-sortable="true">ID</th>
-            <th data-sortable="false">Thumbnail</th>
-            <th data-sortable="true">Timestamp</th>
-            <th data-sortable="true">Name</th>
-            <th data-sortable="true">Age</th>
-            <th data-sortable="true" data-format="string">Gender</th>
-            <th data-sortable="true" data-format="number">Trail length</th>
+            <th data-sortable="true">id</th>
+            <th data-sortable="false">thumb</th>
+            <th data-sortable="true">ts</th>
+            <th data-sortable="true">name</th>
+            <th data-sortable="true">age</th>
+            <th data-sortable="true" data-format="string">gender</th>
+            <th data-sortable="true" data-format="number">trail(count)</th>
           </tr>
          </thead>
 
@@ -194,10 +194,11 @@ function render(v, id)
       <span class="caption">Reports</span>
     </a>
   </li>
+  <li class="item-separator"></li>
   <li>
     <a href="#id-gallery">
       <span class="icon"><span class="mif-upload"></span></span>
-      <span class="caption">Gallery</span>
+      <span class="caption">Face Gallery</span>
     </a>
   </li>
   `;

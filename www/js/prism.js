@@ -306,7 +306,7 @@ function OnCameraEditConfigClick()
   let items = table.getSelectedItems();
 
   if (!items.length) {
-    show_message("Please select a camera to Edit");
+    show_message("Please select a camera to edit");
     return;
   }
 

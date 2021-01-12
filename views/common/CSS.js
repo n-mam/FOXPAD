@@ -4,6 +4,8 @@ var main = ({theme, accordian}) => {
  body {
   font-family: 'Quicksand', sans-serif;
   font-size: 0.9em;
+  font-weight: 600 !important;
+  color: balck;
  }
  input, select, textarea, button {
    font-family: inherit !important;
@@ -19,6 +21,9 @@ a, u {
 }
 tr {
   cursor: pointer;
+}
+th {
+  color: #4242f6 !important;
 }
 .column {
   flex-direction: column;
