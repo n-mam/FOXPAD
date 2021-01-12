@@ -520,6 +520,22 @@ function AddNewCameraView() {
   `;
 }
 
+function GetNextlabelGallery()
+{
+  let id = 0;
+  let table = $('#id-face-gallery-table').data('table');
+  let subjects = table.getItems();
+
+  for (let i = 0; i < subjects.length; i++)
+  {
+    if (subjects[i][0] > id)
+    {
+      id = subjects[i][0];
+    }
+  }
+
+  return (id + 1);
+}
 function OnGalleryDeleteClick()
 {
   let table = $('#id-face-gallery-table').data('table');
@@ -564,10 +580,11 @@ function OnGallerySaveButton(id)
   let files = document.getElementById('new-sub-image').files;
 
   let images = '';
+  let newid = GetNextlabelGallery();
 
   for (let i = 0; i < files.length; i++)
   {
-    images += files[i].name + ', ';
+    images += newid.toString() + '_' + name + i.toString() + '.png' + ', ';
   }
 
   images = images.substring(0, images.length - 1);
@@ -588,6 +605,15 @@ function OnGallerySaveButton(id)
 }
 function OnGalleryFileSelect(files, element) 
 {
+  let name = $('#new-sub-name').val();
+
+  if (!name.length) {
+    show_message("Please enter the subject name first");
+    return;
+  }
+
+  let newid = GetNextlabelGallery();
+
   for (let i = 0; i < files.length; i++)
   {
     let o =
@@ -602,7 +628,7 @@ function OnGalleryFileSelect(files, element)
        }
     }
   
-    let url = '/upload?folder=' + '/www/image' + '&file=' + files[i].name;
+    let url = '/upload?folder=' + '/www/image' + '&file=' + newid.toString() + '_' + name + i.toString() + '.png'; /* 0_obama3.png files[i].name*/
   
     _xhr.bind(o)(url, 'POST', files[i], (res) => {
        if (res)
@@ -653,7 +679,7 @@ function AddNewGallerySubjectView() {
        <div class="cell-12"><input id="new-sub-name" type="text" data-role="input" data-prepend="Name"></div>
     </div>
     <div class="row">
-       <div class="cell-12"><input id="new-sub-image" type="file" multiple="multiple" data-role="file" data-on-select="OnGalleryFileSelect" data-prepend="Image" data-button-title="<span class='mif-upload'></span>"></div>
+       <div class="cell-12"><input id="new-sub-image" type="file" data-on-select="OnGalleryFileSelect" multiple="multiple" data-role="file" data-prepend="Image" data-button-title="<span class='mif-upload'></span>"></div>
     </div>
     <div class="row">
        <div class="cell-12"><input id="new-sub-tags" type="text" data-role="taginput" data-max-tags="5" data-random-color="true"></div>
@@ -697,8 +723,7 @@ function InitCameraObjects()
     OnCameraSelect(e.next().text());
   });
 }
-
-function InitFaceRecTable()
+function InitGalleryTable()
 {
   $("#id-face-gallery-table").table();
 
@@ -712,6 +737,6 @@ function InitFaceRecTable()
 }
 
 windowOnLoadCbk.push(InitCameraObjects);
-windowOnLoadCbk.push(InitFaceRecTable);
+windowOnLoadCbk.push(InitGalleryTable);
 
 var Cameras = [];
