@@ -80,7 +80,7 @@
     }
 
     this.processRangeData = function(res) {
-  
+
       if (!res.result.length)
       {
         show_message("No data found for the selected camera and interval");

@@ -587,6 +587,7 @@ function OnGallerySaveButton(id)
     images += newid.toString() + '_' + name + i.toString() + '.png' + ', ';
   }
 
+  images = images.trim();
   images = images.substring(0, images.length - 1);
 
   let subject = {
