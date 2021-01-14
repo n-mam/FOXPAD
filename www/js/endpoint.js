@@ -1,9 +1,13 @@
 function OnAgentConnect()
 {
   let cmd = {};
-  cmd.app = 'os';
-  cmd.req = 'get-directory-list';
 
+  cmd.app = 'os';
+
+  cmd.req = 'get-directory-list';
+  Agents[0].send(cmd);
+
+  cmd.req = 'get-volume-list';
   Agents[0].send(cmd);
 }
 
@@ -12,6 +16,15 @@ function OnAgentMessage(res)
   if (res.req == 'get-directory-list')
   {
     let table = Metro.getPlugin('#id-browser-table', 'table');
+
+    res.List.forEach(e => {
+      let row = [ e.name, e.type ];
+      table.addItem(row, true);
+    });
+  }
+  else if (res.req == 'get-volume-list')
+  {
+    let table = Metro.getPlugin('#id-volumes-table', 'table');
 
     res.List.forEach(e => {
       let row = [ e.name, e.type ];

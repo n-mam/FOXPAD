@@ -75,7 +75,7 @@ function renderTD(rows, keys)
   return h;
 }
 
-function renderTableView(id, rows, columnNames, handler)
+function renderTableView(id, rows, columnNames, handler, nrows)
 {
   return `
    <div class="grid">
@@ -84,9 +84,9 @@ function renderTableView(id, rows, columnNames, handler)
      <table
        id=${id + '-table'}
        class="table row-hover text-left striped table-border"
-       data-rows="12"
+       data-rows="${'' + nrows}"
        data-check="true"
-       data-rows-steps="12, 24"
+       data-rows-steps="${'' + nrows}, ${'' + (nrows*2)}"
        data-static-view="true"
        data-show-activity="false"
        data-cls-search="cell-md-8"

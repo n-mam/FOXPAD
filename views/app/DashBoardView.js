@@ -30,7 +30,7 @@ function render(v, cbk)
   <h3 class="pt-2" id="id-agents">Agents</h3>
   <div class="flex-row h-100 d-flex flex-justify-center">
     <div class="grid cell-7">
-      ${cc.renderTableView('id-agent', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent')}
+      ${cc.renderTableView('id-agent', v.data.agents, ['id', 'sid', 'host', 'port', 'uid'], 'Agent', 6)}
     </div>
   </div>`;
 
