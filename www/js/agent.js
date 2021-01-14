@@ -145,10 +145,9 @@ function OnAgentDeleteClick()
     (res, e) => {
       if (!e)
       {
-        for (let i = 0; i < items.length; i++)
-        {
-          table.deleteItem(0, items[i][0]);
-        }
+        items.forEach(element => {
+          table.deleteItem(0, element[0]);
+        });
         table.draw();
       }
     });

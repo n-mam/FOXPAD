@@ -165,6 +165,29 @@ function OnCameraSaveButton(id)
      action: isDefined(id) ? 'UPDATE': 'CREATE',
      table: 'cameras',
      rows: [cam]
+   },
+   false,
+   (res, e) => {
+     if (!e)
+     {
+       let table = $('#id-camera-table').data('table');
+
+       if (isDefined(id)) {
+         table.deleteItem(0, id);
+       }
+
+       let values = [
+        isDefined(id) ? id : res.result.insertId,
+        cam.sid,
+        cam.source,
+        cam.target,
+        cam.tracker,
+        cam.aid,
+        cam.uid
+       ];
+
+       table.addItem(values, true);
+     }
    });
 }
 function OnCameraSelect(cid)
@@ -268,10 +291,9 @@ function OnCameraDeleteClick()
     (res, e) => {
       if (!e)
       {
-        for (let i = 0; i < items.length; i++)
-        {
-          table.deleteItem(0, items[i][0]);
-        }
+        items.forEach(element => {
+          table.deleteItem(0, element[0]);
+        });
         table.draw();
       }
     });
@@ -565,10 +587,9 @@ function OnGalleryDeleteClick()
     (res, e) => {
       if (!e)
       {
-        for (let i = 0; i < items.length; i++)
-        {
-          table.deleteItem(0, items[i][0]);
-        }
+        items.forEach(element => {
+          table.deleteItem(0, element[0]);
+        });
         table.draw();
       }
     });
