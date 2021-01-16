@@ -13,7 +13,7 @@ function render(v, id)
     <li>
       <a href="#id-recover" class="">
         <span class="icon"><span class="mif-download"></span></span>
-        <span class="caption">Recover</span>
+        <span class="caption">Restore</span>
       </a>
     </li>
   `;
@@ -22,7 +22,7 @@ function render(v, id)
     <h3 class="pt-2" id="id-backup">Backup</h3>
     <div class="flex-row h-100 d-flex flex-justify-center">
       <div class="grid cell-5">
-        ${cc.renderTableView('id-volumes', [], ['Volume', 'Usage', 'Encrypt'], 'Volume', 8)}
+        ${cc.renderTableView('id-volumes', [], ['Volume', 'Length', 'TotalClusters', 'FreeClusters'], 'Volume', 5)}
       </div>
       <div class="grid cell-1">  </div>
       <div class="grid cell-5">
@@ -30,7 +30,7 @@ function render(v, id)
       </div>
     </div>
 
-    <h3 class="pt-2" id="id-recover">Recover</h3>
+    <h3 class="pt-2" id="id-recover">Restore</h3>
     <div class="flex-row h-100 d-flex flex-justify-center">
       <div class="grid cell-7">
         ${cc.renderTableView('id-backups', v.data.backups, ['id', 'timestamp', 'uid'], 'Backup', 10)}

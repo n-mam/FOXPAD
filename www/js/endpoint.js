@@ -27,7 +27,28 @@ function OnAgentMessage(res)
     let table = Metro.getPlugin('#id-volumes-table', 'table');
 
     res.List.forEach(e => {
-      let row = [ e.name, e.type ];
+
+      let length = 0;
+      let units = 'B';
+      let name = e.paths.replace(/\\\\/g, "\\") + " <br/>" + 
+                 e.guid.replace(/\\\\/g, "\\");
+
+      if (parseInt(e.length) >= (1 * 1024 * 1024 * 1024)) {
+        length = e.length / (1 * 1024 * 1024 * 1024);
+        units = 'G';
+      }
+      else if (parseInt(e.length) >= (1 * 1024 * 1024)) {
+        length = e.length / (1 * 1024 * 1024);
+        units = 'M';
+      }
+
+      let row = [  
+        name,
+        length.toFixed(1).toString() + ' ' + units,
+        e.TotalClusters,
+        e.Freeclusters
+      ];
+
       table.addItem(row, true);
     });
   }
