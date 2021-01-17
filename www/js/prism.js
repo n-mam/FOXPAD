@@ -179,7 +179,7 @@ function OnCameraSaveButton(id)
        let values = [
         isDefined(id) ? id : res.result.insertId,
         cam.sid,
-        cam.source,
+        cam.source.replace(/\\\\/g, "\\"),
         cam.target,
         cam.tracker,
         cam.aid,
