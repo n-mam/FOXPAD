@@ -7,7 +7,7 @@
     "url": "https://github.com/n-mam/node-npl.git"
   },
   "dependencies": {
-    "negotiator": ">=0.6.1"
+    "negotiator": ">=0.6.1",
     "mime": "1.4.1",
     "mysql": "^2.16.0",
     "oppressor": "0.0.1",
