@@ -4,7 +4,6 @@ function Agent(o)
   this.sid = o.sid;
   this.host = o.host;
   this.port = o.port;
-  this.onconnect = null;
   this.onmessage = null;
 
   this.isConnected = function(){
@@ -18,7 +17,6 @@ function Agent(o)
 
   this.onopen = function(e){
     console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
-    this.onconnect();
     let lv = $('#id-agent-table');
     let items = lv.find("tr");
     let self = this;

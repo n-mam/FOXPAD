@@ -187,6 +187,7 @@ function OnCameraSaveButton(id)
        ];
 
        table.addItem(values, true);
+       location.reload(true);
      }
    });
 }
