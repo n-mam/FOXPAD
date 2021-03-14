@@ -9,6 +9,8 @@
 
     this.generate = function() {
 
+      let activity = Metro.activity.open();
+
       this.range = this.getIntervalRange();
 
       _crud(
@@ -49,6 +51,7 @@
               }
             }
           }
+          Metro.activity.close(activity);
         });
     }
 
@@ -739,7 +742,7 @@
         where: `cid = ${cid} and uid = ${uid} and ts between '${dateToMySql(range.start)}' and '${dateToMySql(range.end)}'`,
         rows: [{x: 'y'}]
       });
-  } 
+  }
   function OnClickAnalyzeTrail()
   {
     let cid = $('#id-report-cam').data('select').val();

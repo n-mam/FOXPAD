@@ -53,3 +53,11 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'welcome'
 flush privileges;
 
 #### mysql.exe -u root -p  foxpad
+
+BAT file to start the node server
+----------
+@echo off
+F:
+cd f:\foxpad
+npm start
+----------
