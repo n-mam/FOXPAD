@@ -227,7 +227,7 @@ function OnCameraControl(cid, action)
   let cam = getCameraObject(parseInt(cid));
 
   if (!cam.agent.isConnected()){
-    Metro.toast.create("Camera agent not running", null, null, "alert");
+    show_message("Camera agent not running");
     return;
   }
 

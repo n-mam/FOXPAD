@@ -218,11 +218,15 @@
 
   var show_message = (message, top = false, type = "alert") =>
   {
-    let opt = {
-      showTop: top,
-      timeout: 3000
-    }
-    Metro.toast.create(message, null, null, type, opt);
+    var notify = Metro.notify;
+    notify.setup({
+      width: 300,
+      duration: 500,
+      distance: -20
+    });
+    notify.create(message, "", {
+        cls: type
+    });
     console.log(message);
   }
 
