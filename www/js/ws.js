@@ -5,9 +5,17 @@ function Socket(host, port, actions, agent)
   this.port = port;
   this.actions = actions;
   this.agent = agent;
-
-  this.ws = new WebSocket ('ws://' + host + ':' + port);
-
+  
+  try
+  {
+    this.ws = new WebSocket ('ws://' + host + ':' + port);
+  }
+  catch (e)
+  {
+    console.log('Socket() failed to parse websocket url');
+    return;
+  }
+  
   this.ws.socket = this;
 
   this.isConnected = function(){
