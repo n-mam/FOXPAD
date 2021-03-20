@@ -58,7 +58,7 @@ function renderTD(rows, keys)
     {
       let content = rows[i][keys[j]].toString();
 
-      if (content.indexOf(" ") === -1 && content.length > 10)
+      if (content.indexOf(" ") === -1 && content.length > 20)
       {
         style = `style="white-space: nowrap;overflow:hidden;text-overflow:ellipsis;width: 100px;"`;
         h += `<td><div ${style}>${content}</div></td>`;
