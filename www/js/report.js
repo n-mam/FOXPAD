@@ -265,6 +265,7 @@
           options:
            {
             responsive: true,
+            maintainAspectRatio: false,
             legend: {
              position: 'bottom',
             },
@@ -296,6 +297,7 @@
               intersect: false
             },
             responsive: true,
+            maintainAspectRatio: false,
             legend: {
               position: 'bottom',
             },

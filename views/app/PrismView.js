@@ -13,6 +13,7 @@ function ReportsView(id, cameras)
   <div class="cell d-flex flex-justify-center" id='${id}'>
   <script src='js/Chart.min.js'></script>
   <div class="grid w-100">
+
     <div class="row d-flex flex-justify-center">
       <div class="cell-2">
         <div>
@@ -48,28 +49,24 @@ function ReportsView(id, cameras)
         </div>
       </div>
     </div>
-    <div class="row flex-justify-center">
-      <div class="row pt-10 cell-12 d-flex flex-justify-center">
-        <div class="cell-6 pr-3">
-          <canvas id="id-chart-canvas"></canvas>
-        </div>
-        <div class="cell-5 pl-2">
 
+    <div class="row d-flex flex-justify-center">
+        <div class="cell-8">
          <table
-          class="table row-hover text-left striped table-border"
-          data-rows="3"
-          data-check="true"
-          data-rows-steps="3, 6"
-          data-static-view="true"
-          data-show-activity="false"
-          data-cls-search="cell-md-8"
-          data-cls-rows-count="cell-md-4" 
-          data-cls-table-top="row flex-nowrap"
-          id="id-table-thumbnails"
-          data-role="table"
-          data-pagination-wrapper=".trail-table-pagination-wrapper">
-         <thead>
-          <tr>
+            class="table row-hover text-left striped table-border"
+            data-rows="3"
+            data-check="true"
+            data-rows-steps="3, 6"
+            data-static-view="true"
+            data-show-activity="false"
+            data-cls-search="cell-md-8"
+            data-cls-rows-count="cell-md-4" 
+            data-cls-table-top="row flex-nowrap"
+            id="id-table-thumbnails"
+            data-role="table"
+            data-pagination-wrapper=".trail-table-pagination-wrapper">
+          <thead>
+           <tr>
             <th data-sortable="true">id</th>
             <th data-sortable="false">thumb</th>
             <th data-sortable="true">ts</th>
@@ -77,21 +74,26 @@ function ReportsView(id, cameras)
             <th data-sortable="true">age</th>
             <th data-sortable="true" data-format="string">gender</th>
             <th data-sortable="true" data-format="number">trail(count)</th>
-          </tr>
-         </thead>
-
-        </table>
-        <div class="row">
+           </tr>
+          </thead>
+         </table>
+         <div class="row">
           <style> .pagination {margin:0em} </style>
-          <div class="w-75 trail-table-pagination-wrapper">  </div>
+          <div class="w-75 trail-table-pagination-wrapper"></div>
           <div class="w-25 d-flex flex-align-center flex-justify-end">
-           <button class="tool-button" onclick="OnClickTrailDelete()"><span class="mif-bin"></span></button>
-           <button class="tool-button" onclick="OnClickTrailEdit()"><span class="mif-pencil"></span></button>
+            <button class="tool-button" onclick="OnClickTrailDelete()"><span class="mif-bin"></span></button>
+            <button class="tool-button" onclick="OnClickTrailEdit()"><span class="mif-pencil"></span></button>
           </div>    
+         </div>
         </div>
-       </div>
-      </div>
     </div>
+
+    <div class="row d-flex flex-justify-center">
+       <div class="cell-8" style="border:1px solid lightgrey">
+         <canvas id="id-chart-canvas" style="width:500px; height: 380px;"> </canvas>
+       </div>
+    </div>
+
    </div>
   </div>
   <script>
@@ -205,21 +207,21 @@ function render(v, id)
 
   v.page.html = `
    <h3 class="pt-2" id="id-cameras">Cameras</h3>
-   <div class="flex-row h-100 d-flex flex-justify-center">
+   <div class="flex-row d-flex flex-justify-center pb-20">
      <div class="grid cell-7">
        ${cc.renderTableView('id-camera', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'aid', 'uid'], 'Camera', 12)}
      </div>
    </div>
 
    <h3 class="pt-2" id="id-reports">Reports</h3>
-   <div class="flex-row h-100 d-flex flex-justify-center">
+   <div class="flex-row d-flex flex-justify-center pb-20">
      <div class="grid cell-12">
       ${ReportsView('id-report-center', v.data.cameras)}
      </div>
    </div>
 
    <h3 class="pt-2" id="id-gallery">Face Gallery</h3>
-   <div class="flex-row h-100 d-flex flex-justify-center">
+   <div class="flex-row d-flex flex-justify-center pb-20">
      <div class="grid cell-7">
       ${cc.renderTableView('id-face-gallery', v.data.gallery, ['id', 'name', 'images', 'tags', 'uid'], 'Gallery', 12)}
      </div>
