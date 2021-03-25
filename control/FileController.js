@@ -1,5 +1,5 @@
-var fs = require('fs');
-var u = require('../lib/util');
+let fs = require('fs');
+let u = require('../lib/util');
 
 function index(buf)
 {

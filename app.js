@@ -2,12 +2,11 @@ var http = require("http");
 var URL = require('url').URL;
 
 var u = require('./lib/util');
+var ss = require('./lib/session');
 var router = require('./lib/router');
 var APIController = require('./lib/api');
 
 var HomeController = require('./control/HomeController');
-var DashBoardController = require('./control/DashBoardController');
-var UserController = require('./control/UserController');
 var FileController = require('./control/FileController');
 
 var port = 8080;
@@ -28,7 +27,6 @@ console.log(" port     : " + port.toString());
 console.log(" database : " + dbname);
 
 router.setHandler('/', HomeController);
-router.setHandler('/User', UserController);
 router.setHandler('/api', APIController);
 router.setHandler('/upload', FileController);
 
@@ -58,7 +56,7 @@ http.createServer((req, res) => {
 
   const { headers, method, url } = req;
 
-  let cookie = u.getCookie(req);
+  let cookie = ss.getCookie(req);
 
   let body = [], handler, _url;
 
@@ -130,7 +128,7 @@ http.createServer((req, res) => {
       else if (method === 'GET')
       {
         console.log(method + ", " + _url.pathname + ", " + _url.search + " ");
-        console.log('BH : ' + JSON.stringify(u.getCookie(req, 'BH')));
+        console.log('BH : ' + JSON.stringify(ss.getCookie(req, 'BH')));
         handler();
       }
     }

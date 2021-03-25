@@ -69,10 +69,6 @@ var style = () => { return `
  </style>
 `;}
 
-/*
- * upload renderer
- */
-
 var render = (folder, name) => 
 { 
   return `

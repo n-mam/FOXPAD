@@ -29,8 +29,9 @@ Copy <installpath>\cuda\lib\x64\cudnn*.lib to C:\Program Files\NVIDIA GPU Comput
 
 Thats it your test etup should be up and running at this point
 
+The frontend UI makes use of https://metroui.org.ua/ for UI controls and https://www.chartjs.org/for reporting
+
 # do not use the below instructions
-node web app boilerplate
 
 download mysql zip file for windows
 

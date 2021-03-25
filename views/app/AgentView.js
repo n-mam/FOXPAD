@@ -1,4 +1,4 @@
-var css = require('../common/CSS');
+let css = require('../common/CSS');
 
 var savedConnectionPanel = (id) =>
 {

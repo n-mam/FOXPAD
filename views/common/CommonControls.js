@@ -1,24 +1,3 @@
-function renderListView(items, id, handler, icon) 
-{
-  let h = ``;
-
-  for (let i = 0; i < items.length; i++)
-  {
-    h += `<li id="${id + '-li-' + items[i].id}" 
-            data-icon="<span class='${icon} fg-black'>" 
-            data-caption="<span class='caption'>${items[i].sid}</span>"
-          </li>`
-  }
-
-  return `
-   <ul id="${id}"
-       class="p-3"
-       data-role="listview"
-       data-on-node-click=${handler}>
-     ${h}
-   </ul>`;
-}
-
 function renderSelect(options, id, title, icon)
 {
   let h = ``;
@@ -119,4 +98,4 @@ function renderTableView(id, rows, columnNames, handler, nrows)
    </div>`;
 }
 
-module.exports = { renderListView, renderSelect, renderTableView }
+module.exports = { renderSelect, renderTableView }
