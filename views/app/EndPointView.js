@@ -32,7 +32,7 @@ function render(v, id)
 
     <h3 class="pt-2" id="id-recover">Restore</h3>
     <div class="flex-row h-100 d-flex flex-justify-center">
-      <div class="grid cell-7">
+      <div class="grid cell-8">
         ${cc.renderTableView('id-backups', v.data.backups, ['id', 'timestamp', 'uid'], 'Backup', 10)}
       </div>
     </div>
