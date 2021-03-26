@@ -20,7 +20,7 @@ function render(v, id)
 
   v.page.html = `
     <h3 class="pt-2" id="id-backup">Backup</h3>
-    <div class="flex-row h-100 d-flex flex-justify-center">
+    <div class="flex-row d-flex flex-justify-center">
       <div class="grid cell-5">
         ${cc.renderTableView('id-volumes', [], ['Volume', 'Length', 'TotalClusters', 'FreeClusters'], 'Volume', 5)}
       </div>
@@ -31,7 +31,7 @@ function render(v, id)
     </div>
 
     <h3 class="pt-2" id="id-recover">Restore</h3>
-    <div class="flex-row h-100 d-flex flex-justify-center">
+    <div class="flex-row d-flex flex-justify-center">
       <div class="grid cell-8">
         ${cc.renderTableView('id-backups', v.data.backups, ['id', 'timestamp', 'uid'], 'Backup', 10)}
       </div>
