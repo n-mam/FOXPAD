@@ -1,10 +1,16 @@
-Install node.js on windows
-
 Install mysql on windows with default root password welcome
 
-clone this repo
+login to mysql shell :
 
-create the db using the db.sql script in the repo
+mysql.exe -u root -p
+
+create the db using the db.sql script in the repo (copy paste into mysql shell)
+
+Install node.js on windows and clone this repo
+
+git clone https://github.com/n-mam/foxpad.git
+
+change directory in the cloned repo folder and issue :
 
 "npm install" from the repo root folder
 
@@ -16,18 +22,7 @@ at this point you'd also need the agent running on the system.
 
 This can be downloaded from http://52.66.251.154:8080/ home page "Download Agent" button. 
 
-The agent also requires the below setup on the machine
-
-download and install cuda toolkit 
-
-download and unzip cudnn
-
-Copy the following files into the CUDA Toolkit directory.
-Copy <installpath>\cuda\bin\cudnn*.dll to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vx.x\bin.
-Copy <installpath>\cuda\include\cudnn*.h to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vx.x\include.
-Copy <installpath>\cuda\lib\x64\cudnn*.lib to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vx.x\lib\x64.
-
-Thats it your test etup should be up and running at this point
+test setup should be up and running at this point
 
 The frontend UI makes use of https://metroui.org.ua/ for UI controls and https://www.chartjs.org/for reporting
 
@@ -52,13 +47,15 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY 'welcome';
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'welcome';
 
 flush privileges;
+-----
 
-#### mysql.exe -u root -p  foxpad
+The agent also requires the below setup on the machine
 
-BAT file to start the node server
-----------
-@echo off
-F:
-cd f:\foxpad
-npm start
-----------
+download and install cuda toolkit 
+
+download and unzip cudnn
+
+Copy the following files into the CUDA Toolkit directory.
+Copy <installpath>\cuda\bin\cudnn*.dll to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vx.x\bin.
+Copy <installpath>\cuda\include\cudnn*.h to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vx.x\include.
+Copy <installpath>\cuda\lib\x64\cudnn*.lib to C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\vx.x\lib\x64.

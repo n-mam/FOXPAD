@@ -36,7 +36,7 @@ function index(v, cbk)
             else
             {
               data.gallery = results;
-    
+
               cbk(null, data);
             }
           });

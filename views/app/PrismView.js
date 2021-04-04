@@ -209,7 +209,7 @@ function render(v, id)
    <h3 class="pt-2" id="id-cameras">Cameras</h3>
    <div class="flex-row d-flex flex-justify-center pb-20">
      <div class="grid cell-8">
-       ${cc.renderTableView('id-camera', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'aid', 'uid'], 'Camera', 12)}
+       ${cc.renderTableView('id-camera', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'aid'], 'Camera', 12)}
      </div>
    </div>
 
@@ -223,7 +223,7 @@ function render(v, id)
    <h3 class="pt-2" id="id-gallery">Face Gallery</h3>
    <div class="flex-row d-flex flex-justify-center pb-20">
      <div class="grid cell-8">
-      ${cc.renderTableView('id-face-gallery', v.data.gallery, ['id', 'name', 'images', 'tags', 'uid'], 'Gallery', 12)}
+      ${cc.renderTableView('id-face-gallery', v.data.gallery, ['id', 'name', 'images', 'tags'], 'Gallery', 12)}
      </div>
    </div>
 

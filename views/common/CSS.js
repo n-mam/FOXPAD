@@ -22,8 +22,8 @@ a, u {
 tr {
   cursor: pointer;
 }
-th {
-  color: #4242f6 !important;
+thead {
+  background-color: #e8e8e8;
 }
 .column {
   flex-direction: column;
