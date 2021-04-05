@@ -182,8 +182,7 @@ function OnCameraSaveButton(id)
         cam.source.replace(/\\\\/g, "\\"),
         cam.target,
         cam.tracker,
-        cam.aid,
-        cam.uid
+        cam.aid
        ];
 
        table.addItem(values, true);
