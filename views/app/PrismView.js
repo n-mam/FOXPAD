@@ -54,9 +54,9 @@ function ReportsView(id, cameras)
         <div class="cell-8">
          <table
             class="table row-hover text-left striped table-border"
-            data-rows="3"
+            data-rows="5"
             data-check="true"
-            data-rows-steps="3, 6"
+            data-rows-steps="5, 10"
             data-static-view="true"
             data-show-activity="false"
             data-cls-search="cell-md-8"
