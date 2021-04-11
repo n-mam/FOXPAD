@@ -1,3 +1,5 @@
+let u = require('../../lib/util');
+
 function renderSelect(options, id, title, icon)
 {
   let h = ``;
@@ -35,7 +37,12 @@ function renderTD(rows, keys)
 
     for (let j = 0; j < keys.length; j++)
     {
-      let content = rows[i][keys[j]].toString();
+      let content = `N/A`;
+      
+      if (u.isDefined(rows[i][keys[j]]))
+      {
+        content = rows[i][keys[j]].toString();
+      }
 
       if (content.indexOf(" ") === -1 && content.length > 35)
       {
