@@ -790,7 +790,7 @@
       id.push(items[i][0]);
     }
 
-    let ok = confirm("Are you sure you want to delete this trails ?");
+    let ok = confirm("Are you sure you want to delete these trails ?");
 
     if (!ok)
     {
@@ -804,7 +804,17 @@
         table: 'Trails',
         where: 'id IN (' + id.toString() + ')',
         rows: [{x: 'y'}]
-      });
-
+      },
+      false,
+      (res, e) => {
+        if (!e)
+        {
+          items.forEach(element => {
+            table.deleteItem(0, element[0]);
+          });
+          table.draw();
+        }
+      }
+    );
   }
 

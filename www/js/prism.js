@@ -296,7 +296,8 @@ function OnCameraDeleteClick()
         });
         table.draw();
       }
-    });
+    }
+  );
 }
 function OnCameraAddClick()
 {
