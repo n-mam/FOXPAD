@@ -225,6 +225,11 @@ function OnCameraControl(cid, action)
 {
   let cam = getCameraObject(parseInt(cid));
 
+  if (!isDefined(cam.agent)) {
+    show_message("Camera agent not defined");
+    return;
+  }
+
   if (!cam.agent.isConnected()){
     show_message("Camera agent not running");
     return;
