@@ -28,6 +28,9 @@ thead {
 .column {
   flex-direction: column;
 }
+.panel {
+  display: inline-flex;
+}
 @font-face {
  font-family: Quicksand;
  src: url(/fonts/Quicksand/Quicksand-Regular.ttf);

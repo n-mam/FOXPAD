@@ -97,11 +97,10 @@ function InitEndpoint()
 
 function OnFSBrowserSelect()
 {
-
 }
+
 function OnVolumeSelect()
 {
-
 }
 
 windowOnLoadCbk.push(InitEndpoint);
