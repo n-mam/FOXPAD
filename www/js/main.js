@@ -212,6 +212,7 @@ function show_message(message, top = false, type = "alert")
 {
   let notify = Metro.notify;
     notify.setup({
+      container: this,
       width: 300,
       duration: 500,
       distance: -20
@@ -227,6 +228,24 @@ function show_message(message, top = false, type = "alert")
   );
 
   console.log(message);
+}
+
+function GettTableData(table, cbk) {
+  _crud(
+    {
+      action: 'READ',
+      columns: '*',
+      table: table,
+      rows: [{x: 'y'}], //dummy
+      where: 'id > 0' //dummy
+    },
+    false,
+    (res, e) => {
+      if (!e)
+      {
+        cbk(res.result);
+      }
+    });
 }
 
 function onDocumentMouseDown(e)

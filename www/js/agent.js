@@ -88,6 +88,7 @@ function GetAgentParams()
 
   return agent;
 }
+
 function OnAgentSaveButton(id)
 {
   let agent = GetAgentParams();
@@ -108,13 +109,16 @@ function OnAgentSaveButton(id)
      rows: [agent]
    });
 }
+
 function OnAgentSelect(node)
 {
   alert("OnAgentSelect");
 }
+
 function OnAgentTableNodeClick()
 {
 }
+
 function OnAgentDeleteClick()
 {
   let table = $('#id-agent-table').data('table');
@@ -150,6 +154,7 @@ function OnAgentDeleteClick()
       }
     });
 }
+
 function OnAgentAddClick()
 {
   Metro.dialog.create({
@@ -174,6 +179,7 @@ function OnAgentAddClick()
     ]
   });
 }
+
 function OnAgentEditConfigClick()
 {
   var table = $('#id-agent-table').data('table');
@@ -216,6 +222,7 @@ function OnAgentEditConfigClick()
     ]
   });
 }
+
 function addNewAgentView() {
   return `
     <div class="row">

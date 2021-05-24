@@ -234,6 +234,7 @@ function render(v, id)
    </script>
    <script src='/js/prism.js'></script>
    <script src='/js/report.js'></script>
+   <script src='/js/gallery.js'></script>
    `;
 }
 
