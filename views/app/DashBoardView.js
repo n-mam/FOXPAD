@@ -17,7 +17,7 @@ function render(v, cbk)
 
   cbk(null);
 
-  v.page.nav += `
+  v.page.nav += ` 
   <li class="item-separator"></li>
   <li>
     <a href="#id-agents" class="">

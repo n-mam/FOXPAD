@@ -18,7 +18,7 @@ var render = (v) =>
      <body class="m4-cloak h-vh-100">
        ${content(v)}
        <script src="js/metro-ui-css/js/metro.min.js"></script>
-       ${postJS()}
+       ${postJS(v)}
      </body>
   </html>`;
 }
@@ -73,8 +73,7 @@ var content = (v) =>
          ${u.DEBUG()}
        </div>
       </div>
-    </div>
-    `;
+    </div>`;
   }
   else
   {
@@ -118,12 +117,17 @@ var preJS = () =>
   </script>`;
 }
 
-var postJS = () => 
+var postJS = (v) => 
 {
- return `
-  <script src='/js/main.js'></script>
-  <script src='/js/ws.js'></script>
-  <script src='/js/agent.js'></script>`;
+  let js = `<script src='/js/main.js'></script>
+            <script src='/js/ws.js'></script>`;
+
+  if (u.isDefined(v.json.prv.user))
+  {
+    js += `<script src='/js/agent.js'></script>`;
+  }
+
+  return js;
 }
 
 function landingPage()

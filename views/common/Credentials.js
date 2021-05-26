@@ -32,7 +32,7 @@ var credentials = () => {
       <img style='' src='/image/fox1.png' alt='logo' width='32' height='32'>
       <b class="pl-2">FOXPAD</b>
    </div>
-
+   
    <div class='flex column'>
     <div class="pb-4">
      <input id='email' type='text' placeholder='USER' style='text-align:center;' tabindex="1" autocomplete="off"> 
@@ -52,6 +52,7 @@ var credentials = () => {
    <div id='l-toggle' class="pb-4">
      New user ? <b class='link' style="color:blue;border-bottom:solid 1px blue;padding:0.1em;cursor:pointer;" onclick='toggleaction()'>SIGNUP</b>
    </div>
+
   </div>
   `;
 }

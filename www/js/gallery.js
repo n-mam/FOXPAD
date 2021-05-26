@@ -132,6 +132,23 @@ function OnGalleryFileSelect(files, element)
   }
 }
 
+function OnGalleryEditConfigClick()
+{
+  var table = $('#id-face-gallery-table').data('table');
+  let items = table.getSelectedItems();
+
+  if (!items.length) {
+    show_message("Please select a gallery item to edit");
+    return;
+  }
+
+  if (items.length > 1) {
+    show_message("Please select a single gallery item to edit");
+    return;
+  }
+
+}
+
 function OnGalleryAddClick()
 {
   Metro.dialog.create({
