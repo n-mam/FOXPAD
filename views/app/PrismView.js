@@ -208,7 +208,7 @@ function render(v, id)
   v.page.html = `
    <div class="flex-row d-flex flex-justify-center pb-5 pt-10">
      <div class="grid cell-12">
-       <div data-role="panel"
+       <div data-role="panel" class="rounded"
             data-width="900"
             data-cls-title="bg-gray"
             data-cls-title-icon="bg-gray"
@@ -224,7 +224,7 @@ function render(v, id)
 
    <div class="flex-row d-flex flex-justify-center pb-5 pt-10">
      <div class="grid cell-12">
-       <div data-role="panel"
+       <div data-role="panel" class="rounded"
             data-width="900"
             data-cls-title="bg-gray"
             data-cls-title-icon="bg-gray"
@@ -241,7 +241,7 @@ function render(v, id)
 
    <div class="flex-row d-flex flex-justify-center pb-5 pt-10">
      <div class="grid cell-12">
-       <div data-role="panel"
+       <div data-role="panel" class="rounded"
             data-width="900"
             data-cls-title="bg-gray"
             data-cls-title-icon="bg-gray"
