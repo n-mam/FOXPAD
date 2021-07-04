@@ -525,7 +525,7 @@ function OnCameraPropertySave(cid, prop, val) {
 function AddNewCameraView() {
   let o = ``;
   for (let i = 0; i < Agents.length; i++) {
-    o += `<option value="${Agents[i].id}" data-template="<span class='mif-display icon'></span> $1">${Agents[i].sid}</option>`
+    o += `<option value="${Agents[i].id}" data-template="<span class='mif-flow-tree icon'></span> $1">${Agents[i].sid}</option>`
   }
   return `
     <div class="row">

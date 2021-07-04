@@ -340,7 +340,7 @@
           let d = new Date(this.range.start.getTime() + i*86400000);
           
           xAxis[i] = d.getDate() + '/' + parseInt(d.getMonth() + 1);
-    
+
           this.chart.data.labels = xAxis;
         }
         this.chart.options.scales.xAxes[0].scaleLabel.labelString = 'Last 14 days'

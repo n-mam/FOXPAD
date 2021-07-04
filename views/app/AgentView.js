@@ -6,7 +6,7 @@ var savedConnectionPanel = (id) =>
   <div id='${id}' class="mx-auto mb-5"
   data-role="panel"
   data-title-caption="Saved connection"
-  data-title-icon="<span class='mif-display'></span>"
+  data-title-icon="<span class='mif-flow-tree'></span>"
   data-collapsible="true"
   data-draggable="false">
   
@@ -24,7 +24,7 @@ var newConnectionPanel = (id) =>
     <div id='${id}-new-connection' class="mx-auto mb-5"
     data-role="panel"
     data-title-caption="New agent connection"
-    data-title-icon="<span class='mif-display'></span>"
+    data-title-icon="<span class='mif-flow-tree'></span>"
     data-collapsible="true"
     data-draggable="false">
  

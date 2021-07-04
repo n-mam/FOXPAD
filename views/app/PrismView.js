@@ -15,12 +15,12 @@ function ReportsView(id, cameras)
   <div class="grid w-100">
 
     <div class="row d-flex flex-justify-center">
-      <div class="cell-2">
+      <div class="cell-3">
         <div>
           ${cc.renderSelect(cameras, 'id-report-cam', 'Camera')}
         </div>
       </div>
-      <div class="cell-2">
+      <div class="cell-3">
         <div>
          <select id="id-report-int" data-prepend="Interval" data-role="select">
           <option value="1Hour">1 Hour</option>
@@ -30,14 +30,14 @@ function ReportsView(id, cameras)
          </select>
         </div>
       </div>
-      <div class="cell-2">
+      <div class="cell-3">
         <div>
          <select id="id-report-trail-length" data-prepend="Trail" data-role="select">
            ${trailLengthOptions}
          </select>
         </div>
       </div>
-      <div class="cell-2">
+      <div class="cell-3">
         <div style="text-align: left;">
           <div class="split-button">
             <button class="button" onclick="OnClickAnalyzeTrail();">ANALYZE</button>
@@ -51,7 +51,7 @@ function ReportsView(id, cameras)
     </div>
 
     <div class="row d-flex flex-justify-center">
-        <div class="cell-8">
+        <div class="cell-12">
          <table
             class="table row-hover text-left striped table-border"
             data-rows="5"
@@ -89,7 +89,7 @@ function ReportsView(id, cameras)
     </div>
 
     <div class="row d-flex flex-justify-center">
-       <div class="cell-8" style="border:1px solid lightgrey">
+       <div class="cell-12" style="border:1px solid lightgrey">
          <canvas id="id-chart-canvas" style="width:500px; height: 380px;"> </canvas>
        </div>
     </div>
@@ -206,24 +206,52 @@ function render(v, id)
   `;
 
   v.page.html = `
-   <h3 class="pt-2" id="id-cameras">Cameras</h3>
-   <div class="flex-row d-flex flex-justify-center pb-20">
-     <div class="grid cell-8">
-       ${cc.renderTableView('id-camera', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'aid'], 'Camera', 12)}
-     </div>
-   </div>
-
-   <h3 class="pt-2" id="id-reports">Reports</h3>
-   <div class="flex-row d-flex flex-justify-center pb-20">
+   <div class="flex-row d-flex flex-justify-center pb-5 pt-10">
      <div class="grid cell-12">
-      ${ReportsView('id-report-center', v.data.cameras)}
+       <div data-role="panel"
+            data-width="900"
+            data-cls-title="bg-gray"
+            data-cls-title-icon="bg-gray"
+            data-cls-collapse-toggle="bg-gray"
+            data-title-icon="<span class='mif-video-camera'></span>"
+            data-title-caption="Cameras"
+            data-collapsible="true"
+            id="id-cameras">
+         ${cc.renderTableView('id-camera', v.data.cameras, ['id', 'sid', 'source', 'target', 'tracker', 'aid'], 'Camera', 12)}
+       </div>
      </div>
    </div>
 
-   <h3 class="pt-2" id="id-gallery">Face Gallery</h3>
-   <div class="flex-row d-flex flex-justify-center pb-20">
-     <div class="grid cell-8">
-      ${cc.renderTableView('id-face-gallery', v.data.gallery, ['id', 'name', 'images', 'tags'], 'Gallery', 12)}
+   <div class="flex-row d-flex flex-justify-center pb-5 pt-10">
+     <div class="grid cell-12">
+       <div data-role="panel"
+            data-width="900"
+            data-cls-title="bg-gray"
+            data-cls-title-icon="bg-gray"
+            data-cls-collapse-toggle="bg-gray"
+            data-title-icon="<span class='mif-chart-line'></span>"
+            data-title-caption="Reports"
+            data-collapsible="true"
+            id="id-reports">
+         ${ReportsView('id-report-center', v.data.cameras)}
+       </div>
+     </div>
+   </div>
+
+
+   <div class="flex-row d-flex flex-justify-center pb-5 pt-10">
+     <div class="grid cell-12">
+       <div data-role="panel"
+            data-width="900"
+            data-cls-title="bg-gray"
+            data-cls-title-icon="bg-gray"
+            data-cls-collapse-toggle="bg-gray"
+            data-title-icon="<span class='mif-upload'></span>"
+            data-title-caption="Face Gallery"
+            data-collapsible="true"
+            id="id-gallery">
+         ${cc.renderTableView('id-face-gallery', v.data.gallery, ['id', 'name', 'images', 'tags'], 'Gallery', 12)}
+       </div>
      </div>
    </div>
 
