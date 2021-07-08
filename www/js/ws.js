@@ -1,4 +1,3 @@
-
 function Socket(host, port, actions, agent)
 {
   this.host = host;

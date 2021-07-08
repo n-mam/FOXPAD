@@ -4,18 +4,19 @@ function Agent(o)
   this.sid = o.sid;
   this.host = o.host;
   this.port = o.port;
+  this.onconnect = null;
   this.onmessage = null;
 
-  this.isConnected = function(){
+  this.isConnected = function() {
     return this.socket.isConnected();
   }
 
-  this.send = function(m){
+  this.send = function(m) {
     console.log("client : " + JSON.stringify(m))
     this.socket.send(JSON.stringify(m));
   }
 
-  this.onopen = function(e){
+  this.onopen = function(e) {
     console.log("agent websocket open : " + this.socket.host + ':' + this.socket.port);
     let lv = $('#id-agent-table');
     let items = lv.find("tr");
@@ -26,9 +27,10 @@ function Agent(o)
         $(ch[3]).addClass("success text-bold border bd-gray");
       }
     });
+    this.onconnect();
   }
 
-  this.onclose = function(e){
+  this.onclose = function(e) {
     console.warn('agent websocket closed : ' + this.socket.host + ':' + this.socket.port + ' reason : ' + e.reason);
     show_message("Agent '" + this.socket.agent.sid + "' connection broken");
     let lv = $('#id-agent-table');
@@ -42,11 +44,11 @@ function Agent(o)
     });
   }
 
-  this.onerror = function(e){
+  this.onerror = function(e) {
     console.error('agent websocket error : ' + this.socket.host + ':' + this.socket.port);
   }
 
-  this.onmessage = function(e){
+  this.onmessage = function(e) {
 
     if (e.data.indexOf("\"frame\"") === -1)
     {
@@ -163,18 +165,18 @@ function OnAgentAddClick()
     closeButton: true,
     actions: [
         {
-            caption: "SAVE",
-            cls: "js-dialog-close",
-            onclick: function(){
-              OnAgentSaveButton();
-            }
+          caption: "SAVE",
+          cls: "js-dialog-close",
+          onclick: function(){
+            OnAgentSaveButton();
+          }
         },
         {
-            caption: "CANCEL",
-            cls: "js-dialog-close",
-            onclick: function(){
+          caption: "CANCEL",
+          cls: "js-dialog-close",
+          onclick: function(){
 
-            }
+          }
         }
     ]
   });

@@ -21,11 +21,13 @@ function render(v, id)
   v.page.html = `
     <h3 class="pt-2" id="id-backup">Backup</h3>
     <div class="flex-row d-flex flex-justify-center">
-      <div class="grid cell-5">
+      <div class="grid cell-8">
         ${cc.renderTableView('id-volumes', [], ['Volume', 'Length', 'TotalClusters', 'FreeClusters'], 'Volume', 5)}
       </div>
-      <div class="grid cell-1">  </div>
-      <div class="grid cell-5">
+    </div>
+
+    <div class="flex-row d-flex flex-justify-center">
+      <div class="grid cell-8">
         ${cc.renderTableView('id-browser', [], ['Name', 'Attribute'], 'fsbrowser', 8)}
       </div>
     </div>

@@ -94,8 +94,8 @@ function Camera(o)
     if (this.aid == Agents[i].id)
     {
       this.agent = Agents[i];
-      Agents[i]['onmessage']['cam'] = this.OnAgentMessage.bind(this);
       Agents[i]['onconnect'] = this.OnAgentConnect.bind(this);
+      Agents[i]['onmessage']['cam'] = this.OnAgentMessage.bind(this);
     }
   }
 }
